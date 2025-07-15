@@ -5,7 +5,7 @@
 
 <header class="bg-[#232c4d] p-4 flex justify-between items-center">
     <!-- Logo o título -->
-    <nuxt-link to="#"  class="flex items-center active">
+    <nuxt-link to="ai"  class="flex items-center active">
   
       <img src="~/assets/images/wafidelyuvaweb.png" style="height:auto; width:auto; max-width:100%; max-height:100%;"   alt="WAFIDELY"  />
 </nuxt-link>
@@ -15,7 +15,7 @@
     <div class="space-x-4 hide-for-mobile" >
       <!-- Botón 1 -->
 
-      <nuxt-link to="/landing"  class="active">
+      <nuxt-link to="/ai"  class="active">
   <button class="hover:text-[#7d7d7d]  text-sm px-4 py-2 rounded-lg " style="font-family: 'Montserrat', sans-serif; font-size: 18px">
     Inicio
   </button>
