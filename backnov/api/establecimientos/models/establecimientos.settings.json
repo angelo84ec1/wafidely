@@ -1,0 +1,278 @@
+{
+  "kind": "collectionType",
+  "collectionName": "establecimientos",
+  "info": {
+    "name": "Establecimientos",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nombre": {
+      "type": "string"
+    },
+    "ruc": {
+      "type": "string"
+    },
+    "telefono": {
+      "type": "string"
+    },
+    "correo": {
+      "type": "string"
+    },
+    "fechainicio": {
+      "type": "date"
+    },
+    "fechafin": {
+      "type": "date"
+    },
+    "logo": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "banner": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "categoria": {
+      "type": "string"
+    },
+    "descripcion": {
+      "type": "richtext"
+    },
+    "numerocontacto": {
+      "type": "string"
+    },
+    "whatsapp": {
+      "type": "string"
+    },
+    "formulario": {
+      "type": "string"
+    },
+    "servicios": {
+      "type": "string"
+    },
+    "googlemaps": {
+      "type": "text"
+    },
+    "activateLanding": {
+      "type": "boolean"
+    },
+    "titulodescripcion1": {
+      "type": "string"
+    },
+    "titulodescripcion2": {
+      "type": "string"
+    },
+    "titulodescripcion3": {
+      "type": "string"
+    },
+    "detalledescripcion1": {
+      "type": "text"
+    },
+    "detalledescripcion2": {
+      "type": "text"
+    },
+    "detalledescripcion3": {
+      "type": "text"
+    },
+    "titulodescripcion4": {
+      "type": "string"
+    },
+    "titulodescripcion5": {
+      "type": "string"
+    },
+    "titulodescripcion6": {
+      "type": "string"
+    },
+    "titulodescripcion7": {
+      "type": "string"
+    },
+    "titulodescripcion8": {
+      "type": "string"
+    },
+    "titulodescripcion9": {
+      "type": "string"
+    },
+    "titulodescripcion10": {
+      "type": "string"
+    },
+    "detalledescripcion4": {
+      "type": "text"
+    },
+    "detalledescripcion5": {
+      "type": "text"
+    },
+    "detalledescripcion6": {
+      "type": "text"
+    },
+    "detalledescripcion7": {
+      "type": "text"
+    },
+    "detalledescripcion8": {
+      "type": "text"
+    },
+    "detalledescripcion9": {
+      "type": "text"
+    },
+    "detalledescripcion10": {
+      "type": "text"
+    },
+    "facebook": {
+      "type": "string"
+    },
+    "instagram": {
+      "type": "string"
+    },
+    "tiktok": {
+      "type": "string"
+    },
+    "youtube": {
+      "type": "string"
+    },
+    "galeria1": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "galeria2": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "galeria3": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "galeria4": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "galeria5": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false,
+      "pluginOptions": {}
+    },
+    "googlemaps2": {
+      "type": "text"
+    },
+    "googlemaps3": {
+      "type": "text"
+    },
+    "googlemaps4": {
+      "type": "text"
+    },
+    "googlemaps5": {
+      "type": "text"
+    },
+    "titulogooglemaps": {
+      "type": "text"
+    },
+    "titulogooglemaps2": {
+      "type": "text"
+    },
+    "titulogooglemaps3": {
+      "type": "text"
+    },
+    "titulogooglemaps4": {
+      "type": "text"
+    },
+    "titulogooglemaps5": {
+      "type": "text"
+    },
+    "direccion1": {
+      "type": "text"
+    },
+    "direccion2": {
+      "type": "text"
+    },
+    "direccion3": {
+      "type": "text"
+    },
+    "direccion4": {
+      "type": "text"
+    },
+    "direccion5": {
+      "type": "text"
+    },
+    "description1Url": {
+      "type": "text"
+    },
+    "description2Url": {
+      "type": "text"
+    },
+    "description3Url": {
+      "type": "text"
+    },
+    "description4Url": {
+      "type": "text"
+    },
+    "description5Url": {
+      "type": "text"
+    },
+    "totalsend": {
+      "type": "string"
+    },
+    "citas": {
+      "via": "establecimientos",
+      "collection": "citas"
+    }
+  }
+}
