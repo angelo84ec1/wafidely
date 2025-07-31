@@ -17,19 +17,22 @@ module.exports = ({env}) => ({
   },
 
 
+
+
   email: {
-    provider: "sendgrid", // For community providers pass the full package name (e.g. provider: 'strapi-provider-email-mandrill')
+    provider: "amazon-ses", // For community providers pass the full package name (e.g. provider: 'strapi-provider-email-mandrill')
     providerOptions: {
-      apiKey:
-        "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",
+      key: "AKIA4FEXSBW7XGP6PJUK",
+      secret: "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",
+      amazon: "https://email.us-east-2.amazonaws.com",
     },
     settings: {
-      defaultFrom: "amc@automotorsclub.com",
-      defaultReplyTo: "amc@automotorsclub.com",
-      testAddress: "",
+      defaultFrom: "salesai@wappiad.com",
+      defaultReplyTo: "salesai@wappiad.com",
+     
     },
   },
-  'email-designer': {
+'email-designer': {
     enabled: true,
   }
 });
