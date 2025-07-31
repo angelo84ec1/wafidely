@@ -28,6 +28,7 @@
     "strapi-plugin-import-export-content": "^0.4.2",
     "strapi-plugin-upload": "3.6.8",
     "strapi-plugin-users-permissions": "3.6.8",
+    "strapi-provider-email-amazon-ses": "^3.6.11",
     "strapi-provider-email-sendgrid": "^3.6.11",
     "strapi-utils": "3.6.8"
   },
