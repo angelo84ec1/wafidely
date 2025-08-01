@@ -136,7 +136,7 @@
           return;
         }
         loading.value = true; // Show the loader
-        const res = await fetch("https://amcacmin.automotorsclub.com/establecimientos", {
+        const res = await fetch("https://wafiapi.wafidely.com/establecimientos", {
           method:"POST",
           headers: {
             "Content-Type": "application/json",

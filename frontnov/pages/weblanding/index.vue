@@ -543,7 +543,7 @@ const uploadFile = (file: File, name: String) => {
   // Create form data
   const formData = new FormData();
   formData.append("files", file);
-  fetch(`https://amcacmin.automotorsclub.com/upload`, {
+  fetch(`https://wafiapi.wafidely.com/upload`, {
     method: "POST",
     body: formData,
   }).then(response => response.json())
@@ -584,7 +584,7 @@ const uploadFile = (file: File, name: String) => {
 const currentUserEstablishment = ref<EstableCimientos | null>(null);
 
 const fetchData = ()=>{
-  fetch(`https://amcacmin.automotorsclub.com/establecimientos/${currentUserEstablishment.value[0]?.id}`, {
+  fetch(`https://wafiapi.wafidely.com/establecimientos/${currentUserEstablishment.value[0]?.id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -804,7 +804,7 @@ const save = async () => {
 
 
     // Make API call to save the form data
-    const response = await fetch(`https://amcacmin.automotorsclub.com/establecimientos/${currentUserEstablishment.value[0]?.id}`, {
+    const response = await fetch(`https://wafiapi.wafidely.com/establecimientos/${currentUserEstablishment.value[0]?.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -841,7 +841,7 @@ const sendEmail = () => {
 
 
     const emailData = {
-      to: "ciatseg@gmail.com",
+      to: "websecuador.net@gmail.com",
       subject: 'Landing Page Creada',
       text: `
       Un establecimiento creo la Landing page con la siguiente información a revisar:
@@ -879,15 +879,12 @@ const sendEmail = () => {
 
 
 const categoryOptions = ref<SelectOption[]>([
-  { text: "Escuela de Conducción", value: "Escuela de Conducción" },
-  { text: "Lavadora de Vehiculos", value: "Lavadora" },
-  { text: "Mecánica", value: "Mecánica" },
-  { text: "Repuestos", value: "Repuestos" },
-  { text: "Accesorio de Vehículos", value: "Accesorio de Vehiculos" },
-  { text: "Parqueaderos", value: "Parqueaderos" },
-  { text: "Cursos de Formación", value: "Cursos de Formacion" },
-  { text: "Concesionarios", value: "Concesionarios" },
-  { text: "Estudio Jurídico", value: "Estudio Jurídico" },
+  { text: "Veterinaria", value: "Veterinaria" },
+  { text: "Clínica", value: "Clínica" },
+  { text: "Agencias de IA", value: "Agencias de IA" },
+  { text: "Gimnasios", value: "Gimnasios" },
+  { text: "Talleres Vehículos", value: "Talleres Vehículos" },
+
 ]);
 
 
