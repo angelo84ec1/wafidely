@@ -27,7 +27,7 @@ module.exports = ({env}) => ({
       amazon: "https://email.us-east-2.amazonaws.com",
     },
     settings: {
-      defaultFrom: "salesai@wappiad.com",
+      defaultFrom: "",
       defaultReplyTo: "salesai@wappiad.com",
      
     },
