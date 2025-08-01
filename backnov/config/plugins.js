@@ -22,8 +22,8 @@ module.exports = ({env}) => ({
   email: {
     provider: "amazon-ses", // For community providers pass the full package name (e.g. provider: 'strapi-provider-email-mandrill')
     providerOptions: {
-      key: "AKIA4FEXSBW7XGP6PJUK",
-      secret: "0zn09Yt/RWWmkqoWmD/zuVIyOU3GyKLt+AeCZbcY",
+      key: "",
+      secret: "",
       amazon: "https://email.us-east-2.amazonaws.com",
     },
     settings: {
