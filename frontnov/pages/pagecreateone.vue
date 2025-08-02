@@ -1,17 +1,30 @@
 <template>
-    <div>
-      <div class="login">
-        <div class="login__container">
-          <div class="login__content">
-            <div class="login__text">
-              <img class="logo" src="https://amcacmin.automotorsclub.com/uploads/logo_AMC_317a0caa6e.svg" alt="" />
-              <h1>Bienvenidos a crear tu Cuenta:</h1>
-              
-            </div>
+
+
+
+
+
+<!-- Container -->
+<div class="flex flex-wrap min-h-screen w-full content-center justify-center bg-[#fbf8ff] py-10">
   
-            <form class="login__form" @submit.prevent="register">
-           
-              <BaseSelect v-model="formLogin.documentType" :v="vuelidate.documentType" label="Tipo de identificación"
+  <!-- Login component -->
+  <div class="flex shadow-md">
+    <!-- Login form -->
+    <div class="flex flex-wrap content-center justify-center rounded-l-md bg-white" style="width: 24rem; height: 32rem;">
+      <div class="w-72">
+        <!-- Heading -->
+        <h1 class="text-xl font-semibold">Bienvenidos</h1>
+        <small class="text-gray-400">Crea tu Landig Page por 5 dias GRATIS</small>
+
+        <form class="mt-4" @submit.prevent="register">
+   
+          <div class="mb-3">
+
+            
+
+
+
+            <BaseSelect v-model="formLogin.documentType" :v="vuelidate.documentType" label="Tipo de identificación"
                 for="tipo de identificacion" :options="options" />
               <BaseInput v-model="formLogin.idDocument" :v="vuelidate.idDocument" label="Identificación" for="id"
                 :has-icon="true">
@@ -19,13 +32,13 @@
                   <img src="~/assets/images/account_rosado.png" alt="User icon" class="image-container"/>
                 </template>
               </BaseInput>
-              <BaseInput v-model="formLogin.email" :v="vuelidate.email" label="Email" for="email"
+              <BaseInput class="svgIcon mb-2 block text-sm font-normal" v-model="formLogin.email" :v="vuelidate.email" label="Email" for="email"
                 :has-icon="true">
                 <template #img>
                   <img src="~/assets/images/email_estableci.png" alt="Email icon" />
                 </template>
               </BaseInput>
-              <BaseInput v-model="formLogin.establecimientos" :v="vuelidate.establecimientos" label="Nombre del establecimiento" for="establecimientos"
+              <BaseInput v-model="formLogin.establecimientos" :v="vuelidate.establecimientos" label="Nombre del establecimiento" label-class="text-sm" for="establecimientos"
                 :has-icon="true">
                 <template #img>
                   <img src="~/assets/images/estable_mientos.png" alt="User icon" />
@@ -37,7 +50,7 @@
                   <img src="~/assets/images/Password.png" alt="Left icon" />
                 </template>
               </BaseInput>
-              <BaseButton type="submit" :disabled="loading">
+              <BaseButton class="mt-4 mb-1.5 block w-full text-center text-white bg-[#232c4d] hover:bg-[#40496d] px-2 py-1.5 rounded-md" type="submit" :disabled="loading">>
                 <template #text>
                   <span v-if="loading">
                     <Loader />
@@ -47,16 +60,32 @@
                   </span>
                 </template>
               </BaseButton>
-            
-            </form>
+
+
+
           </div>
-        </div>
-        <div class="login__image">
-          <span></span>
-        </div>
+
+  
+
+        </form>
+
+        <!-- Footer -->
+      
       </div>
       <AccountNotExistModal v-if="showModal" @close="hideAccountNotExistModal" @action="sendMailto" />
     </div>
+
+    <!-- Login banner -->
+    <div class="deg flex flex-wrap content-center justify-center rounded-r-md  responsive-hide" style="width: 24rem; height: 32rem; overflow: hidden;">
+  <img class="max-w-full max-h-full rounded-r-md" src="~/assets/images/wafidelyuvaweb.png" alt="Logo">
+</div>
+
+  </div>
+
+ 
+</div>
+
+
   </template>
   <script lang="ts" setup>
   import useVuelidate from "@vuelidate/core";
@@ -184,106 +213,75 @@
       }
     }
   </script>
-  <style scoped>
-  .login {
-    display: flex;
-    min-height: 100vh;
-  }
-  
-  .login>* {
-    flex: 50% 1;
-  }
-  
-  .login__content {
-    max-width: 423px;
-  }
-  
-  .login__container {
-    display: grid;
-    place-items: center;
-    padding: 1rem;
-  }
-  
-  .logo {
-    width: 250px;
-    height: auto;
-  }
-  
-  .login__text {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  
-  .login__form {
-    margin-top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
+<style scoped>
+.login {
+  display: flex;
+  min-height: 100vh;
+}
+
+.login>* {
+  flex: 50% 1;
+}
+
+.login__content {
+  max-width: 423px;
+}
+
+.login__container {
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.logo {
+  width: 250px;
+  height: auto;
+}
+
+.login__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.login__form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+
+.login__image>span {
+  font-size: var(--heading-2);
+  line-height: var(--heading-line-height);
+  color: var(--white);
+  max-width: 497px;
+}
+
+.forgot-password-link {
+  color: #38f5b3;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.deg {
+background-image: linear-gradient(360deg, #232c4d, #38f5b3);
+}
+
+@media (max-width: 800px) {
   .login__image {
-
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding: 1rem;
-    background-image: url("../assets/images/crearcuenta.png");
-    background-repeat: no-repeat;
-  background-size: contain; /* Cambiado a 'contain' para hacer la imagen responsive */
-
+    display: none;
   }
-
-
-  
-  .login__image>span {
-    font-size: var(--heading-2);
-    line-height: var(--heading-line-height);
-    color: var(--white);
-    max-width: 58px;
-  }
-  
-  .forgot-login{
-    color: #2563EB;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
-    text-decoration: none;
-    text-align: left;
-  }
-
-  
-  @media (max-width:600px) {
-    .login__image {
-      display: none;
-      min-height: 50vh; /* 50% del viewport height como altura mínima */
-    min-width: 60vw; /* 50% del viewport width como ancho mínimo */
-    }
-  }
-
-.image-container {
-
-display: inline-block;
-
-/* Establecer la altura mínima del contenedor al 100% del alto de la ventana gráfica (viewport) */
-position: relative;
-/* Estilos para pantallas de 13 y 14 pulgadas */
-width: 100%;
-height: 100%;
-
-
-@media screen and (max-device-width : 1200px) {
-
-  display: inline-block;
-
-  /* Establecer la altura mínima del contenedor al 100% del alto de la ventana gráfica (viewport) */
-  position: relative;
-/* Estilos para pantallas de 13 y 14 pulgadas */
-width: 100%;
-height: 100%;
-
 }
+
+@media (max-width: 768px) {
+  .responsive-hide {
+    display: none;
+  }
 }
-  </style>
+</style>

@@ -768,7 +768,7 @@ const _inlineRuntimeConfig = {
     }
   },
   "public": {
-    "baseURL": "http://localhost:1337",
+    "baseURL": "https://wafiapi.wafidely.com",
     "MAILTO": "websecuador.net@gmail.com",
     "pagomedioToken": "4ttz7cvsgqlfapmgy7iifvc6hz8tgwh56jhlpt0ietyngga-dvws-budn6kbhss3a6oly",
     "GOOGLE_MAPS_API": "AIzaSyAMQ-DzRcCKRrOWJWjPkPSTUHqwyQkyVH8"

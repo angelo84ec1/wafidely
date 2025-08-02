@@ -1,5 +1,5 @@
 <template>
-  <vue-meeting-selector ref="meetingSelector" class="meeting-selector w-[100%] md:w-[50%]" v-model="meeting" :date="date"
+  <vue-meeting-selector ref="meetingSelector" class="mt-8 meeting-selector w-[100%] md:w-[50%]" v-model="meeting" :date="date"
     :loading="false" :meetings-days="meetingsDays" @next-date="nextDate" @previous-date="previousDate"
     @update:modelValue="change" />
 
