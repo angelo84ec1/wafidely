@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <ui-header></ui-header>
 
-  <div class="max-w-[1600px] w-full mx-auto" style="overflow: hidden;">
+
+  <div class="max-w-[1600px] w-full mx-auto " style="overflow: hidden;">
     <img v-if="establecimientos?.banner && establecimientos?.banner.length !== 0"
       :src="getProfilePicture(establecimientos?.banner[0].url)" class="cssbanner w-full" alt="..." />
   </div>
@@ -14,7 +14,7 @@
 
   <div class="top md:flex md:item-start md:justify-start md:gap-[20px] lg:gap-[30px] w-full">
 
-    <div class="left w-full lg:w-[60%]">
+    <div class="left w-full lg:w-[60%] ">
     <!-- Profile area start -->
       <div class="flex items-center justify-start gap-[15px] sm:gap-[25px] md:gap-[40px]">
 
@@ -90,9 +90,9 @@
       <div class="w-full grid grid-cols-5 gap-y-[5px] gap-x-[2%] relative h-[400px] lg:h-auto py-[50px]">
         <div class="">
           <input class="peer sr-only" type="radio" value="yes" name="answer" id="yes" checked />
-          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#FFF200] py-2 px-4 hover:bg-gray-50 hover:border-[#DF2F91] focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-[6px] tab:text-[12px] font-bold font-movile" for="yes"  v-if="establecimientos && establecimientos.titulodescripcion1"> {{ establecimientos.titulodescripcion1 }}</label>
+          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d] px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-[6px] tab:text-[12px] font-bold font-movile" for="yes"  v-if="establecimientos && establecimientos.titulodescripcion1"> {{ establecimientos.titulodescripcion1 }}</label>
           
-          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#DF2F91] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile" >
+          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile" >
             <audio  v-if="audioUrldetalledescripcion1" controls preload="auto|metadata|none">
                 <source :src="audioUrldetalledescripcion1" type="audio/mpeg" />
                 <source :src="audioUrldetalledescripcion1.replace('.mp3', '.ogg')" type="audio/ogg" />
@@ -107,9 +107,9 @@
 
         <div class="">
           <input class="peer sr-only" type="radio" value="no" name="answer" id="no" />
-          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#FFF200] py-2 px-4 hover:bg-gray-50 hover:border-[#DF2F91] focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="no"  v-if="establecimientos && establecimientos.titulodescripcion2">{{ establecimientos?.titulodescripcion2 }}</label>
+          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d]] focus:outline-none peer-checked:border-[#232c4d]] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="no"  v-if="establecimientos && establecimientos.titulodescripcion2">{{ establecimientos?.titulodescripcion2 }}</label>
           
-          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#DF2F91] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
+          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
             <audio   v-if="audioUrldetalledescripcion2" controls preload="auto">
                 <source :src="audioUrldetalledescripcion2" type="audio/mpeg" />
                 <source :src="audioUrldetalledescripcion2.replace('.mp3', '.ogg')" type="audio/ogg" />
@@ -123,9 +123,9 @@
 
         <div class="">
           <input class="peer sr-only" type="radio" value="yesno" name="answer" id="yesno" />
-          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#FFF200] py-2 px-4 hover:bg-gray-50 hover:border-[#DF2F91] focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-6px] tab:text-[12px] font-bold  font-movile " for="yesno"  v-if="establecimientos && establecimientos.titulodescripcion3">{{ establecimientos?.titulodescripcion3 }}</label>
+          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-6px] tab:text-[12px] font-bold  font-movile " for="yesno"  v-if="establecimientos && establecimientos.titulodescripcion3">{{ establecimientos?.titulodescripcion3 }}</label>
           
-          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#DF2F91] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
+          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
             <audio v-if="audioUrldetalledescripcion3"  controls preload="auto">
                 <source :src="audioUrldetalledescripcion3" type="audio/mpeg; codecs=mp3" />
                 <source :src="audioUrldetalledescripcion3.replace('.mp3', '.ogg')" type="audio/ogg" />
@@ -139,9 +139,9 @@
 
         <div class="">
           <input class="peer sr-only" type="radio" value="yesno1" name="answer" id="yesno1" />
-          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#FFF200] py-2 px-4 hover:bg-gray-50 hover:border-[#DF2F91] focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[10px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="yesno1"  v-if="establecimientos && establecimientos.titulodescripcion4">{{ establecimientos.titulodescripcion4 }}</label>
+          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[10px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="yesno1"  v-if="establecimientos && establecimientos.titulodescripcion4">{{ establecimientos.titulodescripcion4 }}</label>
           
-          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#DF2F91] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
+          <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
             <audio  v-if="audioUrldetalledescripcion4" controls preload="auto">
                 <source :src="audioUrldetalledescripcion4" type="audio/mpeg" />
                 <source :src="audioUrldetalledescripcion4.replace('.mp3', '.ogg')" type="audio/ogg" />
@@ -156,16 +156,25 @@
 
         <div class="">
           <input class="peer sr-only" type="radio" value="yesno2" name="answer" id="yesno2" />
-          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#FFF200] py-2 px-4 hover:bg-gray-50 hover:border-[#DF2F91] focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[10px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="yesno2"  v-if="establecimientos && establecimientos.titulodescripcion5">{{ establecimientos.titulodescripcion5 }}</label>
+          <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[10px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="yesno2"  v-if="establecimientos && establecimientos.titulodescripcion5">{{ establecimientos.titulodescripcion5 }}</label>
             
-            <div id="audio" class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#DF2F91] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
+            <div id="audio" class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
               <audio  v-if="audioUrldetalledescripcion5" controls preload="auto">
                 <source :src="audioUrldetalledescripcion5" type="audio/mpeg" />
                 <source :src="audioUrldetalledescripcion5.replace('.mp3', '.ogg')" type="audio/ogg" />
             
                 Your browser does not support the audio element.
               </audio>
-              {{ establecimientos.detalledescripcion5 }}
+              <div class="flex flex-col space-y-2">
+    <label for="color" class="text-sm text-gray-700">Selecciona un color:</label>
+    <input
+      type="color"
+      id="color"
+      v-model="establecimientos.detalledescripcion5"
+      class="w-16 h-10 p-0 border border-gray-300 rounded"
+    />
+    <p class="text-sm text-gray-600">Color seleccionado: {{ establecimientos.detalledescripcion5 }}</p>
+  </div>
             </div>
 
         </div>
@@ -175,9 +184,9 @@
     <!------------- Filter area end --------------------->
     </div>
 
-    <div class="" v-if="calenderLoading">
+    <div class="mb-12" v-if="calenderLoading">
    
-      <div class="bg-slate-200 w-[250px] h-5 mb-4" v-for="n,i in 6" :key="i">&nbsp;</div>
+      <div class="bg-slate-200 w-[250px] h-5 mb-12" v-for="n,i in 6" :key="i">&nbsp;</div>
     </div>
     <CommonCalenderAppoinment :establishmentId="route.params.id" :disabledData="getCalenderData" @fetchCalender="getDataAppoinments"  v-else />
    
@@ -195,7 +204,7 @@
 
           <div class="w-full">
             <input class="peer sr-only" type="radio" value="tab1" name="tabs" id="tab1" checked />
-            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab1" v-if="establecimientos && establecimientos.titulogooglemaps">{{ establecimientos?.titulogooglemaps }}</label>
+            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab1" v-if="establecimientos && establecimientos.titulogooglemaps">{{ establecimientos?.titulogooglemaps }}</label>
             
             <div class="cssdirecciones ml-[40px] max-w-[240px]" for="tab1" v-if="establecimientos && establecimientos.direccion1" v-show="establecimientos && establecimientos.titulogooglemaps">
               <span class="direccion-container">
@@ -204,7 +213,7 @@
               </span>
             </div>
 
-            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px] border-[#DF2F91] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
+            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px] border-[#232c4d] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
               <GoogleMap :apiKey="GOOGLE_MAPS_API" :center="establecimientos?.googlemaps" :zoom="19"
                 style="width: 100%; height: 358px">
                 <Marker :options="markerOptions">
@@ -221,7 +230,7 @@
 
           <div class="w-full">
             <input class="peer sr-only" type="radio" value="tab2" name="tabs" id="tab2" />
-            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab2" v-if="establecimientos && establecimientos.titulogooglemaps2">{{ establecimientos?.titulogooglemaps2 }}</label>
+            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab2" v-if="establecimientos && establecimientos.titulogooglemaps2">{{ establecimientos?.titulogooglemaps2 }}</label>
             
             <div class="cssdirecciones ml-[40px] max-w-[240px]" for="tab2" v-if="establecimientos && establecimientos.direccion2" v-show="establecimientos && establecimientos.titulogooglemaps">
                 <span class="direccion-container">
@@ -230,7 +239,7 @@
                 </span>
               </div>
 
-            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px]  border-[#DF2F91] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
+            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px]  border-[#232c4d] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
               <GoogleMap :apiKey="GOOGLE_MAPS_API" :center="establecimientos?.googlemaps2" :zoom="19"
                   style="width: 99%; height: 358px">
                   <Marker :options="markerOptions">
@@ -248,7 +257,7 @@
 
           <div class="w-full">
             <input class="peer sr-only" type="radio" value="tab3" name="tabs" id="tab3"/>
-            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab3" v-if="establecimientos && establecimientos.titulogooglemaps3">{{ establecimientos?.titulogooglemaps3 }}</label>
+            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab3" v-if="establecimientos && establecimientos.titulogooglemaps3">{{ establecimientos?.titulogooglemaps3 }}</label>
             
             <div class="cssdirecciones ml-[40px] max-w-[240px]" for="tab3" v-if="establecimientos && establecimientos.direccion3" v-show="establecimientos && establecimientos.titulogooglemaps2">
                 <span class="direccion-container">
@@ -257,7 +266,7 @@
                 </span>
               </div>
 
-            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px] border-[#DF2F91] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
+            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px] border-[#232c4d] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
               <GoogleMap :apiKey="GOOGLE_MAPS_API" :center="establecimientos?.googlemaps3" :zoom="19"
                 style="width: 99%; height: 358px">
                 <Marker :options="markerOptions">
@@ -275,7 +284,7 @@
 
           <div class="w-full">
             <input class="peer sr-only" type="radio" value="tab4" name="tabs" id="tab4" />
-            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab4" v-if="establecimientos && establecimientos.titulogooglemaps4">{{ establecimientos?.titulogooglemaps4 }}</label>
+            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab4" v-if="establecimientos && establecimientos.titulogooglemaps4">{{ establecimientos?.titulogooglemaps4 }}</label>
             
             <div class="cssdirecciones ml-[40px] max-w-[240px]" for="tab4" v-if="establecimientos && establecimientos.direccion4" v-show="establecimientos && establecimientos.titulogooglemaps3">
                 <span class="direccion-container">
@@ -284,7 +293,7 @@
                 </span>
               </div>
 
-            <div class="absolute margindesc bg-white shadow-lg p-2 border  border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px] border-[#DF2F91] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
+            <div class="absolute margindesc bg-white shadow-lg p-2 border  border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[185px] border-[#232c4d] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
               <GoogleMap :apiKey="GOOGLE_MAPS_API" :center="establecimientos?.googlemaps4" :zoom="19"
                   style="width: 99%; height: 358px">
                   <Marker :options="markerOptions">
@@ -301,7 +310,7 @@
 
           <div class="w-full ">
             <input class="peer sr-only" type="radio" value="tab5" name="tabs" id="tab5" />
-            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#DF2F91] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab5" v-if="establecimientos && establecimientos.titulogooglemaps5">{{ establecimientos?.titulogooglemaps5 }}</label>
+            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab5" v-if="establecimientos && establecimientos.titulogooglemaps5">{{ establecimientos?.titulogooglemaps5 }}</label>
             
             <div class="cssdirecciones ml-[40px] max-w-[240px]" for="tab5" v-if="establecimientos && establecimientos.direccion5" v-show="establecimientos && establecimientos.titulogooglemaps4">
                 <span class="direccion-container">
@@ -310,7 +319,7 @@
                 </span>
               </div>
 
-            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[175px] border-[#DF2F91] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
+            <div class="absolute margindesc bg-white shadow-lg p-2 border top-[500px] pho:top-[460px] micro:top-[440px] sm:top-[360px] md:top-[320px] lg:top-[175px] border-[#232c4d] rounded-lg w-full lg:w-[50%] transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[2.8vh] font-movile">
               <GoogleMap :apiKey="GOOGLE_MAPS_API" :center="establecimientos?.googlemaps5" :zoom="19"
                 style="width: 99%; height: 358px">
                 <Marker :options="markerOptions">
@@ -330,12 +339,16 @@
     </div>
 
       <!-- Columna para el formulario -->
-      <div class="lg:absolute lg:top-[180px] xl:top-[180px] left-0 lg:left-[55%]">
+      <div class="lg:absolute lg:top-[130px] xl:top-[130px] left-0 lg:left-[55%]">
         <div class="relative cssformulariolanding w-full px-2">
           <FormularioColumnaLanding :email="establecimientos?.formulario" />
-          <div class="absolute bottom-0 right-0">
-            <a :href="'https://wa.me/' + (establecimientos?.whatsapp || '')" target="_blank" class="w-[70px]"> 
-              <img src="~/assets/images/WhatsApp.png" alt="Whatsapp" class="csswhat w-[70px] rounded-lg">
+          <div class="whatsapp-float absolute bottom-0 right-0">
+            <a :href="'https://wa.me/' + (establecimientos?.whatsapp || '')" target="_blank"    rel="noopener noreferrer" class="w-[70px]"> 
+                <img
+      src="https://amcacmin.automotorsclub.com/uploads/Animation_1750186633654_d5a4a6806e.gif"
+      alt="WhatsApp"
+      class="whatsapp-icon"
+    />
             </a>
           </div>
         </div>
@@ -349,8 +362,17 @@
   <div class="spacer"></div>
 
 </div>
-<ui-footer></ui-footer>
 
+
+<div class="w-full text-white" :style="{ backgroundColor: establecimientos.detalledescripcion5 }">
+
+
+    <div class="max-w-7xl mx-auto flex justify-center items-center p-8">
+      <p class="text-xl font-semibold" style="color: white">&copy; LANDING PAGE - EMBUDO DE VENTAS CREADO DE FORMA AUTOMÁTICA CON AI WAFIDELY</p>
+ 
+    </div>
+
+</div>
 
 </template>
 
@@ -377,6 +399,7 @@ const audioUrldetalledescripcion2 = ref(null);
 const audioUrldetalledescripcion3 = ref(null);
 const audioUrldetalledescripcion4 = ref(null);
 const audioUrldetalledescripcion5 = ref(null);
+
 
 
 const getCalenderData = computed(() => {
@@ -548,9 +571,13 @@ calenderLoading.value=true;
 
 
 
-  onMounted(async () => {
-   
-    await getDataAppoinments()
+onMounted(async () => {
+  await getDataAppoinments();
+
+  // Aquí asignas un valor por defecto si aún no tiene uno
+  if (!establecimientos.value.detalledescripcion5) {
+    establecimientos.value.detalledescripcion5 = '#ffffff'; // o el color que quieras
+  }
     audioUrldetalledescripcion1.value = await callLambda(establecimientos.value?.detalledescripcion1);
     audioUrldetalledescripcion2.value = await callLambda(establecimientos.value?.detalledescripcion2);
     audioUrldetalledescripcion3.value = await callLambda(establecimientos.value?.detalledescripcion3);
@@ -570,9 +597,32 @@ calenderLoading.value=true;
 <style scoped lang="scss">
 
   .custom-shadow {
-    box-shadow: 0 0 10px #DF2F91;
+    box-shadow: 0 0 10px #232c4d
+    ;
   } 
+  .whatsapp-float {
+  
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  
+  z-index: 1000;
+}
 
+.whatsapp-icon {
+  
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  margin-top: -150px;
+}
+
+.whatsapp-icon:hover {
+
+transform: scale(1.1);
+}
 // body {
 
 //   position: relative;
@@ -2309,7 +2359,7 @@ calenderLoading.value=true;
 // }
 
 // input[type="radio"]:checked+label {
-//   border-color: #DF2F91;
+//   border-color: #232c4d;
 //   /* Cambiar el color del borde cuando el radio button está seleccionado */
 //   box-shadow: 0 0 5px #FFF200;
 //   /* Añadir sombra al borde */
@@ -2326,7 +2376,7 @@ calenderLoading.value=true;
 // }
 
 // label:hover {
-//   border-color: #DF2F91;
+//   border-color: #232c4d;
 //   /* Cambiar el color del borde al pasar el ratón por encima */
 // }
 

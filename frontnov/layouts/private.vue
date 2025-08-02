@@ -73,8 +73,8 @@
             <div class="w-full px-1 inline-flex space-x-1 items-center border-b border-slate-700 py-1 hover:bg-white/5 transition ease-linear duration-150"></div>
           </li>
           <li v-if="isEstablecimiento || authStore.user?.role?.name === 'establecimiento'">
-            <NuxtLink to="/weblanding" class="drawer__link">
-              <img v-if="route.path.includes('/weblanding')" src="~/assets/images/landingyellow.png" alt="landing-icon" />
+            <NuxtLink to="/aiembudo" class="drawer__link">
+              <img v-if="route.path.includes('/aiembudo')" src="~/assets/images/landingyellow.png" alt="landing-icon" />
               <img  v-else src="~/assets/images/landingwhite.png" alt="landing-icon" /> Landing Page
             </NuxtLink>
             <div class="w-full px-1 inline-flex space-x-1 items-center border-b border-slate-700 py-1 hover:bg-white/5 transition ease-linear duration-150"></div>

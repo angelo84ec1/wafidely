@@ -112,7 +112,7 @@
         <div class="home__actions">
           <h2>Establecimiento</h2>
           <div class="home__buttons">
-            <button class="button button--secondary" :disabled="!active" @click.prevent="() => { router.push(`/weblanding/${estId}`) }">
+            <button class="button button--secondary" :disabled="!active" @click.prevent="() => { router.push(`/aiembudo/${estId}`) }">
               <img src="~/assets/images/landingwhite.png" alt="" /> Landing Page
             </button>
           </div>

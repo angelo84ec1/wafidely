@@ -1,7 +1,7 @@
 <template>
   <div class="">
     <form @submit.prevent="sendMail">
-      <label for="nombre">Nombre del socio:</label>
+      <label for="nombre">Nombre :</label>
       <input v-model="formData.nombre" type="text" id="nombre" name="nombre" class="w-full mb-4 p-2 rounded-md">
 
       <label for="telefono">Teléfono:</label>
@@ -14,7 +14,7 @@
       <textarea v-model="formData.requerimiento" id="requerimiento" name="requerimiento"
         class="w-full mb-4 p-2 rounded-md"></textarea>
 
-      <button type="submit" class="estil1 bg-[#FFF200]   rounded-md">Enviar</button>
+      <button type="submit" class="estil1 bg-[#232c4d]  rounded-md">Enviar</button>
     </form>
   </div>
 </template>
@@ -63,7 +63,7 @@ export default {
       let email = this.email;
       const emailData = {
         to: email,
-        subject: 'Nueva Alianza Formulario App Web AMC',
+        subject: 'Formulario Landing WA',
         text: `
           Nombre de la empresa: ${this.formData.nombre}
           Teléfono: ${this.formData.telefono}
@@ -73,7 +73,7 @@ export default {
       };
 
       // Use strapi email plugin to send email
-      fetch(`${baseURL}/email/`, {
+      fetch(`${baseURL}/email`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -104,8 +104,8 @@ export default {
 <style>
 /* Estilo inicial del botón */
 .estil1 {
-  background-color: #FFF200;
-  color: #000000;
+  background-color: #232c4d;
+  color: #ffffff;
   /* Color del texto negro */
   transition: color 0.3s;
   /* Agrega una transición suave para el cambio de color */

@@ -14,7 +14,7 @@
         <h1>Sube 1 imagen con tu banner y logo, además puedes subir 5 imágenes para la galería, y completa todos los campos solicitados que correspondan.</h1>
         <div class="home__buttons">
 
-          <button class="button button--secondary" @click.prevent="()=>{router.push(`/weblanding/${currentUserEstablishment[0]?.id}`)}">
+          <button class="button button--secondary" @click.prevent="()=>{router.push(`/aiembudo/${currentUserEstablishment[0]?.id}`)}">
             <img src="~/assets/images/landingwhite.png" alt="" /> Ver Landing Page
           </button>
           <button class="button button--secondary" @click.prevent="save()">
