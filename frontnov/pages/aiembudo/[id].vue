@@ -195,16 +195,19 @@
   </div>
 
 
+
+
+
   <!-- Tercera columna -->
-  <div class="mt-[80px] w-full h-auto lg:h-[600px] relative mb-14" >
+  <div class="mt-[130px] w-full h-auto lg:h-[600px] relative mb-14" >
 
     <div class="relative h-[920px] pho:h-[880px] sm:h-[780px] md:h-[740px] lg:h-auto">
         
         <div class="grid grid-cols-3 lg:grid-cols-5 gap-y-[20px] gap-x-[2%] relative">
 
-          <div class="w-full">
-            <input class="peer sr-only" type="radio" value="tab1" name="tabs" id="tab1" checked />
-            <label class="w-full max-w-[200px] inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 bg-[#FFF200] py-2 hover:bg-gray-50 focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab1" v-if="establecimientos && establecimientos.titulogooglemaps">{{ establecimientos?.titulogooglemaps }}</label>
+          <div class="w-ful mt-8">
+            <input class="peer sr-only " type="radio" value="tab1" name="tabs" id="tab1" checked />
+            <label class="w-full max-w-[200px]  inline-flex justify-center cursor-pointer rounded-xl border border-gray-300 mt-8 text-white bg-[#232c4d] py-2 hover:bg-gray-50 hover:text-black focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[2vh] font-bold font-movile" for="tab1" v-if="establecimientos && establecimientos.titulogooglemaps">{{ establecimientos?.titulogooglemaps }}</label>
             
             <div class="cssdirecciones ml-[40px] max-w-[240px]" for="tab1" v-if="establecimientos && establecimientos.direccion1" v-show="establecimientos && establecimientos.titulogooglemaps">
               <span class="direccion-container">
@@ -387,6 +390,7 @@ import BaseFileInput from "~/components/common/inputs/file-input.vue";
 import useAdmin from '~/composables/useAdmin';
 import { useAuthStore } from "~/store/auth";
 import type { User, EstableCimientos } from "~/common/interfaces/user.interface";
+
 
 import { useToast } from "vue-toastification";
 

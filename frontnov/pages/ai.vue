@@ -42,7 +42,6 @@ onMounted(() => {
     initTooltips();
 })
 </script>
-
 <template >   
 
     <ui-header class="mb-0 bg-secondary bg-indigo-600 bg-gray-800 p-0 text-white "></ui-header>
@@ -94,7 +93,7 @@ onMounted(() => {
                     <div class="custom-link p-8 sm:p-16 lg:p-13" >
                         
                         <h2 class="custom-link text-2xl font-bold sm:text-3xl  pb-0"  >
-                            Crea una cuenta GRATIS por 5 dias y accede a nuestra plataforma Sass las 24 horas del día los 365 dias del año.
+                            Crea una cuenta GRATIS por 5 dias y accede a nuestra plataforma Saas las 24 horas del día los 365 dias del año.
                         </h2>
 
                         <p class="custom-link mt-4 text-gray-600  pb-0 text-justify">
@@ -124,8 +123,8 @@ onMounted(() => {
 
     
 
-<section class="py-10 pb-8">
-        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 lg:py-20 ">
+<section class="py-2 pb-8">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 lg:py-1 ">
             <div class="mb-1">
                 <h2 class="font-manrope text-5xl text-center font-bold text-gray-900 mb-10">Ventajas </h2>
                 <p class="text-gray-500 text-center leading-6 pb-8 ">+ de 6 funcionalidades y beneficios al registrarte en nuestro aplicativo web</p>
@@ -151,7 +150,7 @@ onMounted(() => {
                     </span>
                     </div>
                     <h3 class="text-lg leading-normal mb-2 font-semibold text-black">Página de Aterrizaje</h3>
-                    <p class="font-manrope  text-gray-500">Crearás en 2 minutos tu página de aterrizaje con una url personalizada</p>
+                    <p class="font-manrope  text-gray-500">Crearás en 2 minutos tu página de aterrizaje con una url https://wafidely.com/aiembudo/... </p>
                 </div>
                 <!-- end service block -->
             </div>
@@ -165,7 +164,7 @@ onMounted(() => {
                     </span>
                     </div>
                     <h3 class="text-lg leading-normal mb-2 font-semibold text-black">Qr</h3>
-                    <p class="font-manrope text-gray-500">El aplicativo te generá un Qr para que tus clientes accedan agendar citas</p>
+                    <p class="font-manrope text-gray-500">Enlazas tu whatsapp business mediante qr web para tener activo tu flujo de respuestas automáticas con IA, el registro es gratis sin tarjeta</p>
                 </div>
                 <!-- end service block -->
             </div>
@@ -180,7 +179,7 @@ onMounted(() => {
                     </span>
                     </div>
                     <h3 class="text-lg leading-normal mb-2 font-semibold text-black">Calendario</h3>
-                    <p class="text-gray-500">Tus clientes y tu accederas a un calendario interactivo para administrar tu agenda</p>
+                    <p class="text-gray-500">Tus clientes y tu accederas a un calendario interactivo para administrar tu agenda, puedes agendar desde whatsapp con IA</p>
                 </div>
                 <!-- end service block -->
             </div>
@@ -194,7 +193,7 @@ onMounted(() => {
                     </span>
                     </div>
                     <h3 class="text-lg leading-normal mb-2 font-semibold text-black">Recordatorio Automático</h3>
-                    <p class="text-gray-500">La aplicación enviará de manera automática al whatsapp de tu cliente 4 horas antes de la cita el recordario de confirmar o cancelar</p>
+                    <p class="text-gray-500">La aplicación enviará de manera automática al whatsapp de tu cliente 2 horas antes de la cita el recordario de confirmar o cancelar</p>
                 </div>
                 <!-- end service block -->
             </div>
@@ -208,7 +207,7 @@ onMounted(() => {
                     </span>
                     </div>
                     <h3 class="text-lg leading-normal mb-2 font-semibold text-black">Reportes</h3>
-                    <p class="text-gray-500">En el administrador podras filtrar por día, mes y año, citas, el número de citas confirmadas y canceladas, número de clientes y descargar en pdf</p>
+                    <p class="text-gray-500">En el administrador podras filtrar por día, mes y año, citas, el número de citas confirmadas y canceladas, número de clientes </p>
                 </div>
                 <!-- end service block -->
             </div>
@@ -222,7 +221,7 @@ onMounted(() => {
                     </span>
                     </div>
                     <h3 class="text-lg leading-normal mb-2 font-semibold text-black">Tipo de negocio</h3>
-                    <p class="text-gray-500">De acuerdo a la categoría seleccionada el sistema identifica tu giro de negocio dentro de los 9 existentes y activa el módulo respectivo en el menú del admin</p>
+                    <p class="text-gray-500">De acuerdo a la categoría seleccionada el sistema identifica tu giro de negocio dentro de los 4 existentes y activa el módulo respectivo en el menú del admin</p>
                 </div>
                 <!-- end service block -->
             </div>
@@ -233,10 +232,7 @@ onMounted(() => {
 
 
 
-
-
-
-    <section class="py-5 ">
+    <section class="py-3 ">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div class="mb-12">
                 <h2 class="font-manrope text-5xl text-center font-bold text-gray-900 mb-4">Preguntas Frecuentes </h2>
@@ -250,7 +246,7 @@ onMounted(() => {
     </section>
 
 
-    <div class="mx-auto max-w-6xl mt-5 p-8">
+    <div class="mx-auto max-w-6xl mt-2 p-4">
     <div class="divide-y divide-[#38f5b3]">
         <details class="group" >
             <summary
@@ -269,7 +265,7 @@ onMounted(() => {
                     </svg>
                 </div>
             </summary>
-            <div class="pb-4 text-secondary-500">Cada suscripción tiene la válidez mínimo de 5 dias GRATIS, puedes acceder de forma mensual con pagos desde $79, trimestral o anual , podrás acceder al sistema, el paquete de envíos de whatsapp tiene la validez mientras tengas disponibles</div>
+            <div class="pb-4 text-secondary-500">Cada suscripción tiene la válidez mínimo de 5 dias GRATIS, puedes acceder de forma mensual con pagos desde $69, trimestral o anual , podrás acceder al sistema, el paquete de envíos de whatsapp tiene la validez mientras tengas disponibles</div>
         </details>
         <details class="group" >
             <summary
@@ -287,7 +283,7 @@ onMounted(() => {
                     </svg>
                 </div>
             </summary>
-            <div class="pb-4 text-secondary-500">Es una Startup creada y soportada por WAPPIAD S.A.S. para ayudar a las empresas a fidelizar sus clientes con respuestas automáticas desde whatsapp a la cuenta creada por cada empresa, para tener estadisticas de citas o confirmación a eventos  </div>
+            <div class="pb-4 text-secondary-500">Es una Startup creada y soportada por WAPPIAD S.A.S. para ayudar a las empresas a fidelizar sus clientes con respuestas automáticas desde whatsapp a la cuenta creada por cada empresa, para tener estadisticas de citas o confirmación a eventos, respuestas automáticas con IA en tu whatsapp business  </div>
         </details>
         <details class="group">
             <summary
@@ -323,7 +319,7 @@ onMounted(() => {
                     </svg>
                 </div>
             </summary>
-            <div class="pb-4 text-secondary-500">Si lo puede utilizar al seleccionar el plan personalizado, para que se active su número el tiempo que va demorar es de 30 a 90 días</div>
+            <div class="pb-4 text-secondary-500">Si lo puede utilizar para enlazar al flujo del bot debe ser whatsapp business, se activa de manera inmediata</div>
         </details>
         <details class="group">
             <summary
@@ -341,9 +337,37 @@ onMounted(() => {
                     </svg>
                 </div>
             </summary>
+
+
+            
             <div class="pb-4 text-secondary-500">Al crear su cuenta en nuestra plataforma el sistema le solicita que llene la información de su empresa o evento para generar una url la misma que puede utlizar con fines comerciales o de agendamiento de citas</div>
         </details>
         <details class="group">
+
+
+            <summary
+                class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-medium text-secondary-900 group-open:text-primary-500">
+               Puedo enviar desde mi whatsapp publicidad a mi lista de contactos?
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#38f5b3"  viewBox="0 0 24 24" stroke-width="2" 
+                    stroke="#38f5b3"  class=" block h-12 w-12 group-open:hidden">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+            
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#9dfa2b"  viewBox="0 0 24 24" stroke-width="2"
+                    stroke="#9dfa2b"  class="hidden h-12 w-12 group-open:block">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
+                    </svg>
+                </div>
+            </summary>
+
+
+            
+            <div class="pb-4 text-secondary-500">Si, es posible enviar publicidad a lista de contactos, se recomienda hacer menos de 300 contactos por hora para no ser suspendido su whatsapp por Meta.</div>
+        </details>
+        <details class="group">
+
+            
             <summary
                 class="flex cursor-pointer list-none items-center justify-between py-4 text-lg font-medium text-secondary-900 group-open:text-primary-500">
                 Desde que número de whatsapp llega las notificaciones a mis clientes?

@@ -10,7 +10,9 @@ const store = usePaymentStore();
 const router = useRouter();
 const user = true;
 
-
+function redirectToUrl() {
+  window.location.href = 'https://wafidely.com/aiembudo/689370f31ba36e68f0bae824';
+}
 
 
 const Subscription = reactive([
@@ -18,30 +20,32 @@ const Subscription = reactive([
     id: 4,
     name: "WaPyme",
 
-    price: 199,
-    details: ["Anuales o hasta que se termine los 250 whatsapp automáticos"],
+    price: 69,
+    details: ["Demo - 5 dias GRATIS - 50 Recordatorios Automáticos mensual"],
     discount: 0,
     
     benifits: [
-      "Recordatorio automático Citas Whatsapp hasta 250 ",
-"QR de establecimiento",
+      "Recordatorio automático Citas Whatsapp hasta 50 ",
+"Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp",
 "Página de Aterrizaje con agendamiento de citas en calendario",
 "Reporte de citas confirmadas y canceladas",
+"Creación de Prompts para Bot en Whatsapp hasta 90 conversaciones x mes",
     ],
   },
   {
     id: 5,
     name: "WaMedium".trim(),
 
-    price: 299,
-    details: ["Anuales o hasta que se termine los 500 whatsapp automáticos"],
+    price: 99,
+    details: ["Demo - 5 dias GRATIS - Mensuales - 200 Recordatorios Automáticos mensual"],
     discount: 0,
 
     benifits: [
-      "Recordatorio automático Citas hasta 500 Whatsapp",
-"QR de establecimiento",
+    "Recordatorio automático Citas Whatsapp hasta 200 ",
+"Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp",
 "Página de Aterrizaje con agendamiento de citas en calendario",
 "Reporte de citas confirmadas y canceladas",
+"Creación de Prompts para Bot en Whatsapp hasta 90 conversaciones x mes",
 
     ],
   },
@@ -49,15 +53,16 @@ const Subscription = reactive([
     id: 6,
     name: "WaLarge",
 
-    price:399,
-    details: ["Anuales o hasta que se termine los 1000 whatsapp automáticos"],
+    price:199,
+    details: ["Demo - 5 dias GRATIS - Mensuales 1000 Recordatorios Automáticos mensual"],
     discount: 0,
     
     benifits: [
-      "Recordatorio automático Citas hasta 1000 Whatsapp",
-"QR de establecimiento",
+    "Recordatorio automático Citas Whatsapp hasta 1000 ",
+"Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp",
 "Página de Aterrizaje con agendamiento de citas en calendario",
 "Reporte de citas confirmadas y canceladas",
+"Creación de Prompts para Bot en Whatsapp hasta 90 conversaciones x mes",
 
 
 
@@ -165,7 +170,12 @@ onMounted(() => {
         </div>
 
         <div class="mt-[25px] flex justify-center w-7/10">
-          <button class="button w-full ml-20 font-medium" @click="addToCart(sub)">Empezar Ahora</button>
+          <button
+  class="button w-full ml-20 font-medium"
+  @click="redirectToUrl"
+>
+  AGENDAR DEMOS 5 DÍAS GRATIS
+</button>
         </div>
       </div>
     </div>
