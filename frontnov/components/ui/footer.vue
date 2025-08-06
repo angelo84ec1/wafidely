@@ -18,7 +18,7 @@
         <div class="grid grid-cols-1 gap-4 place-items-justify pt-1 pb-2">
 
           <img src="~/assets/images/wafidelynegroturquesaverde.png" style="height:2em; width:10em; "   alt="Wafidely"  />
-          <p class="text-gray-700 text-justify max-w-xs tracking-tight ml-1">Permite enviar recordatorios automáticos a Whatsapp y recibir respuesta desde el whatsapp, la respuesta se almacena en el administrador de Wafidely </p>
+          <p class="text-gray-700 text-justify max-w-xs tracking-tight ml-1">Permite enviar recordatorios automáticos a Whatsapp que son agendados desde la Landing Page, crea flujos de Diálogos con IA para su whatsapp de Whatsapp Business </p>
                            
                          
         </div>
@@ -89,6 +89,19 @@
       </a>
     </div>
 
+    <div class="whatsapp-float">
+  <a
+    href="https://wa.me/593983314957"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <img
+      src="https://amcacmin.automotorsclub.com/uploads/Animation_1750186633654_d5a4a6806e.gif"
+      alt="WhatsApp"
+      class="whatsapp-icon"
+    />
+  </a>
+</div>
  
   </div>
 </template>
@@ -204,6 +217,30 @@
         width: 100px; /* Ancho deseado */
         height: auto; /* Altura ajustada automáticamente */
     }
+
+    .whatsapp-float {
+  
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  
+  z-index: 1000;
+}
+
+.whatsapp-icon {
+  
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s;
+  margin-top: -150px;
+}
+
+.whatsapp-icon:hover {
+
+transform: scale(1.1);
+}
 
 
 

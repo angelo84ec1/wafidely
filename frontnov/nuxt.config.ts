@@ -16,6 +16,17 @@ export default defineNuxtConfig({
 
   ssr: false,
 
+
+      // Hooks para errores (opcional)
+      hooks: {
+        "render:errorMiddleware": (app) => {
+          app.use((error, req, res, next) => {
+            console.log("Error capturado:", error)
+            next(error)
+          })
+        }
+      },
+
   app: {
     head: {
       title: "Wafidely - Sistema agendamiento de citas web y whatsapp - Confirmacion asistencia por whatsapp - Sistema recordatorio vacunas en whatsapp mascotas - Api Whatsapp para N8N - Bot en Whatsapp - Agentes Inteligencia Artifical - AI Agent USA - Agencias creacion Agentes IA en Republica Dominicana - Agencias creacion Agentes IA en México ",

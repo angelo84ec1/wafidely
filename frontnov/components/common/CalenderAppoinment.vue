@@ -24,32 +24,32 @@
                 <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div class="">
                     <div v-if="isCongrats" class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <DialogTitle as="h3" class="text-base font-medium leading-6 text-green-900">Congratulations!!
+                      <DialogTitle as="h3" class="text-base font-medium leading-6 text-green-900">Bien Hecho!!
                       </DialogTitle>
                       <div class="mt-2">
                         <p class="text-sm text-gray-500">Your Date and Time is Saved</p>
                       </div>
                     </div>
                     <div v-else class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <DialogTitle as="h3" class="text-base font-medium leading-6 text-gray-900">Provide All Information
+                      <DialogTitle as="h3" class="text-base font-medium leading-6 text-gray-900">Favor llene la siguiente información para enviar su recordatorio automático
                       </DialogTitle>
                       <div class="mt-2">
                         <div class="mb-2">
-                          <label class="text-sm font-medium leading-6 text-gray-900 block mb-1" for="date">Date:</label>
+                          <label class="text-sm font-medium leading-6 text-gray-900 block mb-1" for="date">Fecha:</label>
                           <input class="w-full rounded-md" type="date" id="date" v-model="form.date" required>
                         </div>
                         <div class="mb-2">
-                          <label class="text-sm font-medium leading-6 text-gray-900 block mb-1" for="hour">Hour:</label>
+                          <label class="text-sm font-medium leading-6 text-gray-900 block mb-1" for="hour">Hora:</label>
                           <input class="w-full rounded-md" type="time" id="hour" v-model="form.hour" required>
                         </div>
                         <div class="mb-2">
                           <label class="text-sm font-medium leading-6 text-gray-900 block mb-1"
-                            for="whatsapp">WhatsApp:</label>
-                          <input class="w-full rounded-md" type="text" id="whatsapp" placeholder="whatsapp number" v-model="form.whatsapp" required>
+                            for="whatsapp">Número WhatsApp Activo:</label>
+                          <input class="w-full rounded-md" type="text" id="whatsapp" placeholder="Ejm: +593998789123" v-model="form.whatsapp" required>
                         </div>
                         <div>
-                          <label class="text-sm font-medium leading-6 text-gray-900 block mb-1"  for="name">Name:</label>
-                          <input class="w-full rounded-md" type="text" id="name" placeholder="name" v-model="form.name" required>
+                          <label class="text-sm font-medium leading-6 text-gray-900 block mb-1"  for="name">Nombre y Apellido:</label>
+                          <input class="w-full rounded-md" type="text" id="name" placeholder="Elisa Cobos" v-model="form.name" required>
                         </div>
                       </div>
                     </div>
@@ -57,15 +57,15 @@
                 </div>
                 <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                   <button type="submit" v-if="!isCongrats"
-                    class="inline-flex gap-2 w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-green-700 sm:ml-3 sm:w-auto">Save
-                    Date
+                    class="inline-flex gap-2 w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:bg-green-700 sm:ml-3 sm:w-auto">Guardar
+                    Recordatorio
                     <div v-if="loadingBtn" class="simple-spinner">
                       <span></span>
                     </div>
                   </button>
                   <button type="button"
                     class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 transition-all duration-300 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto"
-                    @click.prevent="cancelModal" ref="cancelButtonRef"> {{ isCongrats ? 'Close' : 'Cancel' }}</button>
+                    @click.prevent="cancelModal" ref="cancelButtonRef"> {{ isCongrats ? 'Close' : 'Cancelar' }}</button>
                 </div>
               </form>
             </DialogPanel>
