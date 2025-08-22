@@ -254,16 +254,16 @@
           <!-- Video Stats -->
           <div class="grid grid-cols-3 gap-8 mt-12 text-white">
             <div>
-              <div class="text-3xl font-bold mb-2">+2350%</div>
+              <div class="text-3xl font-bold mb-2">+235%</div>
               <p class="text-green-100">Aumento en leads</p>
             </div>
             <div>
-              <div class="text-3xl font-bold mb-2">6 minutos</div>
+              <div class="text-3xl font-bold mb-2">6 min</div>
               <p class="text-green-100">Tiempo de integración</p>
             </div>
             <div>
               <div class="text-3xl font-bold mb-2">0$</div>
-              <p class="text-green-100">Costo de implementación</p>
+              <p class="text-green-100">Implementación</p>
             </div>
           </div>
         </div>
@@ -429,12 +429,12 @@
             >
               <button 
                 @click="toggleFAQ(faq.id)"
-                class="w-full text-left py-[8px] px-[13px] focus:outline-none"
+                class="w-full text-left py-[1px] px-[13px] focus:outline-none"
               >
                 <div class="flex items-center justify-between">
-                  <h3 class="text-lg font-semibold text-gray-800">{{ faq.question }}</h3>
+                  <h3 class="text-sm md:text-lg font-semibold text-gray-800 ">{{ faq.question }}</h3>
                   <svg 
-                    class="w-5 h-5 text-gray-500 transform transition-transform"
+                    class="w-5 h-9 text-gray-500 transform transition-transform"
                     :class="faq.isOpen ? 'rotate-180' : ''"
                     fill="none" 
                     stroke="currentColor" 
@@ -452,8 +452,8 @@
                 leave-from-class="opacity-100 translate-y-0"
                 leave-to-class="opacity-0 -translate-y-2"
               >
-                <div v-if="faq.isOpen" class="p-6 pt-0">
-                  <p class="text-gray-600">{{ faq.answer }}</p>
+                <div v-if="faq.isOpen" class="p-6 pt-0 py-[30px]">
+                  <p class="text-sm md:text-base text-gray-600 py-[30px]" >{{ faq.answer }}</p>
                 </div>
               </Transition>
             </div>
@@ -511,7 +511,7 @@
           <!-- Urgency Element -->
           <div class="bg-white bg-opacity-10 rounded-xl p-6 backdrop-filter backdrop-blur-lg">
             <p class="text-lg font-semibold mb-2">⏰ Oferta Limitada</p>
-            <p class="text-green-100">Los 3 planes incluye por mes 37.000 a 57.000 conversacioines de entrada y salida con Open AI </p>
+            <p class="text-green-100">Los 3 planes incluye por mes 37.000 a 57.000 conversaciones de entrada y salida con Open AI </p>
             <div class="mt-4 text-2xl font-bold">⏱️ {{ remainingSpots }} cupos restantes</div>
           </div>
         </div>
@@ -762,7 +762,7 @@ const mainFeatures = ref<MainFeature[]>([
     benefits: [
       'Segmentación automática de leads',
       'Seguimiento personalizado',
-      'Recuperación de carritos abandonados'
+      'Recuperación de contactos no atendidos'
     ]
   },
   {
@@ -773,7 +773,7 @@ const mainFeatures = ref<MainFeature[]>([
     benefits: [
       'Dashboards en tiempo real',
       'ROI tracking avanzado',
-      'Reportes automáticos'
+      'Estado de consumo tokens de '
     ]
   }
 ])
