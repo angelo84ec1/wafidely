@@ -262,8 +262,8 @@
               <p class="text-green-100">Tiempo de integración</p>
             </div>
             <div>
-              <div class="text-3xl font-bold mb-2">0$</div>
-              <p class="text-green-100">Soporte</p>
+              <div class="text-3xl font-bold mb-2">100%</div>
+              <p class="text-green-100">Escalable</p>
             </div>
           </div>
         </div>
@@ -476,15 +476,15 @@
           <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
             <button 
               @click="startFreeTrial"
-              class="bg-white text-green-600 px-8 py-2 rounded-xl font-bold text-lg shadow-glow hover:shadow-xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
+              class="bg-white text-green-600 px-3 py-2 rounded-xl font-bold text-lg shadow-glow hover:shadow-xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto"
             >
               🚀 Empezar Prueba Gratuita
             </button>
             <button 
               @click="contactExpert"
-              class="border-2 border-white text-white px-8 py-2 rounded-xl font-semibold text-lg hover:bg-white hover:text-green-600 transition-all duration-300 w-full sm:w-auto"
+              class="border-2 border-white text-white px-3 py-2 rounded-xl font-semibold text-lg hover:bg-white hover:text-green-600 transition-all duration-300 w-full sm:w-auto"
             >
-              ⏱️ Agenda una reunión GRATIS
+              ⏱️ 🚀 Reserva tu Demo 1:1 GRATIS - Descubre Poder de la IA
             </button>
           </div>
           
@@ -787,7 +787,7 @@ const extraFeatures = ref<ExtraFeature[]>([
   },
   {
     id: 2,
-    title: 'Integración CRM',
+    title: 'Integración con más de 30 Webhooks',
     description: 'Sincroniza con tus herramientas favoritas automáticamente',
     emoji: '🔄'
   },
