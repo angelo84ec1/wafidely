@@ -72,7 +72,7 @@ const socialLinks = {
 
 const openWhatsApp = () => {
   if (process.client) {
-    window.open('https://wa.me/1234567890?text=Hola%2C%20me%20interesa%20Wafidely%20AI', '_blank')
+    window.open('https://wa.me/593983314957?text=Hola%2C%20me%20interesa%20Wafidely%20AI%20mi%20nombre%20es%20:', '_blank')
   }
 }
 </script>

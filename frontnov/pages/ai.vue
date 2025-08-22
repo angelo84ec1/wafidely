@@ -263,7 +263,7 @@
             </div>
             <div>
               <div class="text-3xl font-bold mb-2">0$</div>
-              <p class="text-green-100">Implementación</p>
+              <p class="text-green-100">Soporte</p>
             </div>
           </div>
         </div>
