@@ -75,7 +75,7 @@
                 <span class="mr-4"><span class="font-bold">Plan Gold:</span> {{ totalPlanGold }}</span>
                 <span class="mr-4"><span class="font-bold">Plan Black:</span> {{ totalPlanBlack }}</span>
                 <p class="llamar">Para asistencia vial llama al:</p>
-                <img src="~/assets/images/logocoris.png" class="mr-5 h-14 w-19" style="margin-left: 5px; margin-top: -15px;" alt="Coris" />
+                
                 <li class="phonecoris"><span class="text[#C028B9]"><i class="fas fa-phone"></i></span>  02-3-422-504 </li>
               </li>
 

@@ -9,7 +9,7 @@
           </svg>
         </button>
 
-        <img class="drawer__logo" src="~/assets/images/wafidelyuvaweb.png" width="32" height="32"  alt="">
+        <img class="drawer__logo" src="~/assets/images/wafidelyblanco.png" width="32" height="32"  alt="">
       </div>
       <img v-if="dataUser && dataUser.datos_personales?.foto?.url"
         :src="getProfilePicture(dataUser.datos_personales.foto.url)"

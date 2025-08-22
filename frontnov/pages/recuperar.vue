@@ -53,7 +53,7 @@
     
         <!-- Login banner -->
         <div class="deg flex flex-wrap content-center justify-center rounded-r-md  responsive-hide" style="width: 24rem; height: 32rem; overflow: hidden;">
-      <img class="max-w-full max-h-full rounded-r-md" src="~/assets/images/wafidelyuvaweb.png" alt="Logo">
+      <img class="max-w-full max-h-full rounded-r-md" src="~/assets/images/wafidelyblanco.png" alt="Logo">
     </div>
     
 
