@@ -773,7 +773,7 @@ const mainFeatures = ref<MainFeature[]>([
     benefits: [
       'Dashboards en tiempo real',
       'ROI tracking avanzado',
-      'Estado de consumo tokens de '
+      'Estado de consumo tokens de IA'
     ]
   }
 ])
@@ -800,7 +800,7 @@ const extraFeatures = ref<ExtraFeature[]>([
   {
     id: 4,
     title: 'Multi-idioma',
-    description: 'Atiende clientes en más de 50 idiomas automáticamente',
+    description: 'Atiende clientes en más de 3 idiomas automáticamente',
     emoji: '🌍'
   }
 ])
