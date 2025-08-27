@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-50 overflow-x-hidden">
+  <div class="bg-[#FBF8FF] overflow-x-hidden">
     <!-- Header Component -->
     <UiHeader />
 
@@ -114,7 +114,7 @@
     </section>
 
     <!-- Problem/Solution Section -->
-    <section class="py-20 bg-gray-100">
+    <section class="py-20 bg-[#FBF8FF]">
       <div class="container mx-auto px-4">
         <div class="max-w-6xl mx-auto">
           <div class="text-center mb-16">
@@ -207,7 +207,7 @@
           <div 
             v-for="extraFeature in extraFeatures" 
             :key="extraFeature.id"
-            class="text-center p-6 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+            class="text-center p-6 bg-[#FBF8FF] rounded-xl hover:bg-[#FBF8FF] transition-colors"
           >
             <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
               <span class="text-2xl">{{ extraFeature.emoji }}</span>
@@ -232,7 +232,7 @@
           
   <!-- Video Placeholder -->
   <div class="relative bg-white bg-opacity-10 rounded-2xl p-8 backdrop-filter backdrop-blur-lg">
-    <div class="aspect-video bg-gray-800 rounded-xl relative overflow-hidden">
+    <div class="aspect-video bg-[#FBF8FF]rounded-xl relative overflow-hidden">
       <video 
         ref="demoVideo"
         class="w-full h-full object-cover rounded-xl"
@@ -271,7 +271,7 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section id="testimonials" class="py-20 bg-gray-100">
+    <section id="testimonials" class="py-20 bg-[#FBF8FF]">
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
           <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
@@ -329,14 +329,14 @@
                 v-model="isAnnual"
                 class="sr-only"
               />
-              <label for="pricing-toggle" class="block w-14 h-8 bg-gray-300 rounded-full cursor-pointer relative">
+              <label for="pricing-toggle" class="block w-14 h-8 bg-[#FBF8FF] rounded-full cursor-pointer relative">
                 <div 
                   class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 transform"
                   :class="isAnnual ? 'translate-x-6' : ''"
                 ></div>
               </label>
             </div>
-            <span class="text-green-600 font-semibold">Anual (2 meses gratis)</span>
+            <span class="text-[#232c4d] font-semibold">Anual (2 meses gratis)</span>
           </div>
         </div>
         
@@ -346,11 +346,11 @@
             v-for="plan in pricingPlans" 
             :key="plan.id"
             class="p-8 rounded-2xl border hover:shadow-lg transition-shadow duration-300 relative"
-            :class="plan.popular ? 'border-2 border-green-600 shadow-glow bg-white' : 'bg-gray-50 border-gray-200'"
+            :class="plan.popular ? 'border-1 border-[#38f5b3] shadow-glow bg-[#FBF8FF]' : 'bg-white border-[#FBF8FF]'"
           >
             <!-- Popular Badge -->
             <div v-if="plan.popular" class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <span class="bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+              <span class="bg-[#38f5b3] text-white px-4 py-2 rounded-full text-sm font-semibold">
                 🔥 Más Popular
               </span>
             </div>
@@ -382,7 +382,7 @@
             
             <ul class="space-y-3 mb-8">
               <li v-for="feature in plan.features" :key="feature" class="flex items-center gap-3">
-                <span class="text-green-600">✓</span>
+                <span class="text-[#38f5b3]">✓</span>
                 <span class="text-gray-700">{{ feature }}</span>
               </li>
             </ul>
@@ -390,7 +390,7 @@
             <button 
               @click="subscribe(plan)"
               class="w-full py-2 rounded-lg font-semibold transition-colors"
-              :class="plan.popular ? 'bg-green-600 text-white hover:bg-green-700 shadow-lg' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+              :class="plan.popular ? 'bg-[#38f5b3] text-black hover:bg-[#38f5b3] shadow-lg' : 'bg-[#38f5b3] text-gray-700 hover:bg-[#38f5b3]'"
             >
               {{ plan.buttonText }}
             </button>
@@ -401,14 +401,14 @@
         <div class="text-center mt-12">
           <div class="inline-flex items-center gap-3 bg-green-50 px-6 py-4 rounded-full border border-green-200">
             <span class="text-2xl">🛡️</span>
-            <span class="text-green-600 font-semibold">Nuestra garantía es la prueba del demo GRATIS de 5 dias sin tarjeta de crédito</span>
+            <span class="text-[#232c4d] font-semibold">Nuestra garantía es la prueba del demo GRATIS de 5 dias sin tarjeta de crédito</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- FAQ Section -->
-    <section class="py-20 bg-gray-100">
+    <section id="preguntasfrecuentes" class="py-20 bg-[#FBF8FF]">
       <div class="container mx-auto px-4">
         <div class="max-w-4xl mx-auto">
           <div class="text-center mb-16">
@@ -629,8 +629,8 @@ const getDisplayPrice = (plan: PricingPlan) => {
 }
 
 const getPriceColor = (plan: PricingPlan) => {
-  if (plan.popular) return 'text-green-600'
-  if (hasDiscount(plan)) return 'text-green-600'
+  if (plan.popular) return 'text-gradient'
+  if (hasDiscount(plan)) return 'text-gradient'
   return 'text-gray-800'
 }
 
@@ -836,14 +836,14 @@ const pricingPlans = ref<PricingPlan[]>([
   {
     id: 1,
     name: 'WAPyme',
-    description: 'Perfecto para probar la automatización',
+    description: 'Perfecto pymes con pocos usuarios clientes',
     descountPrice: 69,
     monthlyPrice: 89,
     annualPrice: 690,
     popular: false,
     buttonText: 'Comenzar Gratis 5 dias',
     features: [
-      'Recordatorio automático Citas Whatsapp hasta 100 (Envío - Respuesta Api Oficial Wafidely)',
+      'Recordatorio automático de tareas o citas Whatsapp hasta 100 (Envío - Respuesta Api Oficial Wafidely)',
       'Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp',
       'Página de Aterrizaje con agendamiento de citas en calendario (Lo generas de manera automática)',
       'Reporte de citas confirmadas y canceladas',
@@ -862,7 +862,7 @@ const pricingPlans = ref<PricingPlan[]>([
     popular: true,
     buttonText: 'Empezar',
     features: [
-      'Recordatorio automático Citas Whatsapp hasta 300 (Envío - Respuesta Api Oficial Wafidely)',
+      'Recordatorio automático de tareas o citas Whatsapp hasta 300 (Envío - Respuesta Api Oficial Wafidely)',
       'Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp',
       'Página de Aterrizaje con agendamiento de citas en calendario (Lo generas de manera automática)',
       'Reporte de citas confirmadas y canceladas',
@@ -874,14 +874,14 @@ const pricingPlans = ref<PricingPlan[]>([
   {
     id: 3,
     name: 'WALarge',
-    description: 'Para empresas grandes',
+    description: 'Para empresas que pasan volumnes altos de tarea con usuarios',
     descountPrice: 199,
     monthlyPrice: 279,
     annualPrice: 1990,
     popular: false,
     buttonText: 'Empezar',
     features: [
-      'Recordatorio automático Citas Whatsapp hasta 1000 (Envío - Respuesta Api Oficial Wafidely)',
+      'Recordatorio automático de tareas o citas Whatsapp hasta 1000 (Envío - Respuesta Api Oficial Wafidely)',
       'Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp',
       'Página de Aterrizaje con agendamiento de citas en calendario (Lo generas de manera automática)',
       'Reporte de citas confirmadas y canceladas',
@@ -1009,7 +1009,7 @@ onMounted(() => {
 }
 
 .shadow-glow {
-  box-shadow: 0 0 30px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 0 20px #FBF8FF;
 }
 
 .hero-pattern {
@@ -1123,6 +1123,13 @@ onMounted(() => {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #1ea854;
+  background: linear-gradient(135deg, #38f5b3   0%, #2563EB 50%, #7C3AED 100%);
+}
+.text-gradient {
+  background: linear-gradient(135deg, #38f5b3 0%, #2563EB 50%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 </style>
