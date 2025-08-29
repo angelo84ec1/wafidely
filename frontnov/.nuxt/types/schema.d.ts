@@ -146,6 +146,8 @@ declare module 'nuxt/schema' {
 
    pagomedioToken: string,
 
+   gtmContainerId: string,
+
    GOOGLE_MAPS_API: string,
   }
 }
