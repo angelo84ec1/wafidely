@@ -178,7 +178,7 @@ const _JFHFWr99n7 = (function(nitro) {
 
 const rootDir = "/Users/angeloluna/Documents/appwafidely/app-wafidely/frontnov";
 
-const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Sistema de agendamiento de citas vía web y WhatsApp. Facilita la gestión de citas y mejora la comunicación con tus clientes."},{"name":"format-detection","content":"telephone=no"},{"name":"keywords","content":"agendamiento de citas, sistema de citas medicas en whatsapp, gestión de citas en whatsapp, citas web, citas whatsapp, Wafidely, Crear agentes de inteligencia artifical, Whatsapp Bot recordatorio citas"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"}],"style":[],"script":[{"src":"https://www.paypal.com/sdk/js?client-id=test&currency=USD","async":true}],"noscript":[],"title":"Wafidely - Sistema agendamiento de citas web y whatsapp - Confirmacion asistencia por whatsapp - Sistema recordatorio vacunas en whatsapp mascotas - Api Whatsapp para N8N - Bot en Whatsapp - Agentes Inteligencia Artifical - AI Agent USA - Agencias creacion Agentes IA en Republica Dominicana - Agencias creacion Agentes IA en México ","htmlAttrs":{"lang":"es"}};
+const appHead = {"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Automatiza con IA tus chats de WhatsApp Business con Wafidely: conecta sin límites números de WhatsApp, centraliza mensajes y asigna chats a colaboradores"},{"name":"format-detection","content":"telephone=no"},{"name":"keywords","content":"Agentes de IA - Sistemas Salas de respuestas automáticas en WhatsApp Business - Landing Page Automática - Recordatorio de tareas y citas en WhatsApp - Respuestas automáticas de Facebook Messanger, Email y WhatsApp"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"},{"rel":"stylesheet","href":"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"}],"style":[],"script":[{"src":"https://www.paypal.com/sdk/js?client-id=test&currency=USD","async":true}],"noscript":[],"title":"Wafidely - Chat automático en WhatsApp Business - Sistema agendamiento de citas web en whatsapp - Confirmacion asistencia por whatsapp - Sistema recordatorio vacunas en whatsapp mascotas - Api Whatsapp para N8N - Bot en Whatsapp - Agentes Inteligencia Artifical - AI Agent USA - Agencias creacion Agentes IA en Republica Dominicana - Agencias creacion Agentes IA en México","htmlAttrs":{"lang":"es"}};
 
 const appRootTag = "div";
 
@@ -771,7 +771,7 @@ const _inlineRuntimeConfig = {
     "baseURL": "https://wafiapi.wafidely.com",
     "MAILTO": "websecuador.net@gmail.com",
     "pagomedioToken": "",
-    "gtmContainerId": "GTM-5JSWM2PJ",
+    "gtmContainerId": "GTM-MD3L9XSB",
     "GOOGLE_MAPS_API": "AIzaSyAMQ-DzRcCKRrOWJWjPkPSTUHqwyQkyVH8"
   },
   "proxy": {
