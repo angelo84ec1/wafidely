@@ -58,6 +58,7 @@ export default defineNuxtConfig({
       baseURL: process.env.STRAPI_URL || "http://localhost:1337",
       MAILTO: process.env.MAILTO || "websecuador.net@gmail.com",
       pagomedioToken: process.env.PAGOMEDIO_TOKEN,
+      gtmContainerId: process.env.NUXT_PUBLIC_GTM_CONTAINER_ID, // set NUXT_PUBLIC_GTM_CONTAINER_ID in .env file
       GOOGLE_MAPS_API: 'AIzaSyAMQ-DzRcCKRrOWJWjPkPSTUHqwyQkyVH8'
     
     },
