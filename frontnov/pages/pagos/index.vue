@@ -1,187 +1,413 @@
 <template>
-  <main>
-    <header>
-      <div class="header__text">
-        <div class="header__description">
-          <h1>Planes Contratados</h1>
-
-        </div>
-
-        
-        <div class="header__actions">
-          <nuxt-link :to="`/pagos/create`">
-
-          </nuxt-link>
-
+  <main class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between py-6">
+          <div>
+            <h1 class="text-3xl font-bold text-gray-900">Planes Contratados</h1>
+            <p class="text-sm text-gray-600 mt-1">Gestiona y visualiza todos los planes de tus clientes</p>
+          </div>
+          
+          <!-- Actions -->
+          <div class="flex items-center space-x-3">
+            <nuxt-link 
+              :to="`/pagos/create`"
+              class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+              </svg>
+              Nuevo Plan
+            </nuxt-link>
+            
+            <button 
+              @click.prevent="printPage()"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+              </svg>
+              Imprimir
+            </button>
+          </div>
         </div>
       </div>
-
-      <div class="header__actions">
-          <button class="button button--secondary" @click.prevent="printPage()">
-            <img src="~/assets/images/imprimir-green.png" alt="" srcset="" />
-            Imprimir
-          </button>
-        </div>
     </header>
 
-    <div class="filters__area">
-      <div class="filters__group">
-        <label for="">
-          Filtrar por:
-          <select v-model="filterKey" name="filter">
-            <option selected value="">select</option>
-            <option value="date">Fecha de Compra</option>
-            <option  v-if="!(isEstablecimiento || authStore.user?.role.name === 'establecimiento') " value="establishment">Establecimiento</option>
-            <option value="month">Mes</option>
-            <option value="year">Año</option>
-          </select>
-        </label>
-
-        
-        <label for="">
-          Valor del filtro:
-          <input v-if="filterKey !== 'date'" v-model="filterValue" type="text" />
-          <input v-if="filterKey === 'date'" v-model="filterValue" type="date" />
-        </label>
-        
-        <label for="" v-if="filterKey === 'establishment'">
-          <select v-model="filterKey2" name="filter">
-            <option selected value="">select</option>
-            <option value="date">Fecha de Compra</option>
-            <option value="month">Mes</option>
-            <option value="year">Año</option>
-          </select>
-        </label>
-        <input v-if="filterKey2 !== '' && filterKey2 !== 'date' && filterKey === 'establishment'" v-model="filterValueDate" type="text" />
-        <input v-if="filterKey2 !== '' && filterKey2 === 'date' && filterKey === 'establishment'" v-model="filterValueDate" type="date" />
-
-        <button class="button button--secondary" @click="applyFilter">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4.5V19.5M19.5 12H4.5" stroke="#374151" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" />
-          </svg>
-          Agregar filtro
-        </button>
-      </div>
-    </div>
-    <div class="mt-4 mb-4">
-      <span v-if="filterKey == 'date'" class="mr-4"><span class="font-bold">Fecha de Compra:</span> {{ filterValue
-      }}</span>
-      <span v-if="filterKey == 'establishment'" class="mr-4"><span class="font-bold">Establecimiento:</span> {{
-        filterValue }}</span>
-      <span v-if="filterKey == 'month'" class="mr-4"><span class="font-bold">Mes:</span> {{ filterValue }}</span>
-      <span v-if="filterKey == 'year'" class="mr-4"><span class="font-bold">Año:</span> {{ filterValue }}</span>
-      <span class="mr-4"><span class="font-bold">Plan Silver:</span> {{ planSilver }}</span>
-      <span class="mr-4"><span class="font-bold">Plan Gold:</span> {{ planGold }}</span>
-      <span class="mr-4"><span class="font-bold">Plan Black:</span> {{ planBlack }}</span>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       
-      <span class="mr-4"><span class="font-bold">Total:</span> ${{ total.toFixed(2) }}</span>
-    </div>
-    <div class="home__content">
-      <table v-if="config_pagos">
-        <tr class="t_header">
-          <th v-for="tableHeader in table_headers" :key="tableHeader.id">{{ tableHeader.name }}</th>
-          <th>Action</th>
-        </tr>
-        <tr v-for="(data, index) in filteredData" :key="data.id">
-          <td v-for="tableHeader in table_headers" :key="tableHeader.id">
-            {{ tableHeader.key == "user" ? data[tableHeader.key] && data[tableHeader.key].username : data[tableHeader.key]
-            }}
-          </td>
-          <td>
-            <div  v-if="!(isEstablecimiento || authStore.user?.role.name === 'establecimiento') "  class="t_actions">
-              <nuxt-link :to="`/pagos/${data.id}`">
-                <svg data-v-45005775="" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path data-v-45005775=""
-                    d="M16.862 4.48725L19.5 7.12525M16.862 4.48725L18.549 2.79925C18.9007 2.44757 19.3777 2.25 19.875 2.25C20.3723 2.25 20.8493 2.44757 21.201 2.79925C21.5527 3.15092 21.7502 3.6279 21.7502 4.12525C21.7502 4.62259 21.5527 5.09957 21.201 5.45125L6.832 19.8202C6.30332 20.3486 5.65137 20.737 4.935 20.9502L2.25 21.7502L3.05 19.0652C3.26328 18.3489 3.65163 17.6969 4.18 17.1682L16.863 4.48725H16.862Z"
-                    stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+      <!-- Filters Section -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+          </svg>
+          Filtros
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Primary Filter -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Filtrar por</label>
+            <select 
+              v-model="filterKey" 
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            >
+              <option value="">Seleccionar filtro</option>
+              <option value="date">Fecha de Compra</option>
+              <option v-if="!(isEstablecimiento || authStore.user?.role.name === 'establecimiento')" value="establishment">Establecimiento</option>
+              <option value="month">Mes</option>
+              <option value="year">Año</option>
+            </select>
+          </div>
+
+          <!-- Primary Filter Value -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Valor del filtro</label>
+            <input 
+              v-if="filterKey !== 'date'" 
+              v-model="filterValue" 
+              type="text" 
+              placeholder="Ingresa el valor"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+            <input 
+              v-if="filterKey === 'date'" 
+              v-model="filterValue" 
+              type="date"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+
+          <!-- Secondary Filter (for establishment) -->
+          <div v-if="filterKey === 'establishment'">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Filtro adicional</label>
+            <select 
+              v-model="filterKey2"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            >
+              <option value="">Seleccionar</option>
+              <option value="date">Fecha de Compra</option>
+              <option value="month">Mes</option>
+              <option value="year">Año</option>
+            </select>
+          </div>
+
+          <!-- Secondary Filter Value -->
+          <div v-if="filterKey2 !== '' && filterKey === 'establishment'">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Valor adicional</label>
+            <input 
+              v-if="filterKey2 !== 'date'" 
+              v-model="filterValueDate" 
+              type="text"
+              placeholder="Valor del filtro"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+            <input 
+              v-if="filterKey2 === 'date'" 
+              v-model="filterValueDate" 
+              type="date"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            />
+          </div>
+        </div>
+
+        <!-- Apply Filter Button -->
+        <div class="mt-6">
+          <button 
+            @click="applyFilter"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+          >
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+            </svg>
+            Aplicar Filtros
+          </button>
+        </div>
+      </div>
+
+      <!-- Active Filters & Stats -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Active Filters -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Filtros Activos</h3>
+          <div class="space-y-2">
+            <div v-if="filterKey == 'date'" class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+              <span class="font-medium">Fecha:</span>&nbsp;{{ filterValue }}
+            </div>
+            <div v-if="filterKey == 'establishment'" class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+              <span class="font-medium">Establecimiento:</span>&nbsp;{{ filterValue }}
+            </div>
+            <div v-if="filterKey == 'month'" class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-800">
+              <span class="font-medium">Mes:</span>&nbsp;{{ filterValue }}
+            </div>
+            <div v-if="filterKey == 'year'" class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-orange-100 text-orange-800">
+              <span class="font-medium">Año:</span>&nbsp;{{ filterValue }}
+            </div>
+            <div v-if="!filterKey" class="text-sm text-gray-500">
+              No hay filtros activos
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary Stats -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <h3 class="text-lg font-semibold text-gray-900 mb-4">Resumen</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="text-center p-3 bg-gray-50 rounded-lg">
+              <div class="text-2xl font-bold text-gray-900">${{ total.toFixed(2) }}</div>
+              <div class="text-sm text-gray-600">Total Recaudado</div>
+            </div>
+            <div class="text-center p-3 bg-gray-50 rounded-lg">
+              <div class="text-2xl font-bold text-gray-900">{{ filteredData.length }}</div>
+              <div class="text-sm text-gray-600">Total Planes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Plans Summary Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-silver-100 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm1-4a1 1 0 100 2h.01a1 1 0 100-2H7zm2 0a1 1 0 100 2h.01a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-900">Plan WAPyme</h3>
+              <p class="text-3xl font-bold text-gray-900">{{ planSilver }}</p>
+              <p class="text-sm text-gray-600">Planes contratados</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm1-4a1 1 0 100 2h.01a1 1 0 100-2H7zm2 0a1 1 0 100 2h.01a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-900">Plan WAMedium</h3>
+              <p class="text-3xl font-bold text-gray-900">{{ planGold }}</p>
+              <p class="text-sm text-gray-600">Planes contratados</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <div class="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2H6zm1 2a1 1 0 000 2h6a1 1 0 100-2H7zm6 7a1 1 0 011 1v3a1 1 0 11-2 0v-3a1 1 0 011-1zm-3 3a1 1 0 100 2h.01a1 1 0 100-2H10zm-4 1a1 1 0 011-1h.01a1 1 0 110 2H7a1 1 0 01-1-1zm1-4a1 1 0 100 2h.01a1 1 0 100-2H7zm2 0a1 1 0 100 2h.01a1 1 0 100-2H9z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg font-semibold text-gray-900">Plan WALarge</h3>
+              <p class="text-3xl font-bold text-gray-900">{{ planBlack }}</p>
+              <p class="text-sm text-gray-600">Planes contratados</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Table -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+          <h3 class="text-lg font-semibold text-gray-900">Lista de Planes</h3>
+          <p class="text-sm text-gray-600 mt-1">{{ filteredData.length }} planes encontrados</p>
+        </div>
+
+        <!-- Table for larger screens -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th v-for="tableHeader in table_headers" :key="tableHeader.id" 
+                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  {{ tableHeader.name }}
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Acciones
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr v-for="(data, index) in filteredData" :key="data.id" class="hover:bg-gray-50 transition-colors">
+                <td v-for="tableHeader in table_headers" :key="tableHeader.id" class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900">
+                    {{ tableHeader.key == "user" ? data[tableHeader.key] && data[tableHeader.key].username : data[tableHeader.key] }}
+                  </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <div v-if="!(isEstablecimiento || authStore.user?.role.name === 'establecimiento')" class="flex items-center space-x-2">
+                    <nuxt-link 
+                      :to="`/pagos/${data.id}`"
+                      class="text-indigo-600 hover:text-indigo-900 p-2 rounded-lg hover:bg-indigo-50 transition-colors"
+                      title="Editar"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                      </svg>
+                    </nuxt-link>
+                    <button 
+                      @click="remove(data.id, index)"
+                      class="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                      title="Eliminar"
+                    >
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16"/>
+                      </svg>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Cards for mobile screens -->
+        <div class="md:hidden space-y-4 p-4">
+          <div v-for="(data, index) in filteredData" :key="data.id" 
+               class="bg-gray-50 rounded-lg p-4 space-y-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-semibold text-gray-900">{{ data.producto }}</h4>
+                <p class="text-sm text-gray-600">{{ data.fecha_compra }}</p>
+              </div>
+              <div class="text-right">
+                <p class="font-semibold text-gray-900">${{ data.total }}</p>
+                <p class="text-sm text-gray-600">-${{ data.descuento }}</p>
+              </div>
+            </div>
+            
+            <div class="text-sm text-gray-600">
+              <p><span class="font-medium">Usuario:</span> {{ data.user?.username || 'N/A' }}</p>
+            </div>
+
+            <div v-if="!(isEstablecimiento || authStore.user?.role.name === 'establecimiento')" 
+                 class="flex justify-end space-x-2 pt-2 border-t border-gray-200">
+              <nuxt-link 
+                :to="`/pagos/${data.id}`"
+                class="text-indigo-600 hover:text-indigo-900 p-2 rounded-lg hover:bg-indigo-50 transition-colors"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                 </svg>
               </nuxt-link>
-              <button data-v-45005775="" title="Borrar" @click="remove(data.id, index)">
-                <svg data-v-45005775="" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path data-v-45005775=""
-                    d="M14.74 8.99954L14.394 17.9995M9.606 17.9995L9.26 8.99954M19.228 5.78954C19.57 5.84154 19.91 5.89654 20.25 5.95554M19.228 5.79054L18.16 19.6725C18.1164 20.2378 17.8611 20.7657 17.445 21.1508C17.029 21.5359 16.4829 21.7497 15.916 21.7495H8.084C7.5171 21.7497 6.97102 21.5359 6.55498 21.1508C6.13894 20.7657 5.88359 20.2378 5.84 19.6725L4.772 5.78954M19.228 5.78954C18.0739 5.61506 16.9138 5.48264 15.75 5.39254M3.75 5.95454C4.09 5.89554 4.43 5.84054 4.772 5.78954M4.772 5.78954C5.92613 5.61506 7.08623 5.48264 8.25 5.39254M15.75 5.39254V4.47654C15.75 3.29654 14.84 2.31254 13.66 2.27554C12.5536 2.24018 11.4464 2.24018 10.34 2.27554C9.16 2.31254 8.25 3.29754 8.25 4.47654V5.39254M15.75 5.39254C13.2537 5.19962 10.7463 5.19962 8.25 5.39254"
-                    stroke="#374151" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <button 
+                @click="remove(data.id, index)"
+                class="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16"/>
                 </svg>
               </button>
             </div>
-          </td>
-        </tr>
-      </table>
-      <bottom-pagination :page="page" :total-data="totalData ?? 0" :limit="Number(limit)"
-        @change-limit="(e) => changeLimit(e)" @go-to-page="(e) => goToPage(e)" @next-page="nextPage()"
-        @prev-page="prevPage()" />
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div v-if="filteredData.length === 0" class="text-center py-12">
+          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">No hay planes</h3>
+          <p class="mt-1 text-sm text-gray-500">No se encontraron planes con los filtros aplicados.</p>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div v-if="config_pagos && filteredData.length > 0" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <bottom-pagination 
+          :page="page" 
+          :total-data="totalData ?? 0" 
+          :limit="Number(limit)"
+          @change-limit="(e) => changeLimit(e)" 
+          @go-to-page="(e) => goToPage(e)" 
+          @next-page="nextPage()"
+          @prev-page="prevPage()" 
+        />
+      </div>
     </div>
   </main>
 </template>
+
 <script setup lang="ts">
 import { POSITION, useToast } from "vue-toastification";
 import { useAuthStore } from "~~/store/auth";
 import bottomPagination from "~~/components/common/pagination/bottom-pagination.vue";
-import { ref, onMounted, onBeforeMount } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import type { ConfiguracionPago } from "~/common/interfaces/user.interface";
-
 
 definePageMeta({
   name: "PagosPage",
   layout: "private",
   middleware: ["auth"],
 });
+
 const toast = useToast();
 const router = useRouter();
 const route = useRoute();
-
 const authStore = useAuthStore();
+
+// Reactive data
 const config_pagos = ref<any>(null);
+const filteredData = ref([]);
+const filterKey = ref("");
+const filterKey2 = ref("");
+const filterValue = ref("");
+const filterValueDate = ref("");
+const planBlack = ref(0);
+const planSilver = ref(0);
+const planGold = ref(0);
+const total = ref(0);
+
+// Pagination
+const limit = ref<number>(10);
+const start = ref<number>(0);
+const page = ref<number>(1);
+const query = ref<string>('');
+
+// Table configuration
 const table_headers = ref([
-  {
-    id: 1,
-    name: "Fecha de Compra",
-    key: "fecha_compra",
-  },
-  {
-    id: 2,
-    name: "Producto",
-    key: "producto",
-  },
-  {
-    id: 5,
-    name: "Cédula",
-    key: "user"
-  },
-  {
-    id: 3,
-    name: "Total",
-    key: "total",
-  },
-  {
-    id: 4,
-    name: "Descuento",
-    key: "descuento",
-  }
+  { id: 1, name: "Fecha de Compra", key: "fecha_compra" },
+  { id: 2, name: "Producto", key: "producto" },
+  { id: 5, name: "Cédula", key: "user" },
+  { id: 3, name: "Total", key: "total" },
+  { id: 4, name: "Descuento", key: "descuento" }
 ]);
 
 const {
   public: { baseURL },
 } = useRuntimeConfig();
 
+// Check user roles
+const isEstablecimiento = computed(() => authStore.user?.role.name === 'establecimiento');
+
+// Fetch data function
 const fetchData = async () => {
   let quer = ""
   if (authStore.user?.role.name == "establecimiento") {
-    console.log(authStore.getUser)
     let establecimientos = authStore.getUser?.establecimientos
-    console.log(establecimientos);
     establecimientos?.forEach((element: any) => {
       quer += `establecimiento=${element._id}&`
     });
-    console.log(quer)
   }
   if (authStore.user?.role.name == "socio") {
     quer += `user=${authStore.getUser?.id}`
   }
-
 
   const { data } = await useFetch<any[]>(`${baseURL}/config-pagos?${quer}`, {
     method: "GET",
@@ -190,67 +416,14 @@ const fetchData = async () => {
       Authorization: `Bearer ${authStore.getToken}`,
     },
   })
-  console.log(data.value);
-  if (data) config_pagos.value = data.value
-
-  applyFilter()
+  
+  if (data) {
+    config_pagos.value = data.value
+    applyFilter()
+  }
 }
 
-
-
- /* query.value = `_start=${start.value}&_limit=${limit.value}`;
-  const { data: ConfigData } = useAsyncData<ConfiguracionPago[]>('config_pagos', () => $fetch(`${baseURL}/config-pagos?${query.value}`, {
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authStore.token}`
-    }
-  }))
-
-
-  watch(ConfigData, () => {
-    config_pagos.value = ConfigData.value
-    filteredData.value = ConfigData.value
-  })
-}
-*/
-// fetch config-pagos data
-
-
-onMounted(() => {
-  // console.log(app.$notify)
-
-});
-fetchData();
-
-//delete a config_pagos
-const remove = async (id, index) => {
-  const { data } = await useFetch<any[]>(`${baseURL}/config-pagos/${id}`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${authStore.getToken}`,
-    },
-  });
-  if (data) config_pagos.value.splice(index, 1);
-}
-
-const filterKey = ref("");
-const filterKey2 = ref("");
-const filterValue = ref("");
-const filterValueDate = ref("");
-const filteredData = ref([]);
-const planBlack = ref(0);
-const planSilver = ref(0);
-const planGold = ref(0);
-const total = ref(0);
-const query = ref<string>('');
-
-const limit = ref<number>(10);
-const start = ref<number>(0);
-const page = ref<number>(1);
-
-
+// Get total data count
 const { data: totalData } = useAsyncData<number>('totalData', () => $fetch(`${baseURL}/config-pagos/count`, {
   credentials: 'include',
   headers: {
@@ -259,19 +432,90 @@ const { data: totalData } = useAsyncData<number>('totalData', () => $fetch(`${ba
   }
 }))
 
+// Remove function
+const remove = async (id: string, index: number) => {
+  const { data } = await useFetch<any[]>(`${baseURL}/config-pagos/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authStore.getToken}`,
+    },
+  });
+  if (data) {
+    config_pagos.value.splice(index, 1);
+    applyFilter(); // Reapply filters after deletion
+    toast.success("Plan eliminado correctamente");
+  }
+}
 
+// Apply filters function
+const applyFilter = () => {
+  filteredData.value = [];
+  planSilver.value = 0
+  planBlack.value = 0
+  planGold.value = 0
+  total.value = 0
 
+  if (!config_pagos.value) return;
 
+  if (filterKey.value === 'date') {
+    filteredData.value = config_pagos.value.filter((f_d) => {
+      return f_d.fecha_compra.includes(filterValue.value)
+    })
+  } else if (filterKey.value === 'establishment') {
+    filteredData.value = config_pagos.value.filter((f_d: any) => {
+      return f_d.establecimiento?.nombre == filterValue.value
+    })
+    
+    if (filterKey2.value === 'date') {
+      filteredData.value = filteredData.value.filter((f_d) => {
+        return f_d.fecha_compra.includes(filterValueDate.value);
+      });
+    } else if (filterKey2.value === 'month') {
+      filteredData.value = filteredData.value.filter((item) => {
+        const date = new Date(item.fecha_compra);
+        return date.getMonth() + 1 === Number(filterValueDate.value);
+      });
+    } else if (filterKey2.value === 'year') {
+      filteredData.value = filteredData.value.filter((item) => {
+        const date = new Date(item.fecha_compra);
+        return date.getFullYear() === Number(filterValueDate.value);
+      });
+    }
+  } else if (filterKey.value === 'month') {
+    filteredData.value = config_pagos.value.filter((item) => {
+      const date = new Date(item.fecha_compra);
+      return date.getMonth() + 1 === Number(filterValue.value);
+    });
+  } else if (filterKey.value === 'year') {
+    filteredData.value = config_pagos.value.filter((item) => {
+      const date = new Date(item.fecha_compra);
+      return date.getFullYear() === Number(filterValue.value);
+    });
+  } else {
+    filteredData.value = config_pagos.value
+  }
+
+  // Calculate stats
+  filteredData.value.forEach(f_d => {
+    if (f_d.producto == "Plan Gold") {
+      planGold.value += 1
+    } else if (f_d.producto == "Plan Black") {
+      planBlack.value += 1
+    } else if (f_d.producto == "Plan Silver") {
+      planSilver.value += 1
+    }
+    total.value += f_d.total
+  })
+};
+
+// Pagination functions
 const changeLimit = (newLimit: number) => {
   limit.value = Number(newLimit)
   start.value = 0
   page.value = 1;
   fetchData()
 }
-
-watch([start, limit], () => {
-  fetchData()
-})
 
 const goToPage = (newPage: number) => {
   start.value = (newPage - 1) * limit.value
@@ -291,226 +535,44 @@ const prevPage = () => {
   fetchData()
 }
 
-
-
-const applyFilter = () => {
-
-  filteredData.value = [];
-  planSilver.value = 0
-  planBlack.value = 0
-  planGold.value = 0
-  total.value = 0
-
-  console.log(">>>>> ", config_pagos.value);
-
-
-  if (filterKey.value === 'date') {
-    filteredData.value = config_pagos.value.filter((f_d) => {
-      return f_d.fecha_compra.includes(filterValue.value)
-    })
-    filteredData.value.forEach(f_d => {
-      if (f_d.producto == "Plan Gold") {
-        planGold.value += 1
-      } else if (f_d.producto == "Plan Black") {
-        planBlack.value += 1
-      } else if (f_d.producto == "Plan Silver") {
-        planSilver.value += 1
-      }
-      total.value += f_d.total
-    })
-  } else if (filterKey.value === 'establishment') {
-    filteredData.value = config_pagos.value.filter((f_d:any) => {
-      return f_d.establecimiento?.nombre == filterValue.value
-    })
-    if (filterKey2.value === 'date') {
-    filteredData.value = filteredData.value.filter((f_d) => {
-      return f_d.fecha_compra.includes(filterValueDate.value);
-    });
-}
-    else if (filterKey2.value === 'month') {
-      filteredData.value = filteredData.value.filter((item) => {
-        const date = new Date(item.fecha_compra);
-        return date.getMonth() + 1 === Number(filterValueDate.value);
-      });
-    } else if (filterKey2.value === 'year') {
-      filteredData.value = filteredData.value.filter((item) => {
-        const date = new Date(item.fecha_compra);
-        return date.getFullYear() === Number(filterValueDate.value);
-      });
-    }
-    console.log(filteredData.value);
-    filteredData.value.forEach(f_d => {
-      if (f_d.producto == "Plan Gold") {
-        planGold.value += 1
-      } else if (f_d.producto == "Plan Black") {
-        planBlack.value += 1
-      } else if (f_d.producto == "Plan Silver") {
-        planSilver.value += 1
-      }
-      total.value += f_d.total
-    })
-  }
-  else if (filterKey.value === 'month') {
-    filteredData.value = config_pagos.value.filter((item) => {
-      const date = new Date(item.fecha_compra);
-      return date.getMonth() + 1 === Number(filterValue.value);
-    });
-    filteredData.value.forEach(f_d => {
-      if (f_d.producto == "Plan Gold") {
-        planGold.value += 1
-      } else if (f_d.producto == "Plan Black") {
-        planBlack.value += 1
-      } else if (f_d.producto == "Plan Silver") {
-        planSilver.value += 1
-      }
-      total.value += f_d.total
-    })
-  } else if (filterKey.value === 'year') {
-    filteredData.value = config_pagos.value.filter((item) => {
-      const date = new Date(item.fecha_compra);
-      return date.getFullYear() === Number(filterValue.value);
-    });
-    filteredData.value.forEach(f_d => {
-      if (f_d.producto == "Plan Gold") {
-        planGold.value += 1
-      } else if (f_d.producto == "Plan Black") {
-        planBlack.value += 1
-      } else if (f_d.producto == "Plan Silver") {
-        planSilver.value += 1
-      }
-      total.value += f_d.total
-    })
-  }
-  else {
-    filteredData.value = config_pagos.value
-    filteredData.value.forEach(f_d => {
-      if (f_d.producto == "Plan Gold") {
-        planGold.value += 1
-      } else if (f_d.producto == "Plan Black") {
-        planBlack.value += 1
-      } else if (f_d.producto == "Plan Silver") {
-        planSilver.value += 1
-      }
-      total.value += f_d.total
-    })
-  }
-  console.log(filteredData.value);
-
-};
-
+// Print function
 const printPage = () => {
   if (typeof window === 'undefined') return;
   window.print()
 }
 
+// Watchers
+watch([start, limit], () => {
+  fetchData()
+})
 
-
-// Code by Saeed
-// console.log(data);
+// Initialize
+onMounted(() => {
+  fetchData();
+});
 </script>
+
 <style scoped>
-header {
-  padding: 1rem 0;
-  display: flex;
-  gap: 1rem;
-  border-bottom: 1px solid var(--gray-200);
+/* Print styles */
+@media print {
+  .no-print {
+    display: none;
+  }
 }
 
-
-.header__description>h1 {
-  font-size: var(--heading-2);
+/* Custom responsive table styles */
+@media (max-width: 768px) {
+  .table-responsive {
+    display: none;
+  }
 }
 
-.header__description>img {
-  width: 56px;
+/* Transition animations */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s;
 }
 
-
-main {
-  padding: 0 1rem 1rem 1rem;
-}
-
-.header__text>h1 {
-  font-size: var(--heading-2);
-}
-
-.header__text {
-  gap: 1rem;
-  flex-wrap: wrap;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.header__actions {
-  flex-wrap: wrap;
-  display: flex;
-  gap: 1rem;
-}
-
-.header__title {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.header__title>img {
-  width: 56px;
-  height: auto;
-}
-
-
-.float {
-  display: flex;
-  align-items: center;
-  background-color: var(--green-400);
-  color: #ffffff;
-}
-
-.float span {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table tr th {
-  text-align: left;
-}
-
-tr th,
-tr td {
-  padding-left: .5rem;
-}
-
-tr td {
-  padding: .5rem 0.5rem;
-}
-
-.t_header {
-  background-color: #e7e7e7;
-}
-
-.t_actions button {
-  background-color: #ffffff;
-  padding: 0 0.4rem
-}
-
-.filters__area {
-  display: flex;
-  justify-content: space-between;
-}
-
-.filters__group {
-  padding: 1rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-end;
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
 }
 </style>

@@ -1,146 +1,316 @@
 <template>
-  <main>
-    <header>
-      <img v-if="dataUser && dataUser.datos_personales?.foto?.url"
-        :src="getProfilePicture(dataUser.datos_personales.foto.url)"
-        :alt="dataUser.datos_personales.nombres ?? 'profile-picture'" class="header__photo" />
-      <div class="header__text">
-        <h1 v-if="dataUser && dataUser.datos_personales">
-          Bienvenido, {{ dataUser.datos_personales.nombres }}
-          {{ dataUser.datos_personales.apellidos }}
-        </h1>
+  <main class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between py-6">
+          <div class="flex items-center space-x-4">
+            <div class="relative">
+              <img 
+                v-if="dataUser && dataUser.datos_personales?.foto?.url"
+                :src="getProfilePicture(dataUser.datos_personales.foto.url)"
+                :alt="dataUser.datos_personales.nombres ?? 'profile-picture'" 
+                class="w-16 h-16 rounded-full object-cover border-4 border-white shadow-lg" 
+              />
+              <div v-else class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center border-4 border-white shadow-lg">
+                <svg class="w-8 h-8 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                </svg>
+              </div>
+            </div>
+            <div>
+              <h1 class="text-2xl font-bold text-gray-900">
+                <span v-if="dataUser && dataUser.datos_personales">
+                  {{ dataUser.datos_personales.nombres }} {{ dataUser.datos_personales.apellidos }}
+                </span>
+                <span v-else>Datos Personales</span>
+              </h1>
+              <p class="text-sm text-gray-600">Completa tu información personal</p>
+            </div>
+          </div>
+          
+          <!-- Save Button -->
+          <button 
+            @click.prevent="save()"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors shadow-lg"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+            Guardar Cambios
+          </button>
+        </div>
       </div>
     </header>
-    <div class="home__content">
-      <div class="home__actions">
-        <h2>Datos personales</h2>
-        <div class="home__buttons">
-          <button class="button button--secondary" @click.prevent="save()">
-            <img src="~/assets/images/save-green.png" alt="" /> Guardar 
-          </button>
-        </div>
-      </div>
 
-      <form ref="formPersonalData" class="form">
-        <div class="form__group">
-          <h2>Sobre tí</h2>
-          <div class="two-columns">
-            <BaseFileInput label="Foto de perfil" name="foto" @file-updated="captureFile($event)" />
-            <BaseInputImageFromWebcam label="Foto de perfil de webcam" name="fotoWebcam"
-              @file-updated="captureFile($event)" />
-
-            <BaseInput v-model="names" type="text" label="Nombres" :disabled="false" class="new-line" name="nombres" />
-            <BaseInput v-model="lastnames" type="text" label="Apellidos" :disabled="false" name="apellidos" />
-
-            <BaseInput v-model="company" type="text" label="Compañia" :disabled="false" name="compania" />
-
-            <BaseInput v-model="idRuc" type="text" label="Ruc" name="cedula_ruc" :disabled="false" />
-
-            <BaseInput v-model="iCedula" type="text" label="Cedula" name="cedula" :disabled="false" />
-
-            <BaseInput v-model="passport" type="text" label="Pasaporte" name="pasaporte" :disabled="false" />
-
-            <BaseInput v-model="nationality" type="text" label="Nacionalidad" :disabled="false" name="nacionalidad" />
-
-            <BaseInput v-if="!(!isAdmin || !isEstablecimiento)" v-model="civilState" type="text" label="Estado Civil"
-              :disabled="false" name="estado_civil" />
-
-            <BaseInput v-model="country" type="text" label="Pais" :disabled="false" name="pais" />
-
-            <BaseInput v-model="city" type="text" label="Ciudad" :disabled="false" name="ciudad" />
-
-            <BaseInput v-model="direction" type="text" label="Direccion" :disabled="false" name="direccion" />
-
-            <BaseInput v-model="province" type="text" label="Provincia" :disabled="false" name="provincia" />
-
-            <BaseInput v-if="!(!isAdmin || !isEstablecimiento)" v-model="typeperson" type="text" label="Tipo de persona"
-              :disabled="false" name="tipo_persona" />
-
-            <BaseInput v-model="cellphone" type="text" label="Celular" :disabled="false" name="celular" />
-
-            <BaseInput v-model="phone" type="text" label="Teléfono Convencional" :disabled="false"
-              name="telefono_convencional" />
-
-            <BaseInput v-model="email" type="email" label="Correo" name="correo" />
-
-            <BaseSelect v-model="gender" label="Sexo" :options="sexOptions" name="sexo" />
-            <BaseSelect v-model="disability" label="Discapacidad fisica o mental" :options="yesNoOptions"
-              name="discapacidad" />
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <form ref="formPersonalData" class="space-y-8">
+        
+        <!-- Photo Section -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+              Foto de Perfil
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">Sube tu foto de perfil desde archivo o webcam</p>
+          </div>
+          
+          <div class="p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <!-- File Upload -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-md font-medium text-gray-900 mb-4">Subir desde Archivo</h3>
+                <BaseFileInput 
+                  label="Foto de perfil" 
+                  name="foto" 
+                  @file-updated="captureFile($event)"
+                  class="w-full"
+                />
+                <p class="text-xs text-gray-500 mt-2">Solo archivos PNG, JPG o JPEG. Máximo 5MB.</p>
+              </div>
+              
+              <!-- Webcam Upload -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h3 class="text-md font-medium text-gray-900 mb-4">Capturar desde Webcam</h3>
+                <BaseInputImageFromWebcam 
+                  label="Foto de perfil de webcam" 
+                  name="fotoWebcam"
+                  @file-updated="captureFile($event)"
+                  class="w-full"
+                />
+                <p class="text-xs text-gray-500 mt-2">Usa tu cámara web para tomar una foto.</p>
+              </div>
+            </div>
           </div>
         </div>
-      </form>
-    </div>
-    <div v-if="!(isAdmin || isEstablecimiento || authStore.user?.role?.name === 'establecimiento')
-        " class="home__content">
-      <p style="font-weight: bold; font-size: 18px">
-        1. Asegurate de llenar los campos correctamente
-      </p>
-      <p style="font-weight: bold; font-size: 18px">
-        2. Si tienes más de 2 planes debes presionar el botón por cada plan.
-      </p>
-      <p style="font-weight: bold; font-size: 18px">
-        3. Una vez que que completes todos los campos y presiones guardar, no podras modificar los planes
-      </p>
-      <div class="home__actions">
-        <h2>Planes</h2>
 
-        <div class="home__buttons">
-          <button class="button button--secondary" @click.prevent="savePlans()">
-            <img src="~/assets/images/save-green.png" alt="" /> Guardar y Activar
-          </button>
-
+        <!-- Personal Information -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+              </svg>
+              Información Personal
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">Completa tus datos personales básicos</p>
+          </div>
+          
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput 
+                v-model="names" 
+                type="text" 
+                label="Nombres" 
+                name="nombres"
+                placeholder="Ingresa tus nombres completos"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="lastnames" 
+                type="text" 
+                label="Apellidos" 
+                name="apellidos"
+                placeholder="Ingresa tus apellidos completos"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="company" 
+                type="text" 
+                label="Compañía" 
+                name="compania"
+                placeholder="Nombre de tu empresa (opcional)"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="nationality" 
+                type="text" 
+                label="Nacionalidad" 
+                name="nacionalidad"
+                placeholder="Tu nacionalidad"
+                class="w-full"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <form class="form" ref="formPlanData">
-        <div v-if="dataPlans?.length === 0">No dispone de planes</div>
-        <button class="plans" v-if="dataPlans?.length > 1" v-for="plan in dataPlans" :key="plan.id"
-          @click.prevent="updatePlan(plan)">
-          {{ plan.producto }}
-        </button>
-        <div class="form__group two-columns">
-          <BaseInput v-model="plane" type="text" label="Plan" :disabled="true" name="plan" />
 
-          <BaseInput v-model="birthDate" type="date" label="Fecha de Nacimiento" :disabled="planDisabled"
-            name="fecha_nacimiento" />
+        <!-- Identification Documents -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 2L3 14h7v8l7-12h-7V2z"/>
+              </svg>
+              Documentos de Identificación
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">Información de tus documentos oficiales</p>
+          </div>
+          
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <BaseInput 
+                v-model="idRuc" 
+                type="text" 
+                label="Ruc / Nut / Nit" 
+                name="cedula_ruc"
+                placeholder="Número de RUC"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="iCedula" 
+                type="text" 
+                label="Cédula / DNI / ID Nacional" 
+                name="cedula"
+                placeholder="Número de cédula"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="passport" 
+                type="text" 
+                label="Pasaporte" 
+                name="pasaporte"
+                placeholder="Número de pasaporte"
+                class="w-full"
+              />
+            </div>
+          </div>
+        </div>
 
-          <BaseInput v-model="pVehicle" type="text" label="Marca Vehiculo" :disabled="planDisabled"
-            name="marca_vehiculo" />
+        <!-- Location Information -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/>
+              </svg>
+              Información de Ubicación
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">Detalles de tu ubicación y domicilio</p>
+          </div>
+          
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput 
+                v-model="country" 
+                type="text" 
+                label="País" 
+                name="pais"
+                placeholder="País de residencia"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="province" 
+                type="text" 
+                label="Provincia" 
+                name="provincia"
+                placeholder="Provincia o estado"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="city" 
+                type="text" 
+                label="Ciudad" 
+                name="ciudad"
+                placeholder="Ciudad de residencia"
+                class="w-full"
+              />
+              <div class="md:col-span-2">
+                <BaseInput 
+                  v-model="direction" 
+                  type="text" 
+                  label="Dirección" 
+                  name="direccion"
+                  placeholder="Dirección completa de domicilio"
+                  class="w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <BaseInput v-model="pModel" type="text" label="Modelo" :disabled="planDisabled" name="modelo" />
+        <!-- Contact Information -->
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+            <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+              <svg class="w-5 h-5 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              Información de Contacto
+            </h2>
+            <p class="text-sm text-gray-600 mt-1">Medios de comunicación para contactarte</p>
+          </div>
+          
+          <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <BaseInput 
+                v-model="cellphone" 
+                type="text" 
+                label="Celular" 
+                name="celular"
+                placeholder="Número de celular"
+                class="w-full"
+              />
+              <BaseInput 
+                v-model="phone" 
+                type="text" 
+                label="Teléfono Convencional" 
+                name="telefono_convencional"
+                placeholder="Teléfono fijo"
+                class="w-full"
+              />
+              <div class="md:col-span-2">
+                <BaseInput 
+                  v-model="email" 
+                  type="email" 
+                  label="Correo Electrónico" 
+                  name="correo"
+                  placeholder="tu@email.com"
+                  class="w-full"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
-          <BaseInput v-model="pAno" type="text" label="Año" :disabled="planDisabled" name="anio" />
-
-          <BaseInput v-model="pColor" type="text" label="Color" :disabled="planDisabled" name="color" />
-
-          <BaseInput v-model="pPlaca" type="text" label="Placa" :disabled="planDisabled" name="placa" />
-
-          <BaseInput v-model="pMotor" type="text" label="Motor" :disabled="planDisabled" name="motor" />
-
-          <BaseInput v-model="pChasis" type="text" label="Chasis" :disabled="planDisabled" name="chasis" />
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-4 pt-6">
+          <button 
+            type="button"
+            class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+          >
+            Cancelar
+          </button>
+          <button 
+            @click.prevent="save()"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors shadow-lg"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12"/>
+            </svg>
+            Guardar Datos
+          </button>
         </div>
       </form>
     </div>
   </main>
 </template>
+
 <script setup lang="ts">
-import { VueTelInput } from "vue-tel-input";
-import "vue-tel-input/dist/vue-tel-input.css";
+import { ref, watch, onMounted } from 'vue'
 import { useAuthStore } from '~/store/auth';
 import BaseInput from "~/components/common/inputs/base-input.vue";
-import axios, { type AxiosRequestConfig, type AxiosRequestHeaders } from "axios";
 import BaseFileInput from "~/components/common/inputs/file-input.vue";
-import useAdmin from "~/composables/useAdmin";
-import type {
-  User,
-  ConfiguracionPago,
-  EstableCimientos,
-} from "~/common/interfaces/user.interface";
-
-import { useToast } from "vue-toastification";
 import BaseInputImageFromWebcam from "~/components/common/inputs/file-input-image-webcam.vue";
+import type { User } from "~/common/interfaces/user.interface";
+import { useToast } from "vue-toastification";
+
 definePageMeta({
-  title: "Socios",
-  name: "Socios Page",
+  title: "Datos Personales",
+  name: "Personal Data Page",
   components: {
     BaseInput,
     BaseFileInput,
@@ -150,10 +320,9 @@ definePageMeta({
   middleware: ["auth"],
 });
 
-// const { isAdmin, isEstablecimiento } = useAdmin();
 const authStore = useAuthStore();
 const router = useRouter();
-
+const toast = useToast();
 
 const {
   public: { baseURL },
@@ -162,160 +331,10 @@ const BASE_URL = baseURL;
 
 const getProfilePicture = (url: string) => `${BASE_URL}${url}`;
 
-const generateRandomString = (num) => {
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result1 = Math.random().toString(36).substring(0, num);
+// Form refs
+const formPersonalData = ref<HTMLFormElement | null>(null);
 
-  return result1;
-};
-
-console.log(generateRandomString(7));
-
-// Usar useFetch para obtener dataPlans
-const { data: dataPlans } = useFetch<ConfiguracionPago[]>(
-  `${BASE_URL}/config-pagos?user.id=${authStore.user?.id}`,
-  {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-);
-
-// const sortDataPlans = () => {
-//   const sortedData = [...dataPlans.value];
-//   sortedData.sort((a, b) => a.producto.localeCompare(b.producto));
-//   dataPlans.value = sortedData;
-//   console.log(dataPlans.value);
-// };
-
-// Verificar si los datos de la API se han cargado correctamente
-watch(dataPlans, () => {
-  if (dataPlans.value && dataPlans.value.length > 0) {
-    if (dataPlans.value?.length === 1) {
-      updatePlan(dataPlans.value[0]);
-    }
-    dataPlans.value.sort((a, b) => b.producto.localeCompare(a.producto));
-    console.log(dataPlans.value);
-  }
-});
-
-onMounted(() => {
-  if (dataPlans.value && dataPlans.value.length > 0) {
-    if (dataPlans.value?.length === 1) {
-      updatePlan(dataPlans.value[0]);
-    }
-  }
-});
-
-const planDisabled = ref<boolean>(false);
-const pName = ref<string>("");
-const pEmail = ref<string>("");
-const pVehicle = ref<string>("");
-const pModel = ref<string>("");
-const pAno = ref<string>("");
-const pColor = ref<string>("");
-const pPlaca = ref<string>("");
-const pMotor = ref<string>("");
-const pChasis = ref<string>("");
-const pId = ref<string>("");
-const fecha_compra = ref<string>("");
-const fecha_fin = ref<string>("");
-const birthDate = ref<string>("");
-const updatePlan = (plan: any) => {
-  pAno.value = plan.anio;
-  pChasis.value = plan.chasis;
-  pColor.value = plan.color;
-  pName.value = plan.user.first_name + plan.user.last_name;
-  pModel.value = plan.modelo;
-  pMotor.value = plan.motor;
-  pPlaca.value = plan.placa;
-  pVehicle.value = plan.marca;
-  pEmail.value = plan.user.email;
-  plane.value = plan.producto;
-  birthDate.value = plan.fecha_nacimiento;
-  pId.value = plan.id;
-  fecha_compra.value = plan.fecha_compra;
-  fecha_fin.value = plan.fecha_fin;
-  const arr = [
-    pAno.value,
-    pChasis.value,
-    pColor.value,
-    pName.value,
-    pModel.value,
-    pMotor.value,
-    pPlaca.value,
-    pVehicle.value,
-  ];
-  if (arr.includes("") || arr.includes(undefined)) {
-    planDisabled.value = false;
-  } else {
-    planDisabled.value = true;
-  }
-};
-
-const savePlans = async () => {
-  const payload = {
-    anio: pAno.value,
-    chasis: pChasis.value,
-    color: pColor.value,
-    marca: pVehicle.value,
-    modelo: pModel.value,
-    motor: pMotor.value,
-    placa: pPlaca.value,
-    fecha_nacimiento: birthDate.value,
-  };
-
-  console.log(payload);
-
-  try {
-    const response = await fetch(`${BASE_URL}/config-pagos/${pId.value}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
-
-    if (response.ok) {
-      toast.success("Planes actualizados correctamente");
-      // update the entry in the dataPlans array
-      const index = dataPlans.value?.findIndex((plan) => plan.id === pId.value);
-      if (index !== undefined && dataPlans.value) {
-        dataPlans.value[index].anio = payload.anio;
-        dataPlans.value[index].chasis = payload.chasis;
-        dataPlans.value[index].color = payload.color;
-        dataPlans.value[index].marca = payload.marca;
-        dataPlans.value[index].modelo = payload.modelo;
-        dataPlans.value[index].motor = payload.motor;
-        dataPlans.value[index].placa = payload.placa;
-        dataPlans.value[index].fecha_nacimiento = payload.fecha_nacimiento;
-        updatePlan(dataPlans.value[index]);
-      }
-      await sendDataToIPAddress()
-    } else {
-      toast.error("Error");
-    }
-  } catch (error) {
-    toast.error("Error");
-  }
-};
-
-const sexOptions = ref<SelectOption[]>([
-  { text: "Masculino", value: "M" },
-  { text: "Femenino", value: "F" },
-]);
-const yesNoOptions = ref([
-  { text: "Si", value: true },
-  { text: "No", value: false },
-]);
-const civilStateOptions = ref<SelectOption[]>([
-  { text: "Casado", value: "casado" },
-  { text: "Divorciado", value: "divorciado" },
-  { text: "Viudo", value: "viudo" },
-  { text: "Soltero", value: "soltero" },
-]);
-
+// Form data
 const file = ref<File | null>(null);
 const names = ref<string>("");
 const lastnames = ref<string>("");
@@ -323,10 +342,7 @@ const company = ref<string>("");
 const idRuc = ref<string>("");
 const iCedula = ref<string>("");
 const passport = ref<string>("");
-const gender = ref<string>("");
-const disability = ref<boolean>(false);
 const nationality = ref<string>("");
-const civilState = ref<string>("");
 const cellphone = ref<string>("");
 const phone = ref<string>("");
 const email = ref<string>("");
@@ -334,11 +350,9 @@ const country = ref<string>("");
 const city = ref<string>("");
 const direction = ref<string>("");
 const province = ref<string>("");
-const typeperson = ref<string>("");
-const plane = ref<string>("");
-
 const webCamImage = ref<File | null>(null);
 
+// Fetch user data
 const { data: dataUser } = useFetch<User>(`${BASE_URL}/users/${authStore.user?.id}`, {
   method: "GET",
   headers: {
@@ -347,90 +361,73 @@ const { data: dataUser } = useFetch<User>(`${BASE_URL}/users/${authStore.user?.i
   },
 });
 
-let lastName = "";
-let secondLastName = "";
-let firstName = "";
-let secondName = "";
-
+// Watch for data changes and populate form
 watch(dataUser, () => {
-
-
-  const fullName = dataUser.value?.datos_personales?.nombres ?? "";
-  const fullLastNames = dataUser.value?.datos_personales?.apellidos ?? "";
-
-  const namesArray = fullName.split(" ");
-   firstName = namesArray[0] ?? "";
-  secondName = namesArray[1] ?? "";
-
-  console.log("firstName:", firstName);
-  console.log("secondName:", secondName);
-
-  const lastNamesArray = fullLastNames.split(" ");
-   lastName = lastNamesArray[0] ?? "";
-  secondLastName = lastNamesArray.length > 1 ? lastNamesArray[1] : "";
-
-  console.log("lastName:", lastName);
-  console.log("secondLastName:", secondLastName);
-
-  names.value = `${firstName ?? ""} ${secondName ?? ""}`;
-  lastnames.value = `${lastName ?? ""} ${secondLastName ?? ""}`;
-
-
-  company.value = dataUser.value?.datos_personales?.compania ?? "";
-  idRuc.value = dataUser.value?.datos_personales?.cedula_ruc ?? "";
-  iCedula.value = dataUser.value?.datos_personales?.cedula ?? "";
-  passport.value = dataUser.value?.datos_personales?.pasaporte ?? "";
-  gender.value = dataUser.value?.datos_personales?.sexo ?? "";
-  disability.value = dataUser.value?.datos_personales?.discapacidad ?? false;
-  nationality.value = dataUser.value?.datos_personales?.nacionalidad ?? "";
-  civilState.value = dataUser.value?.datos_personales?.estado_civil ?? "";
-  cellphone.value = dataUser.value?.datos_personales?.celular ?? "";
-  phone.value = dataUser.value?.datos_personales?.telefono_convencional ?? "";
-  email.value = dataUser.value?.datos_personales?.correo ?? "";
-  country.value = dataUser.value?.datos_personales?.pais ?? "";
-  city.value = dataUser.value?.datos_personales?.ciudad ?? "";
-  direction.value = dataUser.value?.datos_personales?.direccion ?? "";
-  province.value = dataUser.value?.datos_personales?.provincia ?? "";
-  typeperson.value = dataUser.value?.datos_personales?.tipo_persona ?? "";
-  plane.value = dataUser.value?.configuracion_pago[0]?.producto ?? "";
-  console.log(plane.value, dataUser.value)
-
+  if (dataUser.value?.datos_personales) {
+    const dp = dataUser.value.datos_personales;
+    
+    names.value = dp.nombres ?? "";
+    lastnames.value = dp.apellidos ?? "";
+    company.value = dp.compania ?? "";
+    idRuc.value = dp.cedula_ruc ?? "";
+    iCedula.value = dp.cedula ?? "";
+    passport.value = dp.pasaporte ?? "";
+    nationality.value = dp.nacionalidad ?? "";
+    cellphone.value = dp.celular ?? "";
+    phone.value = dp.telefono_convencional ?? "";
+    email.value = dp.correo ?? "";
+    country.value = dp.pais ?? "";
+    city.value = dp.ciudad ?? "";
+    direction.value = dp.direccion ?? "";
+    province.value = dp.provincia ?? "";
+  }
 });
-const formPersonalData = ref<HTMLFormElement | null>(null);
-const formPlanData = ref<HTMLFormElement | null>(null);
-  
 
+// File capture function
+const captureFile = (fileData: File) => {
+  if (fileData) {
+    webCamImage.value = fileData;
+  }
+};
 
-const toast = useToast();
-
+// Save function
 const save = async () => {
   try {
     const data: Record<string, string> = {};
     const formData = new FormData();
-    const elements = [...formPersonalData.value.elements];
-    // console.log(elements);
-    elements.forEach(({ name, type, value, files, ...element }) => {
-      if (!["submit", "file", "date"].includes(type)) {
-        if (name == "") return;
+    
+    if (formPersonalData.value) {
+      const elements = [...formPersonalData.value.elements];
+      
+      elements.forEach((element: any) => {
+        const { name, type, value, files } = element;
+        
+        if (!["submit", "file", "date"].includes(type)) {
+          if (name && name !== "") {
+            data[name] = value;
+          }
+        } else if (type === "date") {
+          if (value && value.length > 0) {
+            data[name] = value;
+          }
+        } else if (type === "file") {
+          const fileList = [...files];
+          fileList.forEach((file: File) => {
+            formData.append(`files.${name}`, file, file.name);
+          });
+        }
+      });
+    }
 
-        data[name] = value;
-      } else if (type === "date") {
-        if (value == "" || value.length === 0) return;
-        data[name] = value;
-      } else if (type === "file") {
-        const fileList = [...files];
-        fileList.forEach((file) => {
-          formData.append(`files.${name}`, file, file.name);
-        });
-      }
-    });
-
+    // Handle webcam image
     if (webCamImage.value !== null) {
       formData.delete("files.foto");
       formData.append("files.foto", webCamImage.value, webCamImage.value.name);
     }
-    console.log(data);
+
+    console.log('Data to save:', data);
     formData.append("data", JSON.stringify(data));
+    
     const infoUpdated = await $fetch(
       `${baseURL}/datos-personales/${dataUser.value?.datos_personales?.id}`,
       {
@@ -441,271 +438,63 @@ const save = async () => {
         body: formData,
       }
     );
-    console.log(infoUpdated);
-    dataUser.value.datos_personales = infoUpdated;
+    
+    console.log('Updated info:', infoUpdated);
+    
+    if (dataUser.value) {
+      dataUser.value.datos_personales = infoUpdated;
+    }
+    
     toast.success("Datos actualizados correctamente");
   } catch (error) {
-    console.log(error);
+    console.error('Error updating data:', error);
     toast.error("Error al actualizar los datos");
   }
 };
-
-const sendDataToIPAddress = async () => {
-  const store = useAuthStore();
-  const res = await store.generateToken();
-  console.log(res)
-  const response = await store.sendInfo({
-    "CLI_EMP": "424",
-    "PLAN_CLIENTE": plane.value,
-    "IDENTIFICACION": iCedula.value,
-    "PRIMER_APELLIDO":  `${lastName ?? ""} `, 
-    "SEGUNDO_APELLIDO": `${secondLastName ?? ""} `, 
-    "PRIMER_NOMBRE": `${firstName ?? ""} `,
-    "SEGUNDO_NOMBRE":  `${secondName ?? ""} `, 
-    "FECHA_NACIMIENTO": birthDate.value,
-    "DIRECCION": direction.value,
-    "CELULAR": cellphone.value,
-    "EMAIL": email.value,
-    "Celular": cellphone.value,
-    "FECHA_INICIO_VIGENCIA": fecha_compra.value,
-    "FECHA_FIN_VIGENCIA": fecha_fin.value,
-    "PLACA": pPlaca.value,
-    "MARCA": pVehicle.value,
-    "MODELO": pModel.value,
-    "ANIO": pAno.value
-  })
-
-  console.log(response)
-
-
-  if (response.status === 200) {
-    toast.success("Datos enviados correctamente");
-  } else {
-    toast.error("Error al enviar los datos");
-  }
-
-
-};
 </script>
+
 <style scoped>
-header {
-  padding: 1rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  border-bottom: 1px solid var(--gray-200);
+/* Custom styles for better visual consistency */
+.form-section {
+  @apply bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden;
 }
 
-.header__text>h1 {
-  font-size: var(--heading-2);
+.section-header {
+  @apply px-6 py-4 border-b border-gray-200 bg-gray-50;
 }
 
-.header__photo {
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
+.section-title {
+  @apply text-lg font-semibold text-gray-900 flex items-center;
 }
 
-.home__actions>h2 {
-  font-size: var(--heading-1);
+.section-description {
+  @apply text-sm text-gray-600 mt-1;
 }
 
-.home__actions {
-  padding: 1rem 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.section-content {
+  @apply p-6;
 }
 
-.home__buttons {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.home__link {
-  color: var(--links);
-}
-
-.home__link:hover {
-  color: gray;
-  /* Color al hacer hover */
-}
-
-.plans {
-  margin-right: 9px;
-  padding: 10px;
-  background-color: #c028b9 !important;
-  border-radius: 6px;
-  color: #fff;
-  cursor: pointer;
-}
-
-.form {
-  padding: 1rem 0;
-}
-
-.form__group {
-  padding: 2rem 0;
-  border-bottom: 1px solid var(--gray-200);
-  max-width: 670px;
-}
-
-.two-columns {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(327px, 1fr));
-}
-
-.one-column {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: auto;
-}
-
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-label>input {
-  height: 40px;
-  padding: 0 0.5rem;
-}
-
-.new-line {
-  grid-column: 1;
-}
-
-label+h3,
-.one-column>h3 {
-  margin-top: 1rem;
-}
-
-.form__group>h2 {
-  margin-bottom: 1rem;
-}
-
-.full-column {
-  grid-column: 1/-1;
-}
-
-.full-column label {
-  /* Tus estilos aquí */
-  color: #000;
-  font-weight: 700;
-  /* Grosor de fuente reducido */
-  font-size: 2rem;
-  /* Tamaño de fuente 1 */
-}
-
-.home_buttons {
-  text-decoration: none;
-  color: var(--green-400);
-
-  align-items: center;
-  justify-content: center;
-  padding: 1px;
-  background-color: transparent;
-  border-radius: 6px;
-
-  border: 1px solid var(--green-500);
-  /* Borde de 2px sólido en color verde */
-}
-
-.home_buttons:hover {
-  background-color: var(--green-400);
-}
-
-.home_buttons--primary {
-  display: flex;
-  gap: 0.25rem;
-  align-items: center;
-  justify-content: center;
-  padding: 0 1rem;
-  color: var(--white);
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
-  /* Grosor de fuente reducido */
-  font-size: 1rem;
-  /* Tamaño de fuente 1 */
-}
-
-.button--secondary {}
-
-@media (max-width: 767px) {
-  .button--secondary {
-    position: fixed;
-    width: 100%;
-    /* Ocupa todo el ancho disponible */
-    right: 2px;
-    margin-top: 402px;
-    padding: 0 1rem;
-    text-align: center;
-    /* Centra el contenido horizontalmente */
-    display: flex;
-
-    z-index: 1;
-    /* Asegúrate de que esté en un z-index superior para que esté por encima del contenido */
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .md\:col-span-2 {
+    grid-column: span 1;
   }
 }
 
-.home_buttons--primary:hover {
-  color: var(--white);
+/* Focus and hover states */
+.button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.home_buttons>img {
-  width: 1.5rem;
-}
-
-.float {
-  position: fixed;
-  top: 180px;
-  right: 21px;
-  z-index: 0;
-}
-
-/* Estilos para pantallas más pequeñas (por ejemplo, menos de 768px) */
-@media (max-width: 767px) {
-  .home_buttons {
-    justify-content: center;
-    /* Mantén o ajusta los estilos según sea necesario para el diseño responsivo */
-    padding: 8px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #fff;
-    /* Puedes ajustar el color de fondo según tu diseño */
-    padding: 10px;
-    /* Espacio de relleno opcional para separar el enlace del borde inferior */
-    text-align: center;
-    z-index: 1;
-    /* Asegúrate de que esté en un z-index superior para que esté por encima del contenido */
-  }
-}
-
-/*breackpoint*/
-@media only screen and (max-width: 600px) {
-  .d-flex {
-    display: flex !important;
-    flex-direction: column;
-    flex-wrap: wrap;
-  }
-
-  .full-column,
-  .full-column-2 {
-    width: 100% !important;
-  }
-
-  .form__group {
-    max-width: 100% !important;
-  }
-
-  .one-column {
-    width: 100% !important;
-  }
+/* Loading state for save button */
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 </style>
