@@ -49,7 +49,7 @@
           <div class="flex -space-x-3 flex-col sm:flex-row items-center justify-center gap-6 my-11">
             <button 
               @click="startFreeTrial"
-              class="group bg-white text-gray-900 px-7 py-2 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto border-2 border-transparent hover:border-green-400"
+              class="group bg-white text-gray-900 px-7 py-2 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto border-2 border-transparent hover:border-[#38f5b3]"
             >
               <span class="group-hover:text-green-600 transition-colors">🎯 Comenzar Prueba Gratis</span>
             </button>
@@ -60,7 +60,7 @@
           <div class="flex flex-col sm:flex-row items-center justify-center gap-10 text-white">
             <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20">
               <div class="flex -space-x-3">
-                <div class="w-10 h-10 bg-green-500 rounded-full border-3 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                <div class="w-10 h-10 bg-[green-500] rounded-full border-3 border-white shadow-lg overflow-hidden flex items-center justify-center">
                   <img 
                     src="~/assets/images/logoamc1.png" 
                     alt="Logo" 
@@ -308,7 +308,7 @@
       </div>
     </section>
 
-    <!-- Pricing Section -->
+    <!-- Pricing Section with Carousel -->
     <section id="pricing" class="py-20 bg-white">
       <div class="container mx-auto px-4">
         <div class="text-center mb-16">
@@ -329,79 +329,132 @@
                 v-model="isAnnual"
                 class="sr-only"
               />
-              <label for="pricing-toggle" class="block w-14 h-8 bg-[#FBF8FF] rounded-full cursor-pointer relative">
+              <label for="pricing-toggle" class="block w-14 h-8 bg-gray-200 rounded-full cursor-pointer relative">
                 <div 
                   class="absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-transform duration-300 transform"
-                  :class="isAnnual ? 'translate-x-6' : ''"
+                  :class="isAnnual ? 'translate-x-6 bg-green-500' : ''"
                 ></div>
               </label>
             </div>
-            <span class="text-[#232c4d] font-semibold">Anual (2 meses gratis)</span>
+            <span class="text-green-600 font-semibold">Anual (2 meses gratis)</span>
           </div>
         </div>
         
-        <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          <!-- Pricing Plans -->
-          <div 
-            v-for="plan in pricingPlans" 
-            :key="plan.id"
-            class="p-8 rounded-2xl border hover:shadow-lg transition-shadow duration-300 relative"
-            :class="plan.popular ? 'border-1 border-[#38f5b3] shadow-glow bg-[#FBF8FF]' : 'bg-white border-[#FBF8FF]'"
+        <!-- Pricing Carousel Container -->
+        <div class="relative max-w-7xl mx-auto">
+          <!-- Left Arrow -->
+          <button 
+            @click="prevSlide"
+            :disabled="currentSlide === 0"
+            class="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            :class="currentSlide === 0 ? 'opacity-50' : 'hover:bg-green-50'"
           >
-            <!-- Popular Badge -->
-            <div v-if="plan.popular" class="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <span class="bg-[#38f5b3] text-white px-4 py-2 rounded-full text-sm font-semibold">
-                🔥 Más Popular
-              </span>
-            </div>
-            
-            <!-- SECCIÓN DE PRECIOS ACTUALIZADA CON DESCUENTO -->
-            <div class="text-center mb-8">
-              <h3 class="text-xl font-bold text-gray-800 mb-2">{{ plan.name }}</h3>
-              <p class="text-gray-600 mb-6">{{ plan.description }}</p>
-              
-              <!-- Precio original tachado (solo si hay descuento) -->
-              <div v-if="hasDiscount(plan)" class="mb-1">
-                <span class="text-xl text-gray-400 line-through">
-                  ${{ getOriginalPrice(plan) }}
-                </span>
-              </div>
-              
-              <!-- Precio con descuento o precio normal -->
-              <div class="text-4xl font-bold mb-2" :class="getPriceColor(plan)">
-                ${{ getDisplayPrice(plan) }}
-              </div>
-              
-              <!-- Badge de descuento -->
-              <div v-if="hasDiscount(plan)" class="inline-block bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold mb-2">
-                {{ getDiscountPercentage(plan) }}% OFF
-              </div>
-              
-              <p class="text-gray-600">{{ isAnnual ? 'Por año' : 'Por mes' }}</p>
-            </div>
-            
-            <ul class="space-y-3 mb-8">
-              <li v-for="feature in plan.features" :key="feature" class="flex items-center gap-3">
-                <span class="text-[#38f5b3]">✓</span>
-                <span class="text-gray-700">{{ feature }}</span>
-              </li>
-            </ul>
-            
-            <button 
-              @click="subscribe(plan)"
-              class="w-full py-2 rounded-lg font-semibold transition-colors"
-              :class="plan.popular ? 'bg-[#38f5b3] text-black hover:bg-[#38f5b3] shadow-lg' : 'bg-[#38f5b3] text-gray-700 hover:bg-[#38f5b3]'"
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
+          </button>
+          
+          <!-- Right Arrow -->
+          <button 
+            @click="nextSlide"
+            :disabled="currentSlide >= maxSlide"
+            class="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white rounded-full p-3 shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            :class="currentSlide >= maxSlide ? 'opacity-50' : 'hover:bg-green-50'"
+          >
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+            </svg>
+          </button>
+          
+          <!-- Carousel Container -->
+          <div class="overflow-hidden mx-12 pt-8">
+            <div 
+              class="flex transition-transform duration-500 ease-in-out"
+              :style="{ transform: `translateX(-${currentSlide * slideWidth}%)` }"
             >
-              {{ plan.buttonText }}
-            </button>
+              <!-- Pricing Plans -->
+              <div 
+                v-for="plan in pricingPlans" 
+                :key="plan.id"
+                class="flex-shrink-0 px-4"
+                :class="carouselItemClass"
+              >
+                <div 
+                  class="h-full p-8 rounded-2xl border hover:shadow-lg transition-all duration-300 relative"
+                  :class="plan.popular ? 'border-2 border-green-400 shadow-glow bg-green-50' : 'bg-white border-gray-200'"
+                >
+                  <!-- Popular Badge -->
+                  <div v-if="plan.popular" class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                    <span class="bg-[#38f5b3] text-white px-4 py-2 rounded-full text-sm font-semibold">
+                      🔥 Más Popular
+                    </span>
+                  </div>
+                  
+                  <!-- Plan Header -->
+                  <div class="text-center mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">{{ plan.name }}</h3>
+                    <p class="text-gray-600 mb-6">{{ plan.description }}</p>
+                    
+                    <!-- Precio original tachado (solo si hay descuento) -->
+                    <div v-if="hasDiscount(plan)" class="mb-1">
+                      <span class="text-xl text-gray-400 line-through">
+                        ${{ getOriginalPrice(plan) }}
+                      </span>
+                    </div>
+                    
+                    <!-- Precio con descuento o precio normal -->
+                    <div class="text-4xl font-bold mb-2" :class="getPriceColor(plan)">
+                      ${{ getDisplayPrice(plan) }}
+                    </div>
+                    
+                    <!-- Badge de descuento -->
+                    <div v-if="hasDiscount(plan)" class="inline-block bg-red-100 text-red-600 px-3 py-1 rounded-full text-sm font-semibold mb-2">
+                      {{ getDiscountPercentage(plan) }}% OFF
+                    </div>
+                    
+                    <p class="text-gray-600">{{ plan.id === 0 ? 'Por 5 días' : (isAnnual ? 'Por año' : 'Por mes') }}</p>
+                  </div>
+                  
+                  <!-- Features List -->
+                  <ul class="space-y-3 mb-8 flex-grow">
+                    <li v-for="feature in plan.features" :key="feature" class="flex items-start gap-3">
+                      <span class="text-[#38f5b3] mt-1 flex-shrink-0">✓</span>
+                      <span class="text-gray-700 text-sm">{{ feature }}</span>
+                    </li>
+                  </ul>
+                  
+                  <!-- CTA Button -->
+                  <button 
+                    @click="subscribe(plan)"
+                    class="w-full py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                    :class="plan.popular 
+                      ? 'bg-[#38f5b3] text-white hover:bg-[#38f5b3] shadow-lg' 
+                      : 'bg-gray-100 text-gray-700 hover:bg-[#38f5b3] hover:text-[#000000]'"
+                  >
+                    {{ plan.buttonText }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Carousel Indicators -->
+          <div class="flex justify-center mt-8 space-x-2">
+            <button
+              v-for="(dot, index) in totalSlides"
+              :key="index"
+              @click="goToSlide(index)"
+              class="w-3 h-3 rounded-full transition-all duration-300"
+              :class="currentSlide === index ? 'bg-[#38f5b3]' : 'bg-gray-300 hover:bg-gray-400'"
+            ></button>
           </div>
         </div>
         
         <!-- Money Back Guarantee -->
         <div class="text-center mt-12">
-          <div class="inline-flex items-center gap-3 bg-green-50 px-6 py-4 rounded-full border border-green-200">
+          <div class="inline-flex items-center gap-3 bg-[#38f5b3] px-6 py-4 rounded-full border border-[#38f5b3]">
             <span class="text-2xl">🛡️</span>
-            <span class="text-[#232c4d] font-semibold">Nuestra garantía es la prueba del demo GRATIS de 5 dias sin tarjeta de crédito</span>
+            <span class="text-gray-700 font-semibold">Nuestra garantía es la prueba del demo GRATIS de 5 dias sin tarjeta de crédito</span>
           </div>
         </div>
       </div>
@@ -585,6 +638,63 @@ const onPlay = () => {
 const isAnnual = ref(false)
 const remainingSpots = ref(87)
 
+// Carousel reactive variables
+const currentSlide = ref(0)
+
+// Carousel configuration
+const slidesPerView = ref(3) // Desktop: 3 slides visible
+const slidesPerViewMobile = ref(1) // Mobile: 1 slide visible
+
+// Computed properties for responsive design
+const isMobile = computed(() => {
+  if (process.client) {
+    return window.innerWidth < 768
+  }
+  return false
+})
+
+const actualSlidesPerView = computed(() => {
+  return isMobile.value ? slidesPerViewMobile.value : slidesPerView.value
+})
+
+const slideWidth = computed(() => {
+  return 100 / actualSlidesPerView.value
+})
+
+const carouselItemClass = computed(() => {
+  if (isMobile.value) {
+    return 'w-full'
+  }
+  return 'w-1/3'
+})
+
+const totalSlides = computed(() => {
+  return Math.max(0, pricingPlans.value.length - actualSlidesPerView.value + 1)
+})
+
+const maxSlide = computed(() => {
+  return Math.max(0, pricingPlans.value.length - actualSlidesPerView.value)
+})
+
+// Carousel navigation methods
+const nextSlide = () => {
+  if (currentSlide.value < maxSlide.value) {
+    currentSlide.value++
+  }
+}
+
+const prevSlide = () => {
+  if (currentSlide.value > 0) {
+    currentSlide.value--
+  }
+}
+
+const goToSlide = (index: number) => {
+  if (index >= 0 && index <= maxSlide.value) {
+    currentSlide.value = index
+  }
+}
+
 const subscribe = (plan: PricingPlan) => {
   const url = `https://ai.wafidely.com/register?plan=${plan.id}&name=${encodeURIComponent(plan.name)}&price=${plan.descountPrice}`
   navigateTo(url, { 
@@ -631,7 +741,7 @@ const getDisplayPrice = (plan: PricingPlan) => {
 const getPriceColor = (plan: PricingPlan) => {
   if (plan.popular) return 'text-gradient'
   if (hasDiscount(plan)) return 'text-gradient'
-  return 'text-gray-800'
+  return 'text-gradient'
 }
 
 const getDiscountPercentage = (plan: PricingPlan) => {
@@ -639,15 +749,11 @@ const getDiscountPercentage = (plan: PricingPlan) => {
   
   const originalPrice = getOriginalPrice(plan)
   const displayPrice = getDisplayPrice(plan)
+  
+  // Evitar división por cero para el plan gratuito
+  if (originalPrice === 0) return 0
+  
   return Math.round(((originalPrice - displayPrice) / originalPrice) * 100)
-}
-
-const getDiscountText = (plan: PricingPlan) => {
-  if (isAnnual.value) {
-    return '2 meses GRATIS'
-  } else {
-    return `${getDiscountPercentage(plan)}% OFF`
-  }
 }
 
 // Data arrays con tipado TypeScript
@@ -834,26 +940,60 @@ const testimonials = ref<Testimonial[]>([
 
 const pricingPlans = ref<PricingPlan[]>([
   {
-    id: 1,
-    name: 'WAPyme',
-    description: 'Perfecto pymes con pocos usuarios clientes',
-    descountPrice: 69,
-    monthlyPrice: 89,
-    annualPrice: 690,
+    id: 0,
+    name: 'WAFree',
+    description: 'Prueba gratuita para conocer nuestro servicio',
+    descountPrice: 0,
+    monthlyPrice: 0,
+    annualPrice: 0,
     popular: false,
-    buttonText: 'Comenzar Gratis 5 dias',
+    buttonText: 'Comenzar Gratis',
     features: [
-      'Recordatorio automático de tareas o citas Whatsapp hasta 100 (Envío - Respuesta Api Oficial Wafidely)',
-      'Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp',
-      'Página de Aterrizaje con agendamiento de citas en calendario (Lo generas de manera automática)',
-      'Reporte de citas confirmadas y canceladas',
-      'Creación de Prompts para Bot en Whatsapp hasta 140 conversaciones x mes',
-      '17000 - 20000 Token de respuestas con IA (Open IA)',
-      'Envío de campañas a Whatsapp hasta 500 contactos, se recomienda enviar por hora de 250 a 280 contactos para no ser baneado el número de whatsapp'
+      '1 Constructor de Flujo ',
+      '2 Números de Whatsapp para integrar',
+      '1000 Tokens de AI por 5 dias',
+      'Soporte Gratuito para crear cuenta'
+    ]
+  },
+  {
+    id: 1,
+    name: 'WAStarter',
+    description: 'Ideal para emprendedores y pequeños negocios',
+    descountPrice: 39,
+    monthlyPrice: 59,
+    annualPrice: 390,
+    popular: false,
+    buttonText: 'Empezar Ahora',
+    features: [
+      '3 Constructores de Flujo completo',
+      'Hasta 75 conversaciones/mes',
+      '4,000-8.000 tokens de IA',
+      'Hasta 300 contactos en campañas',
+      'Soporte por WhatsApp'
     ]
   },
   {
     id: 2,
+    name: 'WAPyme',
+    description: 'Perfecto para pymes con usuarios moderados',
+    descountPrice: 69,
+    monthlyPrice: 89,
+    annualPrice: 690,
+    popular: false,
+    buttonText: 'Comenzar Gratis 5 días',
+    features: [
+      'Recordatorio automático hasta 100 citas',
+      'Constructor de Flujo avanzado',
+      'Página generada automáticamente',
+      'Reportes completos',
+      'Hasta 140 conversaciones/mes',
+      '17,000-20,000 tokens de IA',
+      'Hasta 500 contactos en campañas',
+      'Soporte prioritario'
+    ]
+  },
+  {
+    id: 3,
     name: 'WAMedium',
     description: 'Para empresas en crecimiento',
     descountPrice: 99,
@@ -862,32 +1002,34 @@ const pricingPlans = ref<PricingPlan[]>([
     popular: true,
     buttonText: 'Empezar',
     features: [
-      'Recordatorio automático de tareas o citas Whatsapp hasta 300 (Envío - Respuesta Api Oficial Wafidely)',
-      'Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp',
-      'Página de Aterrizaje con agendamiento de citas en calendario (Lo generas de manera automática)',
-      'Reporte de citas confirmadas y canceladas',
-      'Creación de Prompts para Bot en Whatsapp hasta 350 conversaciones x mes',
-      '20000 - 29000 Token de respuestas con IA (Open IA)',
-      'Envío de campañas a Whatsapp hasta 1000 contactos, se recomienda enviar por hora de 250 a 280 contactos para no ser baneado el número de whatsapp'
+      'Recordatorio automático hasta 300 citas',
+      'API completa de WhatsApp',
+      'Múltiples páginas de aterrizaje',
+      'Analytics avanzados',
+      'Hasta 350 conversaciones/mes',
+      '20,000-29,000 tokens de IA',
+      'Hasta 1,000 contactos en campañas',
+      'Soporte 24/7'
     ]
   },
   {
-    id: 3,
+    id: 4,
     name: 'WALarge',
-    description: 'Para empresas que pasan volumnes altos de tarea con usuarios',
+    description: 'Para empresas con alto volumen',
     descountPrice: 199,
     monthlyPrice: 279,
     annualPrice: 1990,
     popular: false,
     buttonText: 'Empezar',
     features: [
-      'Recordatorio automático de tareas o citas Whatsapp hasta 1000 (Envío - Respuesta Api Oficial Wafidely)',
-      'Constructor de Flujo de Bot con Qr Whatsapp Business o Api Whatsapp',
-      'Página de Aterrizaje con agendamiento de citas en calendario (Lo generas de manera automática)',
-      'Reporte de citas confirmadas y canceladas',
-      'Creación de Prompts para Bot en Whatsapp hasta 720 conversaciones x mes',
-      '29000 - 67000 Token de respuestas con IA (Open IA)',
-      'Envío de campañas a Whatsapp hasta 5000 contactos, se recomienda enviar por hora de 250 a 280 contactos para no ser baneado el número de whatsapp'
+      'Recordatorio automático hasta 1,000 citas',
+      'API empresarial completa',
+      'Múltiples integraciones',
+      'Reportes personalizados',
+      'Hasta 720 conversaciones/mes',
+      '29,000-67,000 tokens de IA',
+      'Hasta 5,000 contactos en campañas',
+      'Gerente de cuenta dedicado'
     ]
   }
 ])
@@ -974,6 +1116,30 @@ const heroStats = computed(() => [
   { value: '70%', label: 'Recuperación de interesados' }
 ])
 
+// Handle window resize for responsive behavior
+if (process.client) {
+  let resizeTimer: NodeJS.Timeout
+  
+  const handleResize = () => {
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(() => {
+      // Reset slide if it's out of bounds after resize
+      if (currentSlide.value > maxSlide.value) {
+        currentSlide.value = maxSlide.value
+      }
+    }, 150)
+  }
+  
+  onMounted(() => {
+    window.addEventListener('resize', handleResize)
+  })
+  
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+    if (resizeTimer) clearTimeout(resizeTimer)
+  })
+}
+
 // Lifecycle - simular countdown
 onMounted(() => {
   if (process.client) {
@@ -1009,7 +1175,7 @@ onMounted(() => {
 }
 
 .shadow-glow {
-  box-shadow: 0 0 20px #FBF8FF;
+  box-shadow: 0 0 20px rgba(37, 211, 102, 0.2);
 }
 
 .hero-pattern {
@@ -1095,6 +1261,28 @@ onMounted(() => {
   outline-offset: 2px;
 }
 
+/* Carousel specific styles */
+.transition-transform {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover\:scale-105:hover {
+  transform: scale(1.05);
+}
+
+button:focus-visible {
+  outline: 2px solid #25D366;
+  outline-offset: 2px;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #25D366 0%, #2563EB 50%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
 @media (max-width: 768px) {
   .hero-pattern {
     background-size: 200% 200%;
@@ -1102,6 +1290,16 @@ onMounted(() => {
   
   .scroll-indicator {
     bottom: 20px;
+  }
+  
+  .overflow-hidden {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .overflow-hidden::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -1124,12 +1322,5 @@ onMounted(() => {
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, #38f5b3   0%, #2563EB 50%, #7C3AED 100%);
-}
-.text-gradient {
-  background: linear-gradient(135deg, #38f5b3 0%, #2563EB 50%, #7C3AED 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
 }
 </style>
