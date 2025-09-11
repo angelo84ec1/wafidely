@@ -1117,7 +1117,7 @@ const pricingPlans = ref<PricingPlan[]>([
     monthlyPrice: 89,
     annualPrice: 690,
     popular: false,
-    buttonText: 'Comenzar Gratis 5 días',
+    buttonText: 'Empezar Ahora',
     features: [
       'Recordatorio automático hasta 100 citas',
       'Constructor de Flujo avanzado',
