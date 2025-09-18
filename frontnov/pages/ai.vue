@@ -833,6 +833,17 @@ const goToSlide = (index: number) => {
 }
 
 const subscribe = (plan: PricingPlan) => {
+  // Si es el plan WAMedida (id: 5), dirigir a WhatsApp
+  if (plan.id === 5) {
+    const whatsappNumber = '593983314957'
+    const message = `Hola, estoy interesado en el plan ${plan.name}. Me gustaría obtener más información sobre la solución personalizada.`
+    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+    
+    window.open(whatsappUrl, '_blank')
+    return
+  }
+  
+  // Para todos los otros planes, comportamiento normal
   const url = `https://ai.wafidely.com/register?plan=${plan.id}&name=${encodeURIComponent(plan.name)}&price=${plan.descountPrice}`
   navigateTo(url, { 
     external: true,
@@ -1141,7 +1152,7 @@ const pricingPlans = ref<PricingPlan[]>([
     features: [
       'Recordatorio automático hasta 300 citas',
       'API completa de WhatsApp',
-      'Múltiples páginas de aterrizaje',
+      'Página de aterrizaje generada de forma automatica con calendario',
       'Analytics avanzados',
       'Hasta 350 conversaciones/mes',
       '20,000-29,000 tokens de IA',
@@ -1161,11 +1172,33 @@ const pricingPlans = ref<PricingPlan[]>([
     features: [
       'Recordatorio automático hasta 1,000 citas',
       'API empresarial completa',
+      'Página de aterrizaje generada de forma automatica con calendario',
       'Múltiples integraciones',
       'Reportes personalizados',
       'Hasta 720 conversaciones/mes',
       '29,000-67,000 tokens de IA',
       'Hasta 5,000 contactos en campañas',
+      'Gerente de cuenta dedicado'
+    ]
+  },
+
+  {
+    id: 5,
+    name: 'WAMedida',
+    description: 'Para empresas con varios sistemas',
+    descountPrice: 'flexible',
+    monthlyPrice: 'flexible',
+    annualPrice: 'flexible',
+    popular: false,
+    buttonText: 'Empezar',
+    features: [
+      'Recordatorio automático hasta 5,000 citas',
+      'API empresarial con integración a sistemas existentes de empresa',
+      'Múltiples integraciones',
+      'Reportes personalizados',
+      'Sin limites conversaciones/mes',
+      'Sin limites tokens de IA',
+      'Desde 100.000 contactos en adelante en campañas',
       'Gerente de cuenta dedicado'
     ]
   }
