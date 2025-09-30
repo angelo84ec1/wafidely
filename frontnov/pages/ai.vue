@@ -1,5 +1,9 @@
 <template>
   <div class="bg-[#FBF8FF] overflow-x-hidden">
+
+    <LoadingPage :show="isLoading" />
+    
+    <div v-if="!isLoading" class="page-content">
     <!-- Header Component -->
     <UiHeader />
 
@@ -710,6 +714,7 @@
   </div>
 
   <ui-footer></ui-footer> 
+</div>
 </template>
 
 <script setup lang="ts">
@@ -737,6 +742,18 @@ useHead({
       href: 'https://www.wafidely.com/ai'
     }
   ]
+})
+
+// ✅ AGREGA ESTO - Control del Loading
+const isLoading = ref(true)
+
+onMounted(async () => {
+  try {
+    await nextTick()
+    await new Promise(resolve => setTimeout(resolve, 800))
+  } finally {
+    isLoading.value = false
+  }
 })
 
 const demoVideo = ref(null)
