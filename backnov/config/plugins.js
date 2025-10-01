@@ -22,12 +22,12 @@ module.exports = ({env}) => ({
   email: {
     provider: "amazon-ses", // For community providers pass the full package name (e.g. provider: 'strapi-provider-email-mandrill')
     providerOptions: {
-      key: "",
-      secret: "",
+      key: "AKIA4FEXSBW7XGP6PJUK",
+      secret: "0zn09Yt/RWWmkqoWmD/zuVIyOU3GyKLt+AeCZbcY",
       amazon: "https://email.us-east-2.amazonaws.com",
     },
     settings: {
-      defaultFrom: "",
+      defaultFrom: "salesai@wappiad.com",
       defaultReplyTo: "salesai@wappiad.com",
      
     },

@@ -403,7 +403,7 @@ const countries = ref([
   {
     code: 'CR',
     name: 'Costa Rica',
-    url: '/cr',
+    url: '/automatizar-whatsapp-business-con-chatgpt-ia-costa-rica',
     flag: `<svg viewBox="0 0 900 600" class="w-full h-full">
       <rect width="900" height="120" fill="#0033A0"/>
       <rect width="900" height="120" y="120" fill="#FFFFFF"/>

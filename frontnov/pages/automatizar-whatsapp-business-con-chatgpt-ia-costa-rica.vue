@@ -1,146 +1,150 @@
 <template>
     <div class="bg-[#FBF8FF] overflow-x-hidden">
+  
+      <LoadingPage :show="isLoading" />
+      
+      <div v-if="!isLoading" class="page-content">
       <!-- Header Component -->
       <UiHeader />
   
-     <!-- Hero Section -->
-<section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
-      <!-- Background overlay for better contrast -->
-      <div class="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-green-900/80 to-blue-900/90"></div>
-      
-      <!-- Animated background elements -->
-      <div class="absolute inset-0 hero-animated-bg"></div>
-      
-      <!-- Floating geometric elements -->
-      <div class="absolute top-20 left-10 animate-float">
-        <div class="w-6 h-6 bg-white rounded-full opacity-60 shadow-lg"></div>
-      </div>
-      <div class="absolute top-40 right-20 animate-float" style="animation-delay: 0.5s;">
-        <div class="w-8 h-8 bg-green-400 rounded-full opacity-70 shadow-lg"></div>
-      </div>
-      <div class="absolute bottom-40 left-20 animate-float" style="animation-delay: 1s;">
-        <div class="w-4 h-4 bg-blue-400 rounded-full opacity-60 shadow-lg"></div>
-      </div>
-      <div class="absolute top-60 right-10 animate-float" style="animation-delay: 1.5s;">
-        <div class="w-5 h-5 bg-purple-400 rounded-full opacity-50 shadow-lg"></div>
-      </div>
-      
-      <!-- Main content -->
-      <div class="container mx-auto px-4 py-20 relative z-10">
-        <div class="max-w-7xl mx-auto">
-          <div class="grid lg:grid-cols-12 gap-8 items-center">
-            
-            <!-- Left Column - Text Content (8 columns = 66%) -->
-            <div class="lg:col-span-8 text-center lg:text-left animate-slide-up">
-              <!-- Badge with better visibility -->
-              <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/30 shadow-lg">
-                <span class="text-white text-sm font-semibold drop-shadow-sm">🚀 Nuevo: IA Conversacional Avanzada</span>
-              </div>
+  <!-- Hero Section -->
+  <section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+        <!-- Background overlay for better contrast -->
+        <div class="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-green-900/80 to-blue-900/90"></div>
+        
+        <!-- Animated background elements -->
+        <div class="absolute inset-0 hero-animated-bg"></div>
+        
+        <!-- Floating geometric elements -->
+        <div class="absolute top-20 left-10 animate-float">
+          <div class="w-6 h-6 bg-white rounded-full opacity-60 shadow-lg"></div>
+        </div>
+        <div class="absolute top-40 right-20 animate-float" style="animation-delay: 0.5s;">
+          <div class="w-8 h-8 bg-green-400 rounded-full opacity-70 shadow-lg"></div>
+        </div>
+        <div class="absolute bottom-40 left-20 animate-float" style="animation-delay: 1s;">
+          <div class="w-4 h-4 bg-blue-400 rounded-full opacity-60 shadow-lg"></div>
+        </div>
+        <div class="absolute top-60 right-10 animate-float" style="animation-delay: 1.5s;">
+          <div class="w-5 h-5 bg-purple-400 rounded-full opacity-50 shadow-lg"></div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="container mx-auto px-4 py-20 relative z-10">
+          <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-12 gap-8 items-center">
               
-              <!-- Main Headline with text shadow for better readability -->
-              <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
-                Automatiza tu <span class="text-green-400 drop-shadow-md">WhatsApp Business</span><br>
-                con <span class="text-blue-400 drop-shadow-md">Inteligencia Artificial</span>
-              </h1>
-              
-              <!-- Subheadline with better contrast -->
-              <p class="text-lg md:text-xl lg:text-2xl text-gray-100 mb-8 leading-relaxed drop-shadow-md">
-                Aumenta tus ventas hasta <strong class="text-yellow-400 text-xl md:text-3xl">7x</strong> con bots inteligentes que responden como humanos, 
-                gestionan citas automáticamente y convierten visitantes en clientes 24/7.
-              </p>
-              
-              <!-- CTA Buttons with enhanced design -->
-              <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-8">
-                <button 
-                  @click="startFreeTrial"
-                  class="group bg-white text-gray-900 px-7 py-2 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto border-2 border-transparent hover:border-[#38f5b3]"
-                >
-                  <span class="group-hover:text-green-600 transition-colors">🎯 Comenzar Prueba Gratis</span>
-                </button>
-              </div>
-              
-              <!-- Social Proof with improved styling -->
-              <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-6 text-white">
-                <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 border border-white/20">
-                  <div class="flex -space-x-2">
-                    <div class="w-8 h-8 bg-green-500 rounded-full border-2 border-white shadow-lg overflow-hidden flex items-center justify-center">
-                      <img 
-                        src="~/assets/images/logoamc1.png" 
-                        alt="Logo" 
-                        class="w-full h-full object-cover rounded-full"
-                      />
-                    </div>
-                    <div class="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-lg">
-                      <img 
-                        src="~/assets/images/logonazcar1.png" 
-                        alt="Logo" 
-                        class="w-full h-full object-cover rounded-full"
-                      />
-                    </div>
-                    <div class="w-8 h-8 bg-purple-500 rounded-full border-2 border-white shadow-lg">
-                      <img 
-                        src="~/assets/images/logoamazing1.png" 
-                        alt="Logo" 
-                        class="w-full h-full object-cover rounded-full"
-                      />
-                    </div>
-                  </div>
-                  <span class="text-sm font-semibold drop-shadow-sm">+200 empresas</span>
-                </div>
-                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-3 border border-white/20">
-                  <div class="flex text-yellow-400 text-sm">
-                    ⭐⭐⭐⭐⭐
-                  </div>
-                  <span class="text-sm font-semibold drop-shadow-sm">4.9/5</span>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Right Column - Video (4 columns = 33%) -->
-            <div class="lg:col-span-4 animate-fade-in lg:animate-slide-right">
-              <div class="relative max-w-sm mx-auto lg:mx-0">
-                <!-- Video Container with Glow Effect -->
-                <div class="relative bg-white/10 backdrop-blur-sm rounded-3xl p-3 border border-white/20 shadow-2xl hover:shadow-glow-strong transition-all duration-500">
-                  <div class="relative overflow-hidden rounded-2xl" style="max-height: 590px;">
-                    <video 
-                      ref="heroVideo"
-                      class="w-full h-full object-cover rounded-2xl shadow-xl"
-                      autoplay
-                      muted
-                      loop
-                      playsinline
-                      preload="auto"
-                    >
-                      <source src="https://video-websecua.s3.us-east-2.amazonaws.com/Video-Wafidely-BotLLM.mp4" type="video/mp4">
-                      Tu navegador no soporta el elemento video.
-                    </video>
-                  </div>
-                  
-                  <!-- Video Badge -->
-                  <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-xl border-2 border-green-400">
-                    <span class="text-xs font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                      ▶️ Demo en Vivo
-                    </span>
-                  </div>
+              <!-- Left Column - Text Content (8 columns = 66%) -->
+              <div class="lg:col-span-8 text-center lg:text-left animate-slide-up">
+                <!-- Badge with better visibility -->
+                <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/30 shadow-lg">
+                  <span class="text-white text-sm font-semibold drop-shadow-sm">🚀 Nuevo: IA Conversacional Avanzada</span>
                 </div>
                 
-                <!-- Decorative Elements -->
-                <div class="absolute -top-4 -right-4 w-20 h-20 bg-green-400 rounded-full opacity-20 blur-2xl"></div>
-                <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-blue-400 rounded-full opacity-20 blur-2xl"></div>
+                <!-- Main Headline with text shadow for better readability -->
+                <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+                  Automatiza tu <span class="text-green-400 drop-shadow-md">WhatsApp Business</span><br>
+                  con <span class="text-blue-400 drop-shadow-md">Inteligencia Artificial</span>
+                </h1>
+                
+                <!-- Subheadline with better contrast -->
+                <p class="text-lg md:text-xl lg:text-2xl text-gray-100 mb-8 leading-relaxed drop-shadow-md">
+                  Aumenta tus ventas hasta <strong class="text-yellow-400 text-xl md:text-3xl">7x</strong> con bots inteligentes que responden como humanos, 
+                  gestionan citas automáticamente y convierten visitantes en clientes 24/7.
+                </p>
+                
+                <!-- CTA Buttons with enhanced design -->
+                <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-8">
+                  <button 
+                    @click="startFreeTrial"
+                    class="group bg-white text-gray-900 px-7 py-2 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto border-2 border-transparent hover:border-[#38f5b3]"
+                  >
+                    <span class="group-hover:text-green-600 transition-colors">🎯 Comenzar Prueba Gratis</span>
+                  </button>
+                </div>
+                
+                <!-- Social Proof with improved styling -->
+                <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-6 text-white">
+                  <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 border border-white/20">
+                    <div class="flex -space-x-2">
+                      <div class="w-8 h-8 bg-green-500 rounded-full border-2 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                        <img 
+                          src="~/assets/images/logoamc1.png" 
+                          alt="Logo" 
+                          class="w-full h-full object-cover rounded-full"
+                        />
+                      </div>
+                      <div class="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-lg">
+                        <img 
+                          src="~/assets/images/logonazcar1.png" 
+                          alt="Logo" 
+                          class="w-full h-full object-cover rounded-full"
+                        />
+                      </div>
+                      <div class="w-8 h-8 bg-purple-500 rounded-full border-2 border-white shadow-lg">
+                        <img 
+                          src="~/assets/images/logoamazing1.png" 
+                          alt="Logo" 
+                          class="w-full h-full object-cover rounded-full"
+                        />
+                      </div>
+                    </div>
+                    <span class="text-sm font-semibold drop-shadow-sm">+200 empresas</span>
+                  </div>
+                  <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-3 border border-white/20">
+                    <div class="flex text-yellow-400 text-sm">
+                      ⭐⭐⭐⭐⭐
+                    </div>
+                    <span class="text-sm font-semibold drop-shadow-sm">4.9/5</span>
+                  </div>
+                </div>
               </div>
+              
+              <!-- Right Column - Video (4 columns = 33%) -->
+              <div class="lg:col-span-4 animate-fade-in lg:animate-slide-right">
+                <div class="relative max-w-sm mx-auto lg:mx-0">
+                  <!-- Video Container with Glow Effect -->
+                  <div class="relative bg-white/10 backdrop-blur-sm rounded-3xl p-3 border border-white/20 shadow-2xl hover:shadow-glow-strong transition-all duration-500">
+                    <div class="relative overflow-hidden rounded-2xl" style="max-height: 590px;">
+                      <video 
+                        ref="heroVideo"
+                        class="w-full h-full object-cover rounded-2xl shadow-xl"
+                        autoplay
+                        muted
+                        loop
+                        playsinline
+                        preload="auto"
+                      >
+                        <source src="https://video-websecua.s3.us-east-2.amazonaws.com/Video-Wafidely-BotLLM.mp4" type="video/mp4">
+                        Tu navegador no soporta el elemento video.
+                      </video>
+                    </div>
+                    
+                    <!-- Video Badge -->
+                    <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-xl border-2 border-green-400">
+                      <span class="text-xs font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                        ▶️ Demo en Vivo
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <!-- Decorative Elements -->
+                  <div class="absolute -top-4 -right-4 w-20 h-20 bg-green-400 rounded-full opacity-20 blur-2xl"></div>
+                  <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-blue-400 rounded-full opacity-20 blur-2xl"></div>
+                </div>
+              </div>
+              
             </div>
-            
           </div>
         </div>
-      </div>
-      
-      <!-- Scroll Indicator -->
-      <div class="scroll-indicator">
-        <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-          <div class="w-1 h-3 bg-white rounded-full mt-2 animate-bounce"></div>
+        
+        <!-- Scroll Indicator -->
+        <div class="scroll-indicator">
+          <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+            <div class="w-1 h-3 bg-white rounded-full mt-2 animate-bounce"></div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
   
       <!-- Stats Section -->
       <section class="py-16 bg-white">
@@ -361,7 +365,7 @@
             </p>
             
             <!-- Pricing Toggle -->
-            <div class="flex items-center justify-center gap-4 mb-12">
+            <div class="flex items-center justify-center gap-4 mb-8">
               <span class="text-gray-600">Mensual</span>
               <div class="relative">
                 <input 
@@ -378,6 +382,35 @@
                 </label>
               </div>
               <span class="text-green-600 font-semibold">Anual (2 meses gratis)</span>
+            </div>
+  
+            <!-- Selector de Moneda -->
+            <div class="flex items-center justify-center gap-4 mb-12 p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl shadow-sm border border-green-200">
+              <span class="text-sm font-semibold text-gray-700">💰 Selecciona tu moneda:</span>
+              
+              <button
+                @click="selectedCurrency = 'USD'"
+                class="px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                :class="selectedCurrency === 'USD' 
+                  ? 'bg-green-500 text-white shadow-md' 
+                  : 'bg-white text-gray-600 hover:bg-gray-100 shadow-sm'"
+              >
+                💵 USD
+              </button>
+              
+              <button
+                @click="selectedCurrency = 'CRC'"
+                class="px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                :class="selectedCurrency === 'CRC' 
+                  ? 'bg-green-500 text-white shadow-md' 
+                  : 'bg-white text-gray-600 hover:bg-gray-100 shadow-sm'"
+              >
+                ₡ CRC
+              </button>
+              
+              <span v-if="selectedCurrency === 'CRC'" class="text-xs text-gray-600 bg-blue-100 px-3 py-1 rounded-full font-medium">
+                Tasa: $1 = ₡{{ exchangeRate }}
+              </span>
             </div>
           </div>
           
@@ -439,13 +472,13 @@
                       <!-- Precio original tachado (solo si hay descuento) -->
                       <div v-if="hasDiscount(plan)" class="mb-1">
                         <span class="text-xl text-gray-400 line-through">
-                          ${{ getOriginalPrice(plan) }}
+                          {{ getOriginalPriceFormatted(plan) }}
                         </span>
                       </div>
                       
                       <!-- Precio con descuento o precio normal -->
                       <div class="text-4xl font-bold mb-2" :class="getPriceColor(plan)">
-                        ${{ getDisplayPrice(plan) }}
+                        {{ getDisplayPriceFormatted(plan) }}
                       </div>
                       
                       <!-- Badge de descuento -->
@@ -453,7 +486,7 @@
                         {{ getDiscountPercentage(plan) }}% OFF
                       </div>
                       
-                      <p class="text-gray-600">{{ plan.id === 0 ? 'Por 5 días' : (isAnnual ? 'CLP / Por año' : 'CLP / Por mes') }}</p>
+                      <p class="text-gray-600">{{ plan.id === 0 ? 'Por 5 días' : (isAnnual ? 'Por año' : 'Por mes') }}</p>
                     </div>
                     
                     <!-- Features List -->
@@ -463,7 +496,6 @@
                         <span class="text-gray-700 text-sm">{{ feature }}</span>
                       </li>
                     </ul>
-  
   
   <!-- Social Integration Info -->
   <div class="text-center mb-6">
@@ -478,51 +510,42 @@
         
         <!-- WhatsApp Icon -->
         <div class="flex flex-col items-center">
-                            <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
-                              <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
-                              </svg>
-                            </div>
-                       
-                          </div>
+          <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
+            <svg class="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.488"/>
+            </svg>
+          </div>
+        </div>
   
-                          <!-- Facebook Icon -->
-                          <div class="flex flex-col items-center">
-                            <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
-                              <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                              </svg>
-                            </div>
-                        
-                          </div>
+        <!-- Facebook Icon -->
+        <div class="flex flex-col items-center">
+          <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
+            <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </div>
+        </div>
   
-                          <!-- Instagram Icon -->
-                          <div class="flex flex-col items-center">
-                            <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
-                              <svg class="w-6 h-6 text-pink-500" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                              </svg>
-                            </div>
-                          
-                          </div>
+        <!-- Instagram Icon -->
+        <div class="flex flex-col items-center">
+          <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
+            <svg class="w-6 h-6 text-pink-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+            </svg>
+          </div>
+        </div>
   
-                          <!-- Email Icon -->
-                          <div class="flex flex-col items-center">
-                            <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
-                              <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                              </svg>
-                            </div>
-                          
-                          </div>
-  
-                          
-        
+        <!-- Email Icon -->
+        <div class="flex flex-col items-center">
+          <div class="p-2 bg-white rounded-full shadow-sm border border-gray-200">
+            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  
-                    
                     
                     <!-- CTA Button -->
                     <button 
@@ -535,13 +558,6 @@
                       {{ plan.buttonText }}
                     </button>
                   </div>
-  
-  
-  
-  
-  
-  
-                  
   
         <!-- Social Icons Container -->
         <div class="flex justify-center items-center space-x-6">
@@ -610,7 +626,6 @@
           </a>
   
         </div>
-  
   
                 </div>
               </div>
@@ -751,10 +766,10 @@
     </div>
   
     <ui-footer></ui-footer> 
+  </div>
   </template>
   
   <script setup lang="ts">
-  // SEO y Meta tags optimizados para Nuxt 3
   useSeoMeta({
     title: 'Wafidely AI - Automatiza tu WhatsApp Business con Inteligencia Artificial',
     ogTitle: 'Wafidely AI - Automatiza tu WhatsApp Business con IA',
@@ -780,16 +795,26 @@
     ]
   })
   
+  const isLoading = ref(true)
+  
+  onMounted(async () => {
+    try {
+      await nextTick()
+      await new Promise(resolve => setTimeout(resolve, 800))
+    } finally {
+      isLoading.value = false
+    }
+  })
+  
   const demoVideo = ref(null)
   const hasStartedPlaying = ref(false)
   const isInitialSetup = ref(true)
   
   const setupVideo = () => {
     if (demoVideo.value && isInitialSetup.value) {
-      // Usar un timeout para asegurar que el video esté completamente cargado
       setTimeout(() => {
         if (demoVideo.value) {
-          demoVideo.value.currentTime = 3 // Establecer en 3 segundos (0:03)
+          demoVideo.value.currentTime = 3
           demoVideo.value.pause()
         }
       }, 100)
@@ -797,7 +822,6 @@
   }
   
   const onSeeked = () => {
-    // Asegurar que se pause después de buscar la posición inicial
     if (isInitialSetup.value && demoVideo.value) {
       demoVideo.value.pause()
       isInitialSetup.value = false
@@ -806,10 +830,45 @@
   
   const onPlay = () => {
     if (demoVideo.value && !hasStartedPlaying.value) {
-      // Primera vez que presionan play - reiniciar desde el segundo 0
       hasStartedPlaying.value = true
       demoVideo.value.currentTime = 0
     }
+  }
+  
+  // ============================================
+  // CONFIGURACIÓN DE CAMBIO DE MONEDA
+  // ============================================
+  const currencies = {
+    USD: {
+      symbol: '$',
+      name: 'Dólares',
+      code: 'USD'
+    },
+    CRC: {
+      symbol: '₡',
+      name: 'Colones',
+      code: 'CRC'
+    }
+  }
+  
+  const selectedCurrency = ref('CRC')
+  const exchangeRate = ref(520) // 1 USD = 520 CRC
+  
+  const currentCurrency = computed(() => currencies[selectedCurrency.value])
+  
+  const formatPrice = (price) => {
+    if (typeof price === 'string') return price
+    
+    const convertedPrice = selectedCurrency.value === 'CRC' 
+      ? Math.round(price * exchangeRate.value)
+      : price
+    
+    const formatted = new Intl.NumberFormat('es-CR', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(convertedPrice)
+    
+    return `${currentCurrency.value.symbol}${formatted}`
   }
   
   // Reactive variables
@@ -820,8 +879,8 @@
   const currentSlide = ref(0)
   
   // Carousel configuration
-  const slidesPerView = ref(3) // Desktop: 3 slides visible
-  const slidesPerViewMobile = ref(1) // Mobile: 1 slide visible
+  const slidesPerView = ref(3)
+  const slidesPerViewMobile = ref(1)
   
   // Computed properties for responsive design
   const isMobile = computed(() => {
@@ -874,40 +933,37 @@
   }
   
   const subscribe = (plan: PricingPlan) => {
-  // Si es el plan WAMedida (id: 5), dirigir a WhatsApp
-  if (plan.id === 5) {
-    const whatsappNumber = '593983314957'
-    const message = `Hola, estoy interesado en el plan ${plan.name}. Me gustaría obtener más información sobre la solución personalizada.`
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+    if (plan.id === 5) {
+      const whatsappNumber = '593983314957'
+      const formattedPrice = getDisplayPriceFormatted(plan)
+      const message = `Hola, estoy interesado en el plan ${plan.name}. Moneda preferida: ${currentCurrency.value.code} (${formattedPrice}). Me gustaría obtener más información sobre la solución personalizada.`
+      const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+      
+      window.open(whatsappUrl, '_blank')
+      return
+    }
     
-    window.open(whatsappUrl, '_blank')
-    return
+    const displayPrice = getDisplayPrice(plan)
+    const url = `https://ai.wafidely.com/register?plan=${plan.id}&name=${encodeURIComponent(plan.name)}&price=${displayPrice}&currency=${selectedCurrency.value}`
+    navigateTo(url, { 
+      external: true,
+      open: {
+        target: '_blank'
+      }
+    })
   }
   
-  // Para todos los otros planes, comportamiento normal
-  const url = `https://ai.wafidely.com/register?plan=${plan.id}&name=${encodeURIComponent(plan.name)}&price=${plan.descountPrice}`
-  navigateTo(url, { 
-    external: true,
-    open: {
-      target: '_blank'
-    }
-  })
-}
-  
-  // MÉTODOS PARA MANEJAR PRECIOS CON DESCUENTO
+  // MÉTODOS PARA MANEJAR PRECIOS CON DESCUENTO Y FORMATO
   const hasDiscount = (plan: PricingPlan) => {
     if (isAnnual.value) {
-      // Para planes anuales, siempre hay descuento (2 meses gratis)
       return true
     } else {
-      // Para planes mensuales, verificar si hay descountPrice
       return plan.descountPrice && plan.descountPrice < plan.monthlyPrice
     }
   }
   
   const getOriginalPrice = (plan: PricingPlan) => {
     if (isAnnual.value) {
-      // Precio original anual sería 12 meses del precio mensual
       return plan.monthlyPrice * 12
     } else {
       return plan.monthlyPrice
@@ -916,15 +972,23 @@
   
   const getDisplayPrice = (plan: PricingPlan) => {
     if (isAnnual.value) {
-      // Para anual, mostrar el precio anual (que incluye 2 meses gratis)
       return plan.annualPrice
     } else {
-      // Para mensual, mostrar descuentPrice si existe, sino monthlyPrice
       if (plan.descountPrice && plan.descountPrice < plan.monthlyPrice) {
         return plan.descountPrice
       }
       return plan.monthlyPrice
     }
+  }
+  
+  const getOriginalPriceFormatted = (plan: PricingPlan) => {
+    const price = getOriginalPrice(plan)
+    return formatPrice(price)
+  }
+  
+  const getDisplayPriceFormatted = (plan: PricingPlan) => {
+    const price = getDisplayPrice(plan)
+    return formatPrice(price)
   }
   
   const getPriceColor = (plan: PricingPlan) => {
@@ -939,7 +1003,6 @@
     const originalPrice = getOriginalPrice(plan)
     const displayPrice = getDisplayPrice(plan)
     
-    // Evitar división por cero para el plan gratuito
     if (originalPrice === 0) return 0
     
     return Math.round(((originalPrice - displayPrice) / originalPrice) * 100)
@@ -1148,9 +1211,9 @@
       id: 1,
       name: 'WAStarter',
       description: 'Ideal para emprendedores y pequeños negocios',
-      descountPrice: 37095,  // $37.095 CLP
-      monthlyPrice: 56118,   // $56.118 CLP
-      annualPrice: 370949,   // $370.949 CLP
+      descountPrice: 39,
+      monthlyPrice: 59,
+      annualPrice: 390,
       popular: false,
       buttonText: 'Empezar Ahora',
       features: [
@@ -1165,9 +1228,9 @@
       id: 2,
       name: 'WAPyme',
       description: 'Perfecto para pymes con usuarios moderados',
-      descountPrice: 65629,  // $65.629 CLP
-      monthlyPrice: 84652,   // $84.652 CLP
-      annualPrice: 656294,   // $656.294 CLP
+      descountPrice: 69,
+      monthlyPrice: 89,
+      annualPrice: 690,
       popular: false,
       buttonText: 'Empezar Ahora',
       features: [
@@ -1185,15 +1248,15 @@
       id: 3,
       name: 'WAMedium',
       description: 'Para empresas en crecimiento',
-      descountPrice: 94164,  // $94.164 CLP
-      monthlyPrice: 113187,  // $113.187 CLP
-      annualPrice: 941639,   // $941.639 CLP
+      descountPrice: 99,
+      monthlyPrice: 119,
+      annualPrice: 990,
       popular: true,
       buttonText: 'Empezar',
       features: [
         'Recordatorio automático hasta 300 citas',
         'API completa de WhatsApp',
-        'Múltiples páginas de aterrizaje',
+        'Página de aterrizaje generada de forma automatica con calendario',
         'Analytics avanzados',
         'Hasta 350 conversaciones/mes',
         '20,000-29,000 tokens de IA',
@@ -1205,14 +1268,15 @@
       id: 4,
       name: 'WALarge',
       description: 'Para empresas con alto volumen',
-      descountPrice: 189279,  // $189.279 CLP
-      monthlyPrice: 265371,   // $265.371 CLP
-      annualPrice: 1892789,   // $1.892.789 CLP
+      descountPrice: 199,
+      monthlyPrice: 279,
+      annualPrice: 1990,
       popular: false,
       buttonText: 'Empezar',
       features: [
         'Recordatorio automático hasta 1,000 citas',
         'API empresarial completa',
+        'Página de aterrizaje generada de forma automatica con calendario',
         'Múltiples integraciones',
         'Reportes personalizados',
         'Hasta 720 conversaciones/mes',
@@ -1221,27 +1285,26 @@
         'Gerente de cuenta dedicado'
       ]
     },
-
     {
-    id: 5,
-    name: 'WAMedida',
-    description: 'Para empresas con varios sistemas',
-    descountPrice: 'flexible',
-    monthlyPrice: 'flexible',
-    annualPrice: 'flexible',
-    popular: false,
-    buttonText: 'Empezar',
-    features: [
-      'Recordatorio automático hasta 5,000 citas',
-      'API empresarial con integración a sistemas existentes de empresa',
-      'Múltiples integraciones',
-      'Reportes personalizados',
-      'Sin limites conversaciones/mes',
-      'Sin limites tokens de IA',
-      'Desde 100.000 contactos en adelante en campañas',
-      'Gerente de cuenta dedicado'
-    ]
-  }
+      id: 5,
+      name: 'WAMedida',
+      description: 'Para empresas con varios sistemas',
+      descountPrice: 'flexible',
+      monthlyPrice: 'flexible',
+      annualPrice: 'flexible',
+      popular: false,
+      buttonText: 'Empezar',
+      features: [
+        'Recordatorio automático hasta 5,000 citas',
+        'API empresarial con integración a sistemas existentes de empresa',
+        'Múltiples integraciones',
+        'Reportes personalizados',
+        'Sin limites conversaciones/mes',
+        'Sin limites tokens de IA',
+        'Desde 100.000 contactos en adelante en campañas',
+        'Gerente de cuenta dedicado'
+      ]
+    }
   ])
   
   const faqs = ref<FAQ[]>([
@@ -1333,7 +1396,6 @@
     const handleResize = () => {
       clearTimeout(resizeTimer)
       resizeTimer = setTimeout(() => {
-        // Reset slide if it's out of bounds after resize
         if (currentSlide.value > maxSlide.value) {
           currentSlide.value = maxSlide.value
         }
@@ -1471,7 +1533,6 @@
     outline-offset: 2px;
   }
   
-  /* Carousel specific styles */
   .transition-transform {
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }

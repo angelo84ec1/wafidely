@@ -4,102 +4,143 @@
       <UiHeader />
   
       <!-- Hero Section -->
-      <section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
-        <!-- Background overlay for better contrast -->
-        <div class="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-green-900/80 to-blue-900/90"></div>
-        
-        <!-- Animated background elements -->
-        <div class="absolute inset-0 hero-animated-bg"></div>
-        
-        <!-- Floating geometric elements -->
-        <div class="absolute top-20 left-10 animate-float">
-          <div class="w-6 h-6 bg-white rounded-full opacity-60 shadow-lg"></div>
-        </div>
-        <div class="absolute top-40 right-20 animate-float" style="animation-delay: 0.5s;">
-          <div class="w-8 h-8 bg-green-400 rounded-full opacity-70 shadow-lg"></div>
-        </div>
-        <div class="absolute bottom-40 left-20 animate-float" style="animation-delay: 1s;">
-          <div class="w-4 h-4 bg-blue-400 rounded-full opacity-60 shadow-lg"></div>
-        </div>
-        <div class="absolute top-60 right-10 animate-float" style="animation-delay: 1.5s;">
-          <div class="w-5 h-5 bg-purple-400 rounded-full opacity-50 shadow-lg"></div>
-        </div>
-        
-        <!-- Main content -->
-        <div class="container mx-auto px-4 py-20 text-center relative z-10">
-          <div class="max-w-5xl mx-auto animate-slide-up">
-            <!-- Badge with better visibility -->
-            <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/30 shadow-lg">
-              <span class="text-white text-sm font-semibold drop-shadow-sm">🚀 Nuevo: IA Conversacional Avanzada</span>
+<section class="hero-bg min-h-screen flex items-center justify-center relative overflow-hidden">
+      <!-- Background overlay for better contrast -->
+      <div class="absolute inset-0 bg-gradient-to-br from-gray-900/90 via-green-900/80 to-blue-900/90"></div>
+      
+      <!-- Animated background elements -->
+      <div class="absolute inset-0 hero-animated-bg"></div>
+      
+      <!-- Floating geometric elements -->
+      <div class="absolute top-20 left-10 animate-float">
+        <div class="w-6 h-6 bg-white rounded-full opacity-60 shadow-lg"></div>
+      </div>
+      <div class="absolute top-40 right-20 animate-float" style="animation-delay: 0.5s;">
+        <div class="w-8 h-8 bg-green-400 rounded-full opacity-70 shadow-lg"></div>
+      </div>
+      <div class="absolute bottom-40 left-20 animate-float" style="animation-delay: 1s;">
+        <div class="w-4 h-4 bg-blue-400 rounded-full opacity-60 shadow-lg"></div>
+      </div>
+      <div class="absolute top-60 right-10 animate-float" style="animation-delay: 1.5s;">
+        <div class="w-5 h-5 bg-purple-400 rounded-full opacity-50 shadow-lg"></div>
+      </div>
+      
+      <!-- Main content -->
+      <div class="container mx-auto px-4 py-20 relative z-10">
+        <div class="max-w-7xl mx-auto">
+          <div class="grid lg:grid-cols-12 gap-8 items-center">
+            
+            <!-- Left Column - Text Content (8 columns = 66%) -->
+            <div class="lg:col-span-8 text-center lg:text-left animate-slide-up">
+              <!-- Badge with better visibility -->
+              <div class="inline-flex items-center bg-white/20 backdrop-blur-sm rounded-full px-6 py-3 mb-8 border border-white/30 shadow-lg">
+                <span class="text-white text-sm font-semibold drop-shadow-sm">🚀 Nuevo: IA Conversacional Avanzada</span>
+              </div>
+              
+              <!-- Main Headline with text shadow for better readability -->
+              <h1 class="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black text-white mb-6 leading-tight drop-shadow-lg">
+                Automatiza tu <span class="text-green-400 drop-shadow-md">WhatsApp Business</span><br>
+                con <span class="text-blue-400 drop-shadow-md">Inteligencia Artificial</span>
+              </h1>
+              
+              <!-- Subheadline with better contrast -->
+              <p class="text-lg md:text-xl lg:text-2xl text-gray-100 mb-8 leading-relaxed drop-shadow-md">
+                Aumenta tus ventas hasta <strong class="text-yellow-400 text-xl md:text-3xl">7x</strong> con bots inteligentes que responden como humanos, 
+                gestionan citas automáticamente y convierten visitantes en clientes 24/7.
+              </p>
+              
+              <!-- CTA Buttons with enhanced design -->
+              <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4 mb-8">
+                <button 
+                  @click="startFreeTrial"
+                  class="group bg-white text-gray-900 px-7 py-2 rounded-2xl font-bold text-lg shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto border-2 border-transparent hover:border-[#38f5b3]"
+                >
+                  <span class="group-hover:text-green-600 transition-colors">🎯 Comenzar Prueba Gratis</span>
+                </button>
+              </div>
+              
+              <!-- Social Proof with improved styling -->
+              <div class="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-6 text-white">
+                <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-5 py-2 border border-white/20">
+                  <div class="flex -space-x-2">
+                    <div class="w-8 h-8 bg-green-500 rounded-full border-2 border-white shadow-lg overflow-hidden flex items-center justify-center">
+                      <img 
+                        src="~/assets/images/logoamc1.png" 
+                        alt="Logo" 
+                        class="w-full h-full object-cover rounded-full"
+                      />
+                    </div>
+                    <div class="w-8 h-8 bg-blue-500 rounded-full border-2 border-white shadow-lg">
+                      <img 
+                        src="~/assets/images/logonazcar1.png" 
+                        alt="Logo" 
+                        class="w-full h-full object-cover rounded-full"
+                      />
+                    </div>
+                    <div class="w-8 h-8 bg-purple-500 rounded-full border-2 border-white shadow-lg">
+                      <img 
+                        src="~/assets/images/logoamazing1.png" 
+                        alt="Logo" 
+                        class="w-full h-full object-cover rounded-full"
+                      />
+                    </div>
+                  </div>
+                  <span class="text-sm font-semibold drop-shadow-sm">+200 empresas</span>
+                </div>
+                <div class="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-5 py-3 border border-white/20">
+                  <div class="flex text-yellow-400 text-sm">
+                    ⭐⭐⭐⭐⭐
+                  </div>
+                  <span class="text-sm font-semibold drop-shadow-sm">4.9/5</span>
+                </div>
+              </div>
             </div>
             
-            <!-- Main Headline with text shadow for better readability -->
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-tight drop-shadow-lg">
-              Automatiza tu <span class="text-green-400 drop-shadow-md">WhatsApp Business</span><br>
-              con <span class="text-blue-400 drop-shadow-md">Inteligencia Artificial</span>
-            </h1>
-            
-            <!-- Subheadline with better contrast -->
-            <p class="text-xl md:text-3xl text-gray-100 mb-10 max-w-4xl mx-auto leading-relaxed drop-shadow-md">
-              Aumenta tus ventas hasta <strong class="text-yellow-400 text-2xl md:text-4xl">7x</strong> con bots inteligentes que responden como humanos, 
-              gestionan citas automáticamente y convierten visitantes en clientes 24/7.
-            </p>
-            
-            <!-- CTA Buttons with enhanced design -->
-            <div class="flex -space-x-3 flex-col sm:flex-row items-center justify-center gap-6 my-11">
-              <button 
-                @click="startFreeTrial"
-                class="group bg-white text-gray-900 px-7 py-2 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 w-full sm:w-auto border-2 border-transparent hover:border-[#38f5b3]"
-              >
-                <span class="group-hover:text-green-600 transition-colors">🎯 Comenzar Prueba Gratis</span>
-              </button>
-         
-            </div>
-            
-            <!-- Social Proof with improved styling -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-10 text-white">
-              <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20">
-                <div class="flex -space-x-3">
-                  <div class="w-10 h-10 bg-[green-500] rounded-full border-3 border-white shadow-lg overflow-hidden flex items-center justify-center">
-                    <img 
-                      src="~/assets/images/logoamc1.png" 
-                      alt="Logo" 
-                      class="w-full h-full object-cover rounded-full"
-                    />
+            <!-- Right Column - Video (4 columns = 33%) -->
+            <div class="lg:col-span-4 animate-fade-in lg:animate-slide-right">
+              <div class="relative max-w-sm mx-auto lg:mx-0">
+                <!-- Video Container with Glow Effect -->
+                <div class="relative bg-white/10 backdrop-blur-sm rounded-3xl p-3 border border-white/20 shadow-2xl hover:shadow-glow-strong transition-all duration-500">
+                  <div class="relative overflow-hidden rounded-2xl" style="max-height: 590px;">
+                    <video 
+                      ref="heroVideo"
+                      class="w-full h-full object-cover rounded-2xl shadow-xl"
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      preload="auto"
+                    >
+                      <source src="https://video-websecua.s3.us-east-2.amazonaws.com/Video-Wafidely-BotLLM.mp4" type="video/mp4">
+                      Tu navegador no soporta el elemento video.
+                    </video>
                   </div>
-                  <div class="w-10 h-10 bg-blue-500 rounded-full border-3 border-white shadow-lg">
-                    <img 
-                      src="~/assets/images/logonazcar1.png" 
-                      alt="Logo" 
-                      class="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                  <div class="w-10 h-10 bg-purple-500 rounded-full border-3 border-white shadow-lg">
-                    <img 
-                      src="~/assets/images/logoamazing1.png" 
-                      alt="Logo" 
-                      class="w-full h-full object-cover rounded-full"
-                    />
+                  
+                  <!-- Video Badge -->
+                  <div class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 bg-white px-4 py-2 rounded-full shadow-xl border-2 border-green-400">
+                    <span class="text-xs font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
+                      ▶️ Demo en Vivo
+                    </span>
                   </div>
                 </div>
-                <span class="text-lg font-semibold drop-shadow-sm">+200 empresas confían en nosotros</span>
-              </div>
-              <div class="flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 border border-white/20">
-                <div class="flex text-yellow-400 text-xl">
-                  ⭐⭐⭐⭐⭐
-                </div>
-                <span class="text-lg font-semibold drop-shadow-sm">4.9/5 en valoraciones</span>
+                
+                <!-- Decorative Elements -->
+                <div class="absolute -top-4 -right-4 w-20 h-20 bg-green-400 rounded-full opacity-20 blur-2xl"></div>
+                <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-blue-400 rounded-full opacity-20 blur-2xl"></div>
               </div>
             </div>
+            
           </div>
         </div>
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-          <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
-            <div class="w-1 h-3 bg-white rounded-full mt-2 animate-bounce"></div>
-          </div>
+      </div>
+      
+      <!-- Scroll Indicator -->
+      <div class="scroll-indicator">
+        <div class="w-6 h-10 border-2 border-white rounded-full flex justify-center">
+          <div class="w-1 h-3 bg-white rounded-full mt-2 animate-bounce"></div>
         </div>
-      </section>
+      </div>
+    </section>
   
       <!-- Stats Section -->
       <section class="py-16 bg-white">
@@ -428,7 +469,7 @@
   <div class="text-center mb-6">
     <!-- Header -->
     <div class="bg-gray-90 text-gray-500 px-4 py-2 rounded-t-lg text-sm font-semibold">
-      Incluye respuestas automáticas de AI para ventas, soporte, atención al ciente en:
+      Incluye respuestas automáticas de AI para ventas, soporte, atención al cliente en:
     </div>
     
     <!-- Social Icons Container -->
