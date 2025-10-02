@@ -150,6 +150,7 @@ export default defineNuxtConfig({
     "~/assets/css/reset.css",
     "~/assets/css/global.css", 
     "~/assets/css/main.css",
+    "~/assets/css/calendar-override.css",
     "~/assets/scss/_swiper.scss"
   ],
 
