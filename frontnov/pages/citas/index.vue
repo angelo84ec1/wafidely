@@ -21,6 +21,31 @@
           <!-- Actions -->
           <div class="flex items-center space-x-3">
             <button 
+              v-if="!isGoogleAuthenticated"
+              @click="syncWithGoogle"
+              class="inline-flex items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+              Sincronizar Google
+            </button>
+            
+            <button 
+              v-else
+              @click="refreshGoogleCalendar"
+              class="inline-flex items-center px-4 py-2 border border-green-300 text-sm font-medium rounded-lg text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none transition-colors"
+            >
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              Actualizar Google
+            </button>
+
+            <button 
               @click.prevent="printPage()"
               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
             >
@@ -221,11 +246,42 @@
                   </svg>
                 </a>
                 
-                <button class="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-50 transition-colors">
-                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
-                  </svg>
-                </button>
+                <!-- Menu con opción de eliminar -->
+                <Menu as="div" class="relative">
+                  <MenuButton class="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-50 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                    </svg>
+                  </MenuButton>
+
+                  <Transition
+                    enter-active-class="transition ease-out duration-100"
+                    enter-from-class="transform opacity-0 scale-95"
+                    enter-to-class="transform opacity-100 scale-100"
+                    leave-active-class="transition ease-in duration-75"
+                    leave-from-class="transform opacity-100 scale-100"
+                    leave-to-class="transform opacity-0 scale-95"
+                  >
+                    <MenuItems class="absolute right-0 mt-2 w-48 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
+                      <div class="py-1">
+                        <MenuItem v-slot="{ active }">
+                          <button
+                            @click="deleteAppointment(appointment._id)"
+                            :class="[
+                              active ? 'bg-red-50 text-red-700' : 'text-red-600',
+                              'group flex items-center w-full px-4 py-2 text-sm'
+                            ]"
+                          >
+                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                            </svg>
+                            Eliminar cita
+                          </button>
+                        </MenuItem>
+                      </div>
+                    </MenuItems>
+                  </Transition>
+                </Menu>
               </div>
             </div>
             
@@ -301,33 +357,42 @@
 <script setup>
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
-import { Dialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { useAuthStore } from "~~/store/auth";
-import { computed, ref, onMounted } from 'vue'
+import { Dialog, DialogPanel, TransitionChild, TransitionRoot, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { useAuthStore } from "~~/store/auth"
+import { computed, ref, onMounted, nextTick } from 'vue'
 
 definePageMeta({
   name: "Citas",
   layout: "private",
-});
+})
 
 const {
   public: { baseURL },
-} = useRuntimeConfig();
+} = useRuntimeConfig()
 
 // Reactive data
 const calenderData = ref([])
+const googleEvents = ref([])
 const postCalenderModal = ref(false)
 const currentView = ref('month')
-const authStore = useAuthStore();
+const isGoogleAuthenticated = ref(false)
+const authStore = useAuthStore()
 
 // Computed properties
 const userData = computed(() => {
-  return authStore.user;
-});
+  return authStore.user
+})
 
 const getCalenderData = computed(() => {
-  return calenderData.value
-    .filter(event => event?.date && event?.hour && event?.name && event?.whatsapp && event?.establecimientos?.length && event?.establecimientos[0]?.id == userData.value?.establecimiento)
+  const localEvents = calenderData.value
+    .filter(event => 
+      event?.date && 
+      event?.hour && 
+      event?.name && 
+      event?.whatsapp && 
+      event?.establecimientos?.length && 
+      event?.establecimientos[0]?.id == userData.value?.establecimiento
+    )
     .map(event => ({
       id: event._id,
       title: `${event?.name} - ${event?.hour}`,
@@ -340,19 +405,71 @@ const getCalenderData = computed(() => {
           <small>WhatsApp: ${event?.whatsapp}</small>
         </div>
       `,
-      class: 'custom-event'
-    }));
-});
+      class: 'custom-event',
+      source: 'local'
+    }))
+
+  // Formatear eventos de Google Calendar
+  const googleEventsFormatted = googleEvents.value.map(event => {
+    // Convertir a Date y luego al formato que espera vue-cal
+    const startDate = new Date(event.start)
+    const endDate = new Date(event.end)
+    
+    // Formato: "YYYY-MM-DD HH:mm"
+    const formatDate = (date) => {
+      const year = date.getFullYear()
+      const month = String(date.getMonth() + 1).padStart(2, '0')
+      const day = String(date.getDate()).padStart(2, '0')
+      const hours = String(date.getHours()).padStart(2, '0')
+      const minutes = String(date.getMinutes()).padStart(2, '0')
+      return `${year}-${month}-${day} ${hours}:${minutes}`
+    }
+    
+    return {
+      id: `google-${event.id}`,
+      title: event.title,
+      start: formatDate(startDate), // ✅ Formato consistente
+      end: formatDate(endDate),     // ✅ Formato consistente
+      content: `
+        <div class="event-content">
+          <strong>${event.title}</strong><br>
+          <small>Google Calendar</small>
+        </div>
+      `,
+      class: 'google-event',
+      source: 'google'
+    }
+  })
+
+  console.log('Total eventos locales:', localEvents.length)
+  console.log('Total eventos Google:', googleEventsFormatted.length)
+  console.log('Primer evento Google formateado:', googleEventsFormatted[0])
+  console.log('Total combinado:', [...localEvents, ...googleEventsFormatted].length)
+
+  return [...localEvents, ...googleEventsFormatted]
+})
 
 const getDisabledDates = computed(() => {
-  return calenderData.value
-    .filter(event => event?.date && event?.hour && event?.name && event?.whatsapp && event?.establecimientos?.length && event?.establecimientos[0]?.id == userData.value?.establecimiento)
+  // Combinar fechas de eventos locales y de Google Calendar
+  const localDates = calenderData.value
+    .filter(event => 
+      event?.date && 
+      event?.hour && 
+      event?.name && 
+      event?.whatsapp && 
+      event?.establecimientos?.length && 
+      event?.establecimientos[0]?.id == userData.value?.establecimiento
+    )
     .map(event => {
-      const [year, month, day] = event.date.split('-');
-      const [hours, minutes] = event.hour.split(':');
-      return new Date(year, month - 1, day, hours, minutes);
-    });
-});
+      const [year, month, day] = event.date.split('-')
+      const [hours, minutes] = event.hour.split(':')
+      return new Date(year, month - 1, day, hours, minutes)
+    })
+
+  const googleDates = googleEvents.value.map(event => new Date(event.start))
+
+  return [...localDates, ...googleDates]
+})
 
 const calendarHeight = computed(() => {
   switch (currentView.value) {
@@ -367,61 +484,77 @@ const calendarHeight = computed(() => {
 
 // Stats computations
 const todayAppointments = computed(() => {
-  const today = new Date().toISOString().split('T')[0];
-  return getCalenderData.value.filter(event => event.start.includes(today)).length;
-});
+  const today = new Date().toISOString().split('T')[0]
+  return getCalenderData.value.filter(event => event.start.includes(today)).length
+})
 
 const weekAppointments = computed(() => {
-  const now = new Date();
-  const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
-  const weekEnd = new Date(now.setDate(now.getDate() - now.getDay() + 6));
+  const now = new Date()
+  const weekStart = new Date(now.setDate(now.getDate() - now.getDay()))
+  const weekEnd = new Date(now.setDate(now.getDate() - now.getDay() + 6))
   
   return getCalenderData.value.filter(event => {
-    const eventDate = new Date(event.start);
-    return eventDate >= weekStart && eventDate <= weekEnd;
-  }).length;
-});
+    const eventDate = new Date(event.start)
+    return eventDate >= weekStart && eventDate <= weekEnd
+  }).length
+})
 
 const monthAppointments = computed(() => {
-  const now = new Date();
-  const currentMonth = now.getMonth();
-  const currentYear = now.getFullYear();
+  const now = new Date()
+  const currentMonth = now.getMonth()
+  const currentYear = now.getFullYear()
   
   return getCalenderData.value.filter(event => {
-    const eventDate = new Date(event.start);
-    return eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear;
-  }).length;
-});
+    const eventDate = new Date(event.start)
+    return eventDate.getMonth() === currentMonth && eventDate.getFullYear() === currentYear
+  }).length
+})
 
 const nextAppointmentTime = computed(() => {
-  const now = new Date();
+  const now = new Date()
   const upcoming = getCalenderData.value
-    .filter(event => new Date(event.start) > now)
-    .sort((a, b) => new Date(a.start) - new Date(b.start))[0];
+    .filter(event => {
+      const eventDate = new Date(event.start)
+      return !isNaN(eventDate.getTime()) && eventDate > now
+    })
+    .sort((a, b) => new Date(a.start) - new Date(b.start))[0]
   
   if (upcoming) {
-    return formatDateTime(upcoming.start.split(' ')[0], upcoming.start.split(' ')[1]);
+    const eventDate = new Date(upcoming.start)
+    
+    if (isNaN(eventDate.getTime())) {
+      return 'Sin citas'
+    }
+    
+    const options = { 
+      weekday: 'short', 
+      month: 'short', 
+      day: 'numeric', 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    }
+    return eventDate.toLocaleDateString('es-ES', options)
   }
-  return 'Sin citas';
-});
+  return 'Sin citas'
+})
 
 const upcomingAppointments = computed(() => {
-  const now = new Date();
+  const now = new Date()
   return calenderData.value
     .filter(event => {
-      if (!event?.date || !event?.hour || !event?.establecimientos?.length) return false;
-      if (event?.establecimientos[0]?.id !== userData.value?.establecimiento) return false;
+      if (!event?.date || !event?.hour || !event?.establecimientos?.length) return false
+      if (event?.establecimientos[0]?.id !== userData.value?.establecimiento) return false
       
-      const eventDateTime = new Date(`${event.date} ${event.hour}`);
-      return eventDateTime > now;
+      const eventDateTime = new Date(`${event.date} ${event.hour}`)
+      return eventDateTime > now
     })
     .sort((a, b) => {
-      const dateA = new Date(`${a.date} ${a.hour}`);
-      const dateB = new Date(`${b.date} ${b.hour}`);
-      return dateA - dateB;
+      const dateA = new Date(`${a.date} ${a.hour}`)
+      const dateB = new Date(`${b.date} ${b.hour}`)
+      return dateA - dateB
     })
-    .slice(0, 5);
-});
+    .slice(0, 5)
+})
 
 // Methods
 const setPostCalenderModal = () => {
@@ -429,24 +562,23 @@ const setPostCalenderModal = () => {
 }
 
 const onEventClick = (event, e) => {
-  // Handle event click
-  console.log('Event clicked:', event);
+  console.log('Event clicked:', event)
 }
 
 const formatDateTime = (date, time) => {
-  const eventDate = new Date(`${date} ${time}`);
+  const eventDate = new Date(`${date} ${time}`)
   const options = { 
     weekday: 'short', 
     month: 'short', 
     day: 'numeric', 
     hour: '2-digit', 
     minute: '2-digit' 
-  };
-  return eventDate.toLocaleDateString('es-ES', options);
+  }
+  return eventDate.toLocaleDateString('es-ES', options)
 }
 
 const printPage = () => {
-  if (typeof window === 'undefined') return;
+  if (typeof window === 'undefined') return
   window.print()
 }
 
@@ -462,21 +594,101 @@ const getData = async () => {
       headers: {
         'Content-Type': 'application/json',
       },
-    });
+    })
 
     if (!response.ok) {
-      throw new Error('Failed to fetch data: ' + response.statusText);
+      throw new Error('Failed to fetch data: ' + response.statusText)
     }
 
-    calenderData.value = await response.json();
+    calenderData.value = await response.json()
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error)
   }
-};
+}
 
-// Lifecycle
+// Google Calendar Integration
+const syncWithGoogle = () => {
+  // Redirigir a la autenticación de Google
+  const config = useRuntimeConfig()
+  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${config.public.googleClientId}&redirect_uri=${config.public.googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/calendar.readonly&access_type=offline`
+  
+  window.location.href = authUrl
+}
+
+const refreshGoogleCalendar = async () => {
+  if (!process.client) return
+  
+  try {
+    console.log('Obteniendo eventos de Google Calendar...')
+    console.log('Primer evento de Google:', googleEvents.value[0])
+console.log('Formato de start:', googleEvents.value[0]?.start)
+console.log('Formato de end:', googleEvents.value[0]?.end)
+    
+    const response = await $fetch('/api/google/calendar', {
+      method: 'GET'
+    })
+
+    console.log('Respuesta recibida:', response)
+
+    if (response.error) {
+      throw new Error(response.error)
+    }
+
+    googleEvents.value = response.events || []
+    isGoogleAuthenticated.value = true
+    
+    console.log('Eventos de Google:', googleEvents.value.length)
+  } catch (error) {
+    console.error('Error al obtener eventos:', error)
+    isGoogleAuthenticated.value = false
+  }
+}
+
+// Agregar DESPUÉS de deleteAppointment y ANTES de onMounted
+
+// Verificar si ya está autenticado con Google
+const checkGoogleAuth = async () => {
+  if (!process.client) return
+  
+  try {
+    const response = await $fetch('/api/google/calendar', {
+      method: 'GET'
+    })
+    
+    console.log('Check auth response:', response)
+    
+    if (response.authenticated && !response.error) {
+      isGoogleAuthenticated.value = true
+      googleEvents.value = response.events || []
+      console.log('Ya autenticado, eventos cargados:', googleEvents.value.length)
+    }
+  } catch (error) {
+    console.log('No autenticado o error:', error)
+    isGoogleAuthenticated.value = false
+  }
+}
+
+// Actualizar onMounted completamente
 onMounted(async () => {
+  console.log('Componente montado')
+  
   await getData()
+  await checkGoogleAuth() // ✅ Verificar autenticación existente
+  
+  if (process.client) {
+    const urlParams = new URLSearchParams(window.location.search)
+    const googleAuth = urlParams.get('google_auth')
+    
+    if (googleAuth === 'success') {
+      console.log('Autenticación exitosa, obteniendo eventos...')
+      isGoogleAuthenticated.value = true
+      
+      setTimeout(async () => {
+        await refreshGoogleCalendar()
+        window.history.replaceState({}, '', '/citas')
+      }, 500)
+    }
+  }
 })
 </script>
 
@@ -485,61 +697,6 @@ onMounted(async () => {
 .calendar-container {
   border-radius: 0.75rem;
   overflow: hidden;
-}
-
-/* Force high z-index for any modals created within calendar appointment component */
-.calendar-appointment-wrapper :deep(.modal),
-.calendar-appointment-wrapper :deep(.dialog),
-.calendar-appointment-wrapper :deep([role="dialog"]),
-.calendar-appointment-wrapper :deep(.v-dialog),
-.calendar-appointment-wrapper :deep(.el-dialog),
-.calendar-appointment-wrapper :deep(.ant-modal),
-.calendar-appointment-wrapper :deep(.modal-container),
-.calendar-appointment-wrapper :deep(.overlay),
-.calendar-appointment-wrapper :deep(.backdrop) {
-  z-index: 999999 !important;
-}
-
-/* Force positioning for nested modals */
-.calendar-appointment-wrapper :deep(.modal-overlay),
-.calendar-appointment-wrapper :deep(.dialog-overlay),
-.calendar-appointment-wrapper :deep(.v-overlay),
-.calendar-appointment-wrapper :deep(.fixed) {
-  z-index: 999998 !important;
-  position: fixed !important;
-}
-
-/* Ensure form containers are on top */
-.calendar-appointment-wrapper :deep(.form-container),
-.calendar-appointment-wrapper :deep(.patient-form),
-.calendar-appointment-wrapper :deep(.appointment-form),
-.calendar-appointment-wrapper :deep(.info-form) {
-  z-index: 999999 !important;
-  position: relative !important;
-}
-
-/* HeadlessUI Dialog overrides */
-.calendar-appointment-wrapper :deep([data-headlessui-state]),
-.calendar-appointment-wrapper :deep(.headlessui-dialog-overlay),
-.calendar-appointment-wrapper :deep(.headlessui-dialog-panel) {
-  z-index: 999999 !important;
-}
-
-/* Any element with high z-index classes */
-.calendar-appointment-wrapper :deep(.z-50),
-.calendar-appointment-wrapper :deep(.z-40),
-.calendar-appointment-wrapper :deep(.z-30) {
-  z-index: 999999 !important;
-}
-
-/* Teleport and portal containers */
-body > .modal,
-body > .dialog,
-body > [role="dialog"],
-body > .v-dialog,
-body > .portal-target,
-body > .teleport-target {
-  z-index: 999999 !important;
 }
 
 :deep(.vuecal__menu) {
@@ -576,8 +733,13 @@ body > .teleport-target {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+:deep(.vuecal__event.google-event) {
+  background: linear-gradient(135deg, #4285f4 0%, #34a853 100%);
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 :deep(.vuecal__event:hover) {
-  background-color: #2563eb;
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
   transition: all 0.2s ease;
@@ -628,14 +790,5 @@ body > .teleport-target {
     font-size: 0.75rem;
     padding: 0.125rem 0.25rem;
   }
-}
-
-/* Animation for modal */
-.modal-enter-active, .modal-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-enter-from, .modal-leave-to {
-  opacity: 0;
 }
 </style>

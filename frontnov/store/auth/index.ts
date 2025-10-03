@@ -2,18 +2,55 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import type { Dictionary } from "~/common/types/generic.types";
 import type { User } from "~~/common/interfaces/user.interface";
+
 export const useAuthStore = defineStore({
   id: "Auth",
   state: () => ({
-    user: {} as User | null,
+    user: null as User | null,  // ✅ Inicializar como null
     token: null as string | null,
   }),
   getters: {
-    isAuthenticated: (state) => Boolean(state.token),
+    isAuthenticated: (state) => Boolean(state.token && state.user),
     getUser: (state) => state.user,
     getToken: (state) => state.token,
   },
   actions: {
+    // Acción para restaurar el estado desde localStorage
+    restoreAuth() {
+      if (process.client) {
+        const savedUser = localStorage.getItem('auth_user');
+        const savedToken = localStorage.getItem('auth_token');
+        
+        if (savedUser && savedToken) {
+          try {
+            this.user = JSON.parse(savedUser);
+            this.token = savedToken;
+          } catch (error) {
+            console.error('Error restaurando autenticación:', error);
+            this.clearAuth();
+          }
+        }
+      }
+    },
+
+    // Guardar en localStorage
+    saveAuth() {
+      if (process.client && this.user && this.token) {
+        localStorage.setItem('auth_user', JSON.stringify(this.user));
+        localStorage.setItem('auth_token', this.token);
+      }
+    },
+
+    // Limpiar autenticación
+    clearAuth() {
+      this.user = null;
+      this.token = null;
+      if (process.client) {
+        localStorage.removeItem('auth_user');
+        localStorage.removeItem('auth_token');
+      }
+    },
+
     async login(payload: {
       identifier: string;
       password: string;
@@ -22,8 +59,8 @@ export const useAuthStore = defineStore({
       const {
         public: { baseURL },
       } = useRuntimeConfig();
+      
       try {
-        // ${baseURL}/auth/local
         const response = await fetch(`${baseURL}/auth/local`, {
           method: "POST",
           credentials: "include",
@@ -32,33 +69,44 @@ export const useAuthStore = defineStore({
           },
           body: JSON.stringify(payload),
         });
+        
         const data = await response.json();
+        
         this.user = data.user;
         this.token = data.jwt;
+        this.saveAuth(); // ✅ Guardar después de login
+        
         return { response, data };
       } catch (error) {
         throw new Error(error);
       }
     },
+
     async logout() {
       const {
         public: { baseURL },
       } = useRuntimeConfig();
-      this.user = null;
-      this.token = null;
-      localStorage.clear();
-      const response = await fetch(`${baseURL}/logout`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      return response;
+      
+      this.clearAuth(); // ✅ Limpiar todo
+      
+      try {
+        const response = await fetch(`${baseURL}/logout`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        return response;
+      } catch (error) {
+        console.error('Error en logout:', error);
+      }
     },
+
     async forgotPassword(payload: { email: string }) {
       const {
         public: { baseURL },
       } = useRuntimeConfig();
+      
       const response = await fetch(`${baseURL}/auth/forgot-password`, {
         method: "POST",
         headers: {
@@ -66,8 +114,10 @@ export const useAuthStore = defineStore({
         },
         body: JSON.stringify(payload),
       });
+      
       return response;
     },
+
     async resetPassword(payload: {
       password: string;
       passwordConfirmation: string;
@@ -76,6 +126,7 @@ export const useAuthStore = defineStore({
       const {
         public: { baseURL },
       } = useRuntimeConfig();
+      
       const response = await fetch(`${baseURL}/auth/reset-password`, {
         method: "POST",
         headers: {
@@ -83,8 +134,10 @@ export const useAuthStore = defineStore({
         },
         body: JSON.stringify(payload),
       });
+      
       return response;
     },
+
     async register(payload: {
       documentType: string;
       identifier: string;
@@ -96,6 +149,7 @@ export const useAuthStore = defineStore({
       const {
         public: { baseURL },
       } = useRuntimeConfig();
+      
       const response = await fetch(`${baseURL}/auth/local/register`, {
         method: "POST",
         headers: {
@@ -103,9 +157,11 @@ export const useAuthStore = defineStore({
         },
         body: JSON.stringify(payload),
       });
+      
       const data = await response.json();
       return { response, data };
     },
+
     async generateToken() {
       const options = {
         method: 'POST',
@@ -132,11 +188,12 @@ export const useAuthStore = defineStore({
       try {
         const response = await axios.request(options);
         this.token = response.data.payload.token;
-        return { response, data: response.data};
+        return { response, data: response.data };
       } catch (error) {
         console.error(error);
       }
     },
+
     async sendInfo(info: Dictionary<string>) {
       const options = {
         method: 'POST',
@@ -161,10 +218,10 @@ export const useAuthStore = defineStore({
       
       try {
         const response = await axios.request(options);
-        return response
+        return response;
       } catch (error) {
         console.error(error);
       }
-  },
-}
+    },
+  }
 });

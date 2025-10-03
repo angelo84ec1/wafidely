@@ -136,12 +136,17 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+
+    googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
     public: {
       baseURL: process.env.STRAPI_URL || "http://localhost:1337",
       MAILTO: process.env.MAILTO || "websecuador.net@gmail.com",
       pagomedioToken: process.env.PAGOMEDIO_TOKEN,
       gtmContainerId: process.env.NUXT_PUBLIC_GTM_CONTAINER_ID,
-      GOOGLE_MAPS_API: 'AIzaSyAMQ-DzRcCKRrOWJWjPkPSTUHqwyQkyVH8'
+      
+      GOOGLE_MAPS_API: 'AIzaSyAMQ-DzRcCKRrOWJWjPkPSTUHqwyQkyVH8',
+      googleClientId: process.env.GOOGLE_CLIENT_ID,
+      googleRedirectUri: process.env.GOOGLE_REDIRECT_URI
     },
   },
 

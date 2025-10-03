@@ -21,6 +21,7 @@ type NuxtAppInjections =
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/dev-server-logs.js")> &
   InjectionType<typeof import("../../node_modules/nuxt/dist/app/plugins/check-if-layout-used.js")> &
   InjectionType<typeof import("../../plugins/toastification.client")> &
+  InjectionType<typeof import("../../plugins/auth-restore.client")> &
   InjectionType<typeof import("../../plugins/gtm.client")> &
   InjectionType<typeof import("../../plugins/pinia-persist.client")>
 

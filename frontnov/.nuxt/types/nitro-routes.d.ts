@@ -3,6 +3,15 @@ import type { Serialize, Simplify } from "nitropack/types";
 declare module "nitropack/types" {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/auth/google/callback': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/google/callback.get').default>>>>
+    }
+    '/api/google-events-public': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/google-events-public.get').default>>>>
+    }
+    '/api/google/calendar': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/google/calendar.get').default>>>>
+    }
     '/api/login': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/login.get').default>>>>
     }

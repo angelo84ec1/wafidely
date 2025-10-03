@@ -43,7 +43,7 @@
             <div class="drawer__divider"></div>
           </li>
 
-          <li v-if="isEstablecimiento || authStore.user?.role?.name === 'establecimiento'">
+          <li v-if="isEstablecimiento || authStore.user?.role.name === 'establecimiento'">
             <NuxtLink to="/pagos" class="drawer__link" @click="handleLinkClick">
               <div class="drawer__icon">
                 <svg v-if="route.path.includes('/pagos')" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -58,7 +58,7 @@
             <div class="drawer__divider"></div>
           </li>
 
-          <li v-if="isAdmin || authStore.user?.role?.name === 'admin'">
+          <li v-if="isAdmin || authStore.user?.role.name === 'admin'">
             <NuxtLink to="/pagos" class="drawer__link" @click="handleLinkClick">
               <div class="drawer__icon">
                 <svg v-if="route.path.includes('/pagos')" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,7 @@
             <div class="drawer__divider"></div>
           </li>
 
-          <li v-if="isAdmin || authStore.user?.role?.name === 'establecimiento'">
+          <li v-if="isAdmin || authStore.user?.role.name === 'establecimiento'">
             <NuxtLink to="/citas" class="drawer__link" @click="handleLinkClick">
               <div class="drawer__icon">
                 <svg v-if="route.path.includes('/citas')" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -88,7 +88,7 @@
             <div class="drawer__divider"></div>
           </li>
 
-          <li v-if="isAdmin || authStore.user?.role?.name === 'establecimiento'">
+          <li v-if="isAdmin || authStore.user?.role.name === 'establecimiento'">
             <NuxtLink 
               to="/socios" 
               :class="{'drawer__link': true, 'active-link': isActive}" 
@@ -107,7 +107,7 @@
             <div class="drawer__divider"></div>
           </li>
 
-          <li v-if="isEstablecimiento || authStore.user?.role?.name === 'establecimiento'">
+          <li v-if="isEstablecimiento || authStore.user?.role.name === 'establecimiento'">
             <NuxtLink to="/establecimientos" class="drawer__link" @click="handleLinkClick">
               <div class="drawer__icon">
                 <svg v-if="route.path.includes('/establecimientos')" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +124,7 @@
             <div class="drawer__divider"></div>
           </li>
 
-          <li v-if="isEstablecimiento || authStore.user?.role?.name === 'establecimiento'">
+          <li v-if="isEstablecimiento || authStore.user?.role.name === 'establecimiento'">
             <NuxtLink to="/aiembudo" class="drawer__link" @click="handleLinkClick">
               <div class="drawer__icon">
                 <svg v-if="route.path.includes('/aiembudo')" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

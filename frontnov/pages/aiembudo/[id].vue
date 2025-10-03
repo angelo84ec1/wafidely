@@ -382,22 +382,19 @@
 
 <script setup lang="ts">
 import { GoogleMap, Marker, InfoWindow } from 'vue3-google-map';
-
-import { ref } from "vue";
+import { ref, computed, onMounted } from "vue";
 import BaseInput from "~/components/common/inputs/base-input.vue";
-
 import BaseFileInput from "~/components/common/inputs/file-input.vue";
 import useAdmin from '~/composables/useAdmin';
 import { useAuthStore } from "~/store/auth";
 import type { User, EstableCimientos } from "~/common/interfaces/user.interface";
-
-
 import { useToast } from "vue-toastification";
 
 
 
 const calenderLoading = ref(true)
 const calenderData = ref([])
+const googleEventsPublic = ref([]) // ✅ Agregar para eventos de Google
 const audioUrldetalledescripcion1 = ref(null);
 const audioUrldetalledescripcion2 = ref(null);
 const audioUrldetalledescripcion3 = ref(null);
@@ -407,14 +404,35 @@ const audioUrldetalledescripcion5 = ref(null);
 
 
 const getCalenderData = computed(() => {
-  console.log('calenderData.value', calenderData.value)
-  return calenderData.value
-    .filter(event => event?.date && event?.hour && event?.name && event?.whatsapp && event?.establecimientos?.length && event?.establecimientos[0]?.id == route.params.id)
+  // Obtener fechas de citas locales
+  const localDates = calenderData.value
+    .filter(event => 
+      event?.date && 
+      event?.hour && 
+      event?.name && 
+      event?.whatsapp && 
+      event?.establecimientos?.length && 
+      event?.establecimientos[0]?.id == route.params.id
+    )
     .map(event => {
       const [year, month, day] = event.date.split('-');
       const [hours, minutes] = event.hour.split(':');
       return new Date(year, month - 1, day, hours, minutes);
     });
+
+  // ✅ Obtener fechas de eventos de Google Calendar
+  const googleDates = googleEventsPublic.value.map(event => {
+    return new Date(event.start);
+  });
+
+  // ✅ Combinar ambas listas
+  const allDisabledDates = [...localDates, ...googleDates];
+  
+  console.log('Fechas locales bloqueadas:', localDates.length);
+  console.log('Fechas Google bloqueadas:', googleDates.length);
+  console.log('Total fechas bloqueadas:', allDisabledDates.length);
+
+  return allDisabledDates;
 });
 
 const callLambda = (text) => {
@@ -552,7 +570,9 @@ definePageMeta({
 
   const getDataAppoinments = async () => {
   try {
-calenderLoading.value=true;
+    calenderLoading.value = true;
+    
+    // Obtener citas locales
     const response = await fetch(`${BASE_URL}/citas`, {
       method: 'GET',
       headers: {
@@ -565,11 +585,39 @@ calenderLoading.value=true;
     }
 
     calenderData.value = await response.json();
-    console.log('Response data:', calenderData.value);
+    console.log('Citas locales obtenidas:', calenderData.value.length);
+
+    // ✅ Obtener eventos de Google Calendar para este establecimiento
+    await getGoogleEvents();
+
   } catch (error) {
     console.error('Error fetching data:', error);
   } finally {
-    calenderLoading.value = false
+    calenderLoading.value = false;
+  }
+};
+
+// ✅ Nueva función para obtener eventos de Google
+const getGoogleEvents = async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/google-events/${route.params.id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      googleEventsPublic.value = data.events || [];
+      console.log('Eventos de Google obtenidos:', googleEventsPublic.value.length);
+    } else {
+      console.log('No se pudieron obtener eventos de Google');
+      googleEventsPublic.value = [];
+    }
+  } catch (error) {
+    console.error('Error obteniendo eventos de Google:', error);
+    googleEventsPublic.value = [];
   }
 };
 

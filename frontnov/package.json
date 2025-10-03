@@ -12,7 +12,7 @@
   "dependencies": {
     "@egoist/tailwindcss-icons": "^1.1.0",
     "@fancyapps/ui": "^5.0.36",
-    "@headlessui/vue": "^1.7.22",
+    "@headlessui/vue": "^1.7.23",
     "@midudev/tailwind-animations": "^0.0.6",
     "@nuxtjs/strapi": "^1.6.3",
     "@paypal/sdk-client": "^4.0.175",
@@ -22,6 +22,7 @@
     "axios": "^0.24.0",
     "cookie": "^0.5.0",
     "flowbite": "^1.6.6",
+    "googleapis": "^161.0.0",
     "iron-session": "^6.3.1",
     "js-cookie": "^3.0.1",
     "jwt-decode": "^3.1.2",

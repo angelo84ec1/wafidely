@@ -54,6 +54,29 @@
             <span v-if="day.date">{{ day.date.getDate() }}</span>
           </div>
         </div>
+
+        <div class="timezone-selector">
+          <label for="timezone" class="timezone-label">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="timezone-icon">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+            </svg>
+            Zona horaria
+          </label>
+          <select 
+            id="timezone"
+            v-model="selectedTimezone" 
+            @change="onTimezoneChange"
+            class="timezone-select"
+          >
+            <option 
+              v-for="tz in timezones" 
+              :key="tz.value" 
+              :value="tz.value"
+            >
+              {{ tz.label }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <!-- Right Side: Time Slots -->
@@ -314,33 +337,118 @@ const selectSlot = (slotDate) => {
   openModal.value = true;
 };
 
+const selectedTimezone = ref('America/Guayaquil'); // Default Ecuador
+
+const timezones = [
+  // Latinoamérica
+  { label: 'Argentina (Buenos Aires)', value: 'America/Argentina/Buenos_Aires', offset: -3 },
+  { label: 'Bolivia (La Paz)', value: 'America/La_Paz', offset: -4 },
+  { label: 'Brasil (São Paulo)', value: 'America/Sao_Paulo', offset: -3 },
+  { label: 'Brasil (Manaus)', value: 'America/Manaus', offset: -4 },
+  { label: 'Chile (Santiago)', value: 'America/Santiago', offset: -3 },
+  { label: 'Colombia (Bogotá)', value: 'America/Bogota', offset: -5 },
+  { label: 'Costa Rica (San José)', value: 'America/Costa_Rica', offset: -6 },
+  { label: 'Cuba (La Habana)', value: 'America/Havana', offset: -5 },
+  { label: 'Ecuador (Quito)', value: 'America/Guayaquil', offset: -5 },
+  { label: 'El Salvador (San Salvador)', value: 'America/El_Salvador', offset: -6 },
+  { label: 'Guatemala (Ciudad)', value: 'America/Guatemala', offset: -6 },
+  { label: 'Honduras (Tegucigalpa)', value: 'America/Tegucigalpa', offset: -6 },
+  { label: 'México (Ciudad de México)', value: 'America/Mexico_City', offset: -6 },
+  { label: 'México (Cancún)', value: 'America/Cancun', offset: -5 },
+  { label: 'Nicaragua (Managua)', value: 'America/Managua', offset: -6 },
+  { label: 'Panamá (Ciudad)', value: 'America/Panama', offset: -5 },
+  { label: 'Paraguay (Asunción)', value: 'America/Asuncion', offset: -4 },
+  { label: 'Perú (Lima)', value: 'America/Lima', offset: -5 },
+  { label: 'Puerto Rico (San Juan)', value: 'America/Puerto_Rico', offset: -4 },
+  { label: 'República Dominicana', value: 'America/Santo_Domingo', offset: -4 },
+  { label: 'Uruguay (Montevideo)', value: 'America/Montevideo', offset: -3 },
+  { label: 'Venezuela (Caracas)', value: 'America/Caracas', offset: -4 },
+  
+  // España
+  { label: 'España (Madrid)', value: 'Europe/Madrid', offset: 1 },
+  { label: 'España (Canarias)', value: 'Atlantic/Canary', offset: 0 },
+  
+  // USA
+  { label: 'USA (Nueva York - ET)', value: 'America/New_York', offset: -5 },
+  { label: 'USA (Chicago - CT)', value: 'America/Chicago', offset: -6 },
+  { label: 'USA (Denver - MT)', value: 'America/Denver', offset: -7 },
+  { label: 'USA (Los Ángeles - PT)', value: 'America/Los_Angeles', offset: -8 },
+  { label: 'USA (Alaska)', value: 'America/Anchorage', offset: -9 },
+  { label: 'USA (Hawái)', value: 'Pacific/Honolulu', offset: -10 },
+];
+
+const getCurrentTimeInTimezone = () => {
+  const selectedTz = timezones.find(tz => tz.value === selectedTimezone.value);
+  const now = new Date();
+  const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+  const timezoneTime = new Date(utcTime + (selectedTz.offset * 60 * 60000));
+  return timezoneTime;
+};
+
+const isTodayInTimezone = (date) => {
+  const today = getCurrentTimeInTimezone();
+  return date.getDate() === today.getDate() &&
+         date.getMonth() === today.getMonth() &&
+         date.getFullYear() === today.getFullYear();
+};
+
 const generateMonthSlots = () => {
   const year = currentMonth.value.getFullYear();
   const month = currentMonth.value.getMonth();
   const lastDay = new Date(year, month + 1, 0).getDate();
   const allDays = [];
+  const timezoneNow = getCurrentTimeInTimezone();
 
   for (let day = 1; day <= lastDay; day++) {
     const date = new Date(year, month, day);
     const dayOfWeek = date.getDay();
-    if (dayOfWeek >= 1 && dayOfWeek <= 5 && date >= new Date().setHours(0, 0, 0, 0)) {
-      const start = { hours: 8, minutes: 0 };
-      const end = { hours: 18, minutes: 0 };
-      const slots = [];
-      const startTime = new Date(date);
-      startTime.setHours(start.hours, start.minutes, 0, 0);
-      const endTime = new Date(date);
-      endTime.setHours(end.hours, end.minutes, 0, 0);
+    
+    // Solo días laborables (lunes a viernes)
+    if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+      const dateAtMidnight = new Date(date);
+      dateAtMidnight.setHours(0, 0, 0, 0);
+      const todayAtMidnight = new Date(timezoneNow);
+      todayAtMidnight.setHours(0, 0, 0, 0);
+      
+      // Solo días presentes o futuros
+      if (dateAtMidnight >= todayAtMidnight) {
+        const start = { hours: 8, minutes: 0 };
+        const end = { hours: 18, minutes: 0 };
+        const slots = [];
+        const startTime = new Date(date);
+        startTime.setHours(start.hours, start.minutes, 0, 0);
+        const endTime = new Date(date);
+        endTime.setHours(end.hours, end.minutes, 0, 0);
 
-      for (let time = startTime.getTime(); time <= endTime.getTime(); time += 30 * 60 * 1000) {
-        slots.push({ date: new Date(time) });
+        for (let time = startTime.getTime(); time <= endTime.getTime(); time += 30 * 60 * 1000) {
+          const slotTime = new Date(time);
+          
+          // Si es hoy, solo agregar slots futuros
+          if (isTodayInTimezone(date)) {
+            if (slotTime > timezoneNow) {
+              slots.push({ date: slotTime });
+            }
+          } else {
+            // Para días futuros, agregar todos los slots
+            slots.push({ date: slotTime });
+          }
+        }
+
+        allDays.push({ date, slots });
       }
-
-      allDays.push({ date, slots });
     }
   }
 
   meetingsDays.value = allDays;
+};
+
+const onTimezoneChange = () => {
+  generateMonthSlots();
+  // Resetear selección si el día actual ya no tiene slots
+  if (selectedDate.value && selectedDaySlots.value.length === 0) {
+    selectedDate.value = null;
+    selectedSlot.value = null;
+  }
 };
 
 const previousMonth = () => {
@@ -396,7 +504,6 @@ const sendData = async () => {
   max-width: 1200px;
   margin: 0 auto;
   padding: 1rem;
-  
 }
 
 .calendar-layout {
@@ -408,7 +515,6 @@ const sendData = async () => {
   padding: 2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   border: 1px solid #e5e7eb;
-  
 }
 
 .calendar-section {
@@ -421,7 +527,6 @@ const sendData = async () => {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.5rem;
-  
 }
 
 .nav-btn {
@@ -462,7 +567,7 @@ const sendData = async () => {
 .month-name {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #ffffff;
+  color: #111827;
 }
 
 .year-number {
@@ -491,7 +596,6 @@ const sendData = async () => {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.25rem;
-  
 }
 
 .calendar-day {
@@ -547,6 +651,50 @@ const sendData = async () => {
   background: white;
 }
 
+.timezone-selector {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.timezone-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.timezone-icon {
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+}
+
+.timezone-select {
+  width: 100%;
+  padding: 0.55rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  color: #111827;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timezone-select:hover {
+  border-color: #9ca3af;
+}
+
+.timezone-select:focus {
+  outline: none;
+  border-color: #232c4d;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+}
+
 .time-slots-section {
   min-height: 500px;
 }
@@ -571,7 +719,7 @@ const sendData = async () => {
 .no-selection h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #dadada;
+  color: #6b7280;
   margin-bottom: 0.5rem;
 }
 
@@ -674,12 +822,11 @@ const sendData = async () => {
 
 .appointment-modal {
   background: white;
-  border-radius: 9px;
+  border-radius: 16px;
   overflow: hidden;  
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   max-width: 480px;
   width: 100%;
-  
 }
 
 .success-content {
@@ -739,7 +886,6 @@ const sendData = async () => {
   padding: 1.5rem 2rem;
   text-align: center;
   color: white;
-  
 }
 
 .form-title {
@@ -805,6 +951,7 @@ const sendData = async () => {
 
 .btn-primary, .btn-secondary {
   flex: 1;
+  
   border-radius: 8px;
   font-weight: 500;
   font-size: 0.9375rem;

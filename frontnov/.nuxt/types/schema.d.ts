@@ -131,6 +131,8 @@ declare module 'nuxt/schema' {
       cdnURL: string,
    },
 
+   googleClientSecret: string,
+
    nitro: {
       envPrefix: string,
    },
@@ -149,6 +151,10 @@ declare module 'nuxt/schema' {
    gtmContainerId: string,
 
    GOOGLE_MAPS_API: string,
+
+   googleClientId: string,
+
+   googleRedirectUri: string,
   }
 }
 declare module 'vue' {
