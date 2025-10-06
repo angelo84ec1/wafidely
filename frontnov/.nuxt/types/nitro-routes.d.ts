@@ -6,8 +6,8 @@ declare module "nitropack/types" {
     '/api/auth/google/callback': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/google/callback.get').default>>>>
     }
-    '/api/google-events-public': {
-      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/google-events-public.get').default>>>>
+    '/api/google-events': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/google-events.get').default>>>>
     }
     '/api/google/calendar': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/google/calendar.get').default>>>>

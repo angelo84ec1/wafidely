@@ -359,7 +359,7 @@ import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import { Dialog, DialogPanel, TransitionChild, TransitionRoot, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
 import { useAuthStore } from "~~/store/auth"
-import { computed, ref, onMounted, nextTick } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 
 definePageMeta({
   name: "Citas",
@@ -384,38 +384,40 @@ const userData = computed(() => {
 })
 
 const getCalenderData = computed(() => {
+  // Eventos locales (de la base de datos)
   const localEvents = calenderData.value
     .filter(event => 
       event?.date && 
       event?.hour && 
       event?.name && 
-      event?.whatsapp && 
       event?.establecimientos?.length && 
       event?.establecimientos[0]?.id == userData.value?.establecimiento
     )
-    .map(event => ({
-      id: event._id,
-      title: `${event?.name} - ${event?.hour}`,
-      start: `${event?.date} ${event?.hour}`,
-      end: `${event?.date} ${event?.hour}`,
-      content: `
-        <div class="event-content">
-          <strong>${event?.name}</strong><br>
-          <small>${event?.hour}</small><br>
-          <small>WhatsApp: ${event?.whatsapp}</small>
-        </div>
-      `,
-      class: 'custom-event',
-      source: 'local'
-    }))
+    .map(event => {
+      const isGoogle = event.source === 'google'
+      
+      return {
+        id: event._id,
+        title: `${event?.name} - ${event?.hour}`,
+        start: `${event?.date} ${event?.hour}`,
+        end: `${event?.date} ${event?.hour}`,
+        content: `
+          <div class="event-content">
+            <strong>${event?.name}</strong><br>
+            <small>${event?.hour}</small><br>
+            ${isGoogle ? '<small>📅 Google Calendar</small>' : `<small>WhatsApp: ${event?.whatsapp}</small>`}
+          </div>
+        `,
+        class: isGoogle ? 'google-event' : 'custom-event',
+        source: event.source || 'local'
+      }
+    })
 
-  // Formatear eventos de Google Calendar
+  // Eventos de Google (si hay)
   const googleEventsFormatted = googleEvents.value.map(event => {
-    // Convertir a Date y luego al formato que espera vue-cal
     const startDate = new Date(event.start)
     const endDate = new Date(event.end)
     
-    // Formato: "YYYY-MM-DD HH:mm"
     const formatDate = (date) => {
       const year = date.getFullYear()
       const month = String(date.getMonth() + 1).padStart(2, '0')
@@ -428,8 +430,8 @@ const getCalenderData = computed(() => {
     return {
       id: `google-${event.id}`,
       title: event.title,
-      start: formatDate(startDate), // ✅ Formato consistente
-      end: formatDate(endDate),     // ✅ Formato consistente
+      start: formatDate(startDate),
+      end: formatDate(endDate),
       content: `
         <div class="event-content">
           <strong>${event.title}</strong><br>
@@ -441,22 +443,15 @@ const getCalenderData = computed(() => {
     }
   })
 
-  console.log('Total eventos locales:', localEvents.length)
-  console.log('Total eventos Google:', googleEventsFormatted.length)
-  console.log('Primer evento Google formateado:', googleEventsFormatted[0])
-  console.log('Total combinado:', [...localEvents, ...googleEventsFormatted].length)
-
   return [...localEvents, ...googleEventsFormatted]
 })
 
 const getDisabledDates = computed(() => {
-  // Combinar fechas de eventos locales y de Google Calendar
   const localDates = calenderData.value
     .filter(event => 
       event?.date && 
       event?.hour && 
       event?.name && 
-      event?.whatsapp && 
       event?.establecimientos?.length && 
       event?.establecimientos[0]?.id == userData.value?.establecimiento
     )
@@ -606,9 +601,34 @@ const getData = async () => {
   }
 }
 
+// Función para eliminar cita
+const deleteAppointment = async (appointmentId) => {
+  if (!confirm('¿Estás seguro de que deseas eliminar esta cita?')) {
+    return
+  }
+
+  try {
+    const response = await fetch(`${baseURL}/citas/${appointmentId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to delete appointment')
+    }
+
+    // Recargar los datos después de eliminar
+    await getData()
+  } catch (error) {
+    console.error('Error deleting appointment:', error)
+    alert('Error al eliminar la cita')
+  }
+}
+
 // Google Calendar Integration
 const syncWithGoogle = () => {
-  // Redirigir a la autenticación de Google
   const config = useRuntimeConfig()
   const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${config.public.googleClientId}&redirect_uri=${config.public.googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/calendar.readonly&access_type=offline`
   
@@ -620,33 +640,70 @@ const refreshGoogleCalendar = async () => {
   
   try {
     console.log('Obteniendo eventos de Google Calendar...')
-    console.log('Primer evento de Google:', googleEvents.value[0])
-console.log('Formato de start:', googleEvents.value[0]?.start)
-console.log('Formato de end:', googleEvents.value[0]?.end)
     
     const response = await $fetch('/api/google/calendar', {
       method: 'GET'
     })
 
-    console.log('Respuesta recibida:', response)
-
     if (response.error) {
       throw new Error(response.error)
     }
 
-    googleEvents.value = response.events || []
-    isGoogleAuthenticated.value = true
+    const googleEventsFromAPI = response.events || []
+    isGoogleAuthenticated.value = response.authenticated || true
     
-    console.log('Eventos de Google:', googleEvents.value.length)
+    console.log('Eventos de Google obtenidos:', googleEventsFromAPI.length)
+
+    if (googleEventsFromAPI.length > 0) {
+      await saveGoogleEventsAsCitas(googleEventsFromAPI)
+    }
+
+    await getData()
+    
   } catch (error) {
-    console.error('Error al obtener eventos:', error)
+    console.error('Error:', error)
     isGoogleAuthenticated.value = false
   }
 }
 
-// Agregar DESPUÉS de deleteAppointment y ANTES de onMounted
+const saveGoogleEventsAsCitas = async (events) => {
+  try {
+    const existingGoogleCitas = calenderData.value.filter(
+      c => c.source === 'google' && 
+      c.establecimientos?.[0]?.id == userData.value?.establecimiento
+    )
+    
+    for (const cita of existingGoogleCitas) {
+      await fetch(`${baseURL}/citas/${cita._id}`, {
+        method: 'DELETE'
+      })
+    }
 
-// Verificar si ya está autenticado con Google
+    for (const event of events) {
+      const startDate = new Date(event.start)
+      const date = startDate.toISOString().split('T')[0]
+      const hour = startDate.toTimeString().substring(0, 5)
+
+      await fetch(`${baseURL}/citas`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: event.title,
+          date: date,
+          hour: hour,
+          whatsapp: '0000000000',
+          source: 'google',
+          establecimientos: [userData.value?.establecimiento]
+        })
+      })
+    }
+    
+    console.log('Eventos de Google guardados como citas:', events.length)
+  } catch (error) {
+    console.error('Error guardando eventos:', error)
+  }
+}
+
 const checkGoogleAuth = async () => {
   if (!process.client) return
   
@@ -668,12 +725,11 @@ const checkGoogleAuth = async () => {
   }
 }
 
-// Actualizar onMounted completamente
 onMounted(async () => {
   console.log('Componente montado')
   
   await getData()
-  await checkGoogleAuth() // ✅ Verificar autenticación existente
+  await checkGoogleAuth()
   
   if (process.client) {
     const urlParams = new URLSearchParams(window.location.search)

@@ -1701,6 +1701,13 @@
                   "type": "string"
                 }
               },
+              "source": {
+                "type": "string",
+                "enum": [
+                  "local",
+                  "google"
+                ]
+              },
               "published_at": {
                 "type": "string"
               },

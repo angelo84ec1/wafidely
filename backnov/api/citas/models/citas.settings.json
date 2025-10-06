@@ -55,6 +55,13 @@
       "collection": "establecimientos",
       "via": "citas",
       "dominant": true
+    },
+    "source": {
+      "type": "enumeration",
+      "enum": [
+        "local",
+        "google"
+      ]
     }
   }
 }
