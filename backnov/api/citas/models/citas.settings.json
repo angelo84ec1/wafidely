@@ -52,8 +52,8 @@
       "type": "string"
     },
     "establecimientos": {
-      "collection": "establecimientos",
       "via": "citas",
+      "collection": "establecimientos",
       "dominant": true
     },
     "source": {
@@ -62,6 +62,10 @@
         "local",
         "google"
       ]
+    },
+    "reminderSent": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

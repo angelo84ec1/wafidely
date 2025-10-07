@@ -1,45 +1,57 @@
 import { google } from 'googleapis'
 
 export default defineEventHandler(async (event) => {
-  console.log('=== CALLBACK INICIADO ===')
-  
   const config = useRuntimeConfig()
   const query = getQuery(event)
   const code = query.code
+  const establecimientoId = query.state // Pasaremos el ID por URL
 
-  console.log('Code recibido:', code ? 'Sí' : 'No')
-  console.log('Client ID:', config.public.googleClientId)
-  console.log('Redirect URI:', config.public.googleRedirectUri)
+  console.log('📥 Callback recibido para establecimiento:', establecimientoId)
 
   if (!code) {
-    console.error('No se recibió código')
     return sendRedirect(event, '/citas?error=no_code')
   }
 
   try {
+    const host = getRequestHeader(event, 'host')
+    const redirectUri = host?.includes('localhost')
+      ? `http://${host}/api/auth/google/callback`
+      : config.public.googleRedirectUri
+
     const oauth2Client = new google.auth.OAuth2(
       config.public.googleClientId,
       config.googleClientSecret,
-      config.public.googleRedirectUri
+      redirectUri
     )
 
-    console.log('Intercambiando código por tokens...')
     const { tokens } = await oauth2Client.getToken(code)
-    console.log('Tokens obtenidos exitosamente')
     
     setCookie(event, 'google_token', JSON.stringify(tokens), {
       httpOnly: true,
-      secure: false, // false para desarrollo local
+      secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24 * 30,
-      sameSite: 'lax',
-      path: '/'
+      sameSite: 'lax'
     })
 
-    console.log('Cookie establecida, redirigiendo...')
+    // Guardar en Strapi si hay refresh_token y establecimientoId
+    if (tokens.refresh_token && establecimientoId) {
+      await fetch(`${config.public.baseURL}/establecimientos/${establecimientoId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          googleRefreshToken: tokens.refresh_token,
+          googleCalendarEmail: 'websecuador.net@gmail.com',
+          googleCalendarSyncEnabled: true
+        })
+      })
+      
+      console.log('✅ Token guardado en establecimiento:', establecimientoId)
+    }
+
     return sendRedirect(event, '/citas?google_auth=success')
+
   } catch (error) {
-    console.error('ERROR EN CALLBACK:', error.message)
-    console.error('Stack:', error.stack)
+    console.error('❌ Error:', error.message)
     return sendRedirect(event, '/citas?error=auth_failed')
   }
 })

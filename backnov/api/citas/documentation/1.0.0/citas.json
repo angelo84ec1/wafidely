@@ -852,6 +852,15 @@
                     "type": "string"
                   }
                 },
+                "googleRefreshToken": {
+                  "type": "string"
+                },
+                "googleCalendarEmail": {
+                  "type": "string"
+                },
+                "googleCalendarSyncEnabled": {
+                  "type": "boolean"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -870,6 +879,10 @@
               "local",
               "google"
             ]
+          },
+          "reminderSent": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",
@@ -919,6 +932,10 @@
               "local",
               "google"
             ]
+          },
+          "reminderSent": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",

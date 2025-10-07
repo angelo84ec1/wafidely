@@ -6,6 +6,12 @@ declare module "nitropack/types" {
     '/api/auth/google/callback': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/google/callback.get').default>>>>
     }
+    '/api/auth/google/init': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/google/init.get').default>>>>
+    }
+    '/api/cron/send-reminders': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/cron/send-reminders.get').default>>>>
+    }
     '/api/google-events': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/google-events.get').default>>>>
     }
@@ -14,6 +20,9 @@ declare module "nitropack/types" {
     }
     '/api/login': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/login.get').default>>>>
+    }
+    '/api/public/google-calendar-direct': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/public/google-calendar-direct.get').default>>>>
     }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/renderer').default>>>>

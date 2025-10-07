@@ -627,38 +627,31 @@ const deleteAppointment = async (appointmentId) => {
   }
 }
 
-// Google Calendar Integration
 const syncWithGoogle = () => {
-  const config = useRuntimeConfig()
-  const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${config.public.googleClientId}&redirect_uri=${config.public.googleRedirectUri}&response_type=code&scope=https://www.googleapis.com/auth/calendar.readonly&access_type=offline`
-  
-  window.location.href = authUrl
+  const establecimientoId = userData.value?.establecimiento
+  if (!establecimientoId) {
+    alert('No se pudo obtener el ID del establecimiento')
+    return
+  }
+  // Redirigir al endpoint de inicio con el establecimientoId
+  window.location.href = `/api/auth/google/init?establecimientoId=${establecimientoId}`
 }
 
 const refreshGoogleCalendar = async () => {
   if (!process.client) return
   
   try {
-    console.log('Obteniendo eventos de Google Calendar...')
-    
-    const response = await $fetch('/api/google/calendar', {
-      method: 'GET'
+    const establecimientoId = userData.value?.establecimiento
+    const response = await $fetch('/api/public/google-calendar-direct', {
+      method: 'GET',
+      params: { establecimientoId }
     })
 
-    if (response.error) {
-      throw new Error(response.error)
+    if (response.events) {
+      googleEvents.value = response.events
+      isGoogleAuthenticated.value = true
+      console.log('Eventos Google en admin:', response.events.length)
     }
-
-    const googleEventsFromAPI = response.events || []
-    isGoogleAuthenticated.value = response.authenticated || true
-    
-    console.log('Eventos de Google obtenidos:', googleEventsFromAPI.length)
-
-    if (googleEventsFromAPI.length > 0) {
-      await saveGoogleEventsAsCitas(googleEventsFromAPI)
-    }
-
-    await getData()
     
   } catch (error) {
     console.error('Error:', error)
@@ -666,43 +659,32 @@ const refreshGoogleCalendar = async () => {
   }
 }
 
-const saveGoogleEventsAsCitas = async (events) => {
+
+
+// Nueva función: verificar si ya está sincronizado
+const checkGoogleSync = async () => {
   try {
-    const existingGoogleCitas = calenderData.value.filter(
-      c => c.source === 'google' && 
-      c.establecimientos?.[0]?.id == userData.value?.establecimiento
-    )
-    
-    for (const cita of existingGoogleCitas) {
-      await fetch(`${baseURL}/citas/${cita._id}`, {
-        method: 'DELETE'
-      })
-    }
+    const establecimientoId = userData.value?.establecimiento
+    if (!establecimientoId) return
 
-    for (const event of events) {
-      const startDate = new Date(event.start)
-      const date = startDate.toISOString().split('T')[0]
-      const hour = startDate.toTimeString().substring(0, 5)
+    const response = await fetch(`${baseURL}/establecimientos/${establecimientoId}`)
+    if (!response.ok) return
 
-      await fetch(`${baseURL}/citas`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: event.title,
-          date: date,
-          hour: hour,
-          whatsapp: '0000000000',
-          source: 'google',
-          establecimientos: [userData.value?.establecimiento]
-        })
-      })
+    const establecimiento = await response.json()
+
+    // Si tiene token y está habilitado, marcar como autenticado
+    if (establecimiento.googleRefreshToken && establecimiento.googleCalendarSyncEnabled) {
+      isGoogleAuthenticated.value = true
+      console.log('✅ Google Calendar ya sincronizado')
+      
+      // Cargar eventos automáticamente
+      await refreshGoogleCalendar()
     }
-    
-    console.log('Eventos de Google guardados como citas:', events.length)
   } catch (error) {
-    console.error('Error guardando eventos:', error)
+    console.error('Error verificando sincronización:', error)
   }
 }
+
 
 const checkGoogleAuth = async () => {
   if (!process.client) return
@@ -729,18 +711,20 @@ onMounted(async () => {
   console.log('Componente montado')
   
   await getData()
-  await checkGoogleAuth()
+  await checkGoogleSync() // ✅ Verificar primero si ya está sincronizado
   
+  // Limpiar URL si viene del callback
   if (process.client) {
     const urlParams = new URLSearchParams(window.location.search)
     const googleAuth = urlParams.get('google_auth')
     
     if (googleAuth === 'success') {
-      console.log('Autenticación exitosa, obteniendo eventos...')
+      console.log('Autenticación exitosa, cargando eventos...')
       isGoogleAuthenticated.value = true
       
       setTimeout(async () => {
         await refreshGoogleCalendar()
+        // Limpiar URL después de procesar
         window.history.replaceState({}, '', '/citas')
       }, 500)
     }

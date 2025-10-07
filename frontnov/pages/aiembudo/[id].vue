@@ -2,6 +2,41 @@
 </script>
 
 <template>
+    <!-- Loading Overlay - Página completa -->
+    <Transition name="fade">
+    <div v-if="isPageLoading" class="fixed inset-0 z-[9999] bg-white flex items-center justify-center">
+      <div class="text-center">
+        <!-- Logo o icono (opcional) -->
+        <div class="mb-8">
+          <div class="w-20 h-20 mx-auto bg-[#232c4d] rounded-full flex items-center justify-center">
+            <svg class="w-10 h-10 text-[#38f5b3]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+          </div>
+        </div>
+        
+        <!-- Spinner -->
+        <div class="relative w-24 h-24 mx-auto mb-6">
+          <div class="absolute inset-0 border-4 border-#232c4d rounded-full"></div>
+          <div class="absolute inset-0 border-4 border-transparent border-t-[#38f5b3] rounded-full animate-spin"></div>
+        </div>
+        
+        <!-- Texto y progreso -->
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Cargando Landing Page</h2>
+        <p class="text-gray-600 mb-4">Sincronizando con Google Calendar...</p>
+        
+        <!-- Barra de progreso -->
+        <div class="w-64 h-2 bg-gray-200 rounded-full overflow-hidden mx-auto">
+          <div 
+            class="h-full bg-[#38f5b3] from-indigo-500 to-purple-600 transition-all duration-300 ease-out"
+            :style="{ width: loadingProgress + '%' }"
+          ></div>
+        </div>
+        <p class="text-sm text-gray-500 mt-2">{{ loadingProgress }}%</p>
+      </div>
+    </div>
+  </Transition>
+
 
 
   <div class="max-w-[1600px] w-full mx-auto " style="overflow: hidden;">
@@ -93,12 +128,7 @@
           <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d] px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-[6px] tab:text-[12px] font-bold font-movile" for="yes"  v-if="establecimientos && establecimientos.titulodescripcion1"> {{ establecimientos.titulodescripcion1 }}</label>
           
           <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile" >
-            <audio  v-if="audioUrldetalledescripcion1" controls preload="auto|metadata|none">
-                <source :src="audioUrldetalledescripcion1" type="audio/mpeg" />
-                <source :src="audioUrldetalledescripcion1.replace('.mp3', '.ogg')" type="audio/ogg" />
-             
-                Your browser does not support the audio element.
-            </audio>
+     
             
             {{ establecimientos?.detalledescripcion1 }}
           </div>
@@ -110,12 +140,7 @@
           <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d]] focus:outline-none peer-checked:border-[#232c4d]] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="no"  v-if="establecimientos && establecimientos.titulodescripcion2">{{ establecimientos?.titulodescripcion2 }}</label>
           
           <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
-            <audio   v-if="audioUrldetalledescripcion2" controls preload="auto">
-                <source :src="audioUrldetalledescripcion2" type="audio/mpeg" />
-                <source :src="audioUrldetalledescripcion2.replace('.mp3', '.ogg')" type="audio/ogg" />
-          
-                Your browser does not support the audio element.
-            </audio>
+
             {{ establecimientos?.detalledescripcion2 }}
           </div>
 
@@ -126,12 +151,7 @@
           <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[8px] md:text-6px] tab:text-[12px] font-bold  font-movile " for="yesno"  v-if="establecimientos && establecimientos.titulodescripcion3">{{ establecimientos?.titulodescripcion3 }}</label>
           
           <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
-            <audio v-if="audioUrldetalledescripcion3"  controls preload="auto">
-                <source :src="audioUrldetalledescripcion3" type="audio/mpeg; codecs=mp3" />
-                <source :src="audioUrldetalledescripcion3.replace('.mp3', '.ogg')" type="audio/ogg" />
-              
-                Your browser does not support the audio element.
-            </audio>
+          
             {{ establecimientos?.detalledescripcion3 }}
           </div>
 
@@ -142,12 +162,7 @@
           <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[10px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="yesno1"  v-if="establecimientos && establecimientos.titulodescripcion4">{{ establecimientos.titulodescripcion4 }}</label>
           
           <div class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
-            <audio  v-if="audioUrldetalledescripcion4" controls preload="auto">
-                <source :src="audioUrldetalledescripcion4" type="audio/mpeg" />
-                <source :src="audioUrldetalledescripcion4.replace('.mp3', '.ogg')" type="audio/ogg" />
-               
-                Your browser does not support the audio element.
-            </audio>
+        
 
             {{ establecimientos.detalledescripcion4 }}
           </div>
@@ -159,12 +174,7 @@
           <label class="flex justify-center cursor-pointer rounded-xl border text-center bg-[#232c4d] py-2 text-white hover:text-[#232c4d]  px-4 hover:bg-gray-50 hover:border-[#232c4d] focus:outline-none peer-checked:border-[#232c4d] transition-all duration-500 ease-in-out text-[6px] micro:text-[4px] mob:text-[10px] md:text-[6px] tab:text-[12px] font-bold  font-movile" for="yesno2"  v-if="establecimientos && establecimientos.titulodescripcion5">{{ establecimientos.titulodescripcion5 }}</label>
             
             <div id="audio" class="margindesc overflow-auto h-auto max-h-[200px] lg:h-auto absolute bg-white shadow-lg p-5 border top-[35%] pho:top-[40%] sm:top-[40%] md:top-[45%] lg:top-[80%] border-[#232c4d] rounded-lg w-full mx-auto transition-all duration-500 ease-in-out left-[100%] opacity-0 invisible peer-checked:opacity-100 peer-checked:visible peer-checked:left-0 text-[10px] micro:text-[12px] md:text-[14px] tab:text-[16px] font-movile">
-              <audio  v-if="audioUrldetalledescripcion5" controls preload="auto">
-                <source :src="audioUrldetalledescripcion5" type="audio/mpeg" />
-                <source :src="audioUrldetalledescripcion5.replace('.mp3', '.ogg')" type="audio/ogg" />
-            
-                Your browser does not support the audio element.
-              </audio>
+             
               <div class="flex flex-col space-y-2">
     <label for="color" class="text-sm text-gray-700">Selecciona un color:</label>
     <input
@@ -188,7 +198,23 @@
    
       <div class="bg-slate-200 w-[250px] h-5 mb-12" v-for="n,i in 6" :key="i">&nbsp;</div>
     </div>
-    <CommonCalenderAppoinment :establishmentId="route.params.id" :disabledData="getCalenderData" @fetchCalender="getDataAppoinments"  v-else />
+    <!-- Loading State -->
+<div v-if="isLoadingCalendar" class="mb-12 flex flex-col items-center justify-center py-12">
+  <div class="relative">
+    <!-- Spinner animado -->
+    <div class="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin"></div>
+  </div>
+  <p class="mt-4 text-gray-600 font-medium">{{ loadingMessage }}</p>
+  <p class="mt-2 text-sm text-gray-400">Sincronizando con Google Calendar...</p>
+</div>
+
+<!-- Calendar Component -->
+<CommonCalenderAppoinment 
+  v-else
+  :establishmentId="route.params.id" 
+  :disabledData="getCalenderData" 
+  @fetchCalender="getDataAppoinments"  
+/>
    
 
 
@@ -391,26 +417,22 @@ import type { User, EstableCimientos } from "~/common/interfaces/user.interface"
 import { useToast } from "vue-toastification";
 
 
-
+const isPageLoading = ref(true)
+const loadingProgress = ref(0)
 const calenderLoading = ref(true)
 const calenderData = ref([])
 const googleEventsPublic = ref([]) // ✅ Agregar para eventos de Google
-const audioUrldetalledescripcion1 = ref(null);
-const audioUrldetalledescripcion2 = ref(null);
-const audioUrldetalledescripcion3 = ref(null);
-const audioUrldetalledescripcion4 = ref(null);
-const audioUrldetalledescripcion5 = ref(null);
+const isLoadingCalendar = ref(true)
+const loadingMessage = ref('Cargando calendario...')
 
 
 
 const getCalenderData = computed(() => {
-  // Obtener fechas de citas locales
+  // Citas locales
   const localDates = calenderData.value
     .filter(event => 
       event?.date && 
       event?.hour && 
-      event?.name && 
-      event?.whatsapp && 
       event?.establecimientos?.length && 
       event?.establecimientos[0]?.id == route.params.id
     )
@@ -420,44 +442,17 @@ const getCalenderData = computed(() => {
       return new Date(year, month - 1, day, hours, minutes);
     });
 
-  // ✅ Obtener fechas de eventos de Google Calendar
-  const googleDates = googleEventsPublic.value.map(event => {
-    return new Date(event.start);
-  });
+  // Eventos de Google
+  const googleDates = googleEventsPublic.value.map(event => event.start);
 
-  // ✅ Combinar ambas listas
-  const allDisabledDates = [...localDates, ...googleDates];
-  
   console.log('Fechas locales bloqueadas:', localDates.length);
   console.log('Fechas Google bloqueadas:', googleDates.length);
-  console.log('Total fechas bloqueadas:', allDisabledDates.length);
+  console.log('Total fechas bloqueadas:', localDates.length + googleDates.length);
 
-  return allDisabledDates;
+  return [...localDates, ...googleDates];
 });
 
-const callLambda = (text) => {
-  const body = {
-    "text": text
-  };
 
-  return fetch(`https://c6yxx5cyj4wnsavllpnnqwj6540yuiyl.lambda-url.us-east-1.on.aws/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    // Parse the JSON response
-    return response.json();
-  })
-  .then(data => {
-    return data.audio_url; // Here you will get the audio URL
-  });
-};
 
 
 
@@ -570,73 +565,109 @@ definePageMeta({
 
   const getDataAppoinments = async () => {
   try {
-    calenderLoading.value = true;
+    calenderLoading.value = true
+    loadingMessage.value = 'Obteniendo citas...'
     
-    // Obtener citas locales
-    const response = await fetch(`${BASE_URL}/citas`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    // ✅ Cargar citas locales y Google Calendar en paralelo
+    const [citasResponse] = await Promise.all([
+      fetch(`${BASE_URL}/citas`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      }),
+      getGoogleEvents() // Se ejecuta al mismo tiempo
+    ])
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch data: ' + response.statusText);
+    if (!citasResponse.ok) {
+      throw new Error('Failed to fetch data')
     }
 
-    calenderData.value = await response.json();
-    console.log('Citas locales obtenidas:', calenderData.value.length);
-
-    // ✅ Obtener eventos de Google Calendar para este establecimiento
-    await getGoogleEvents();
+    calenderData.value = await citasResponse.json()
+    console.log('Citas locales obtenidas:', calenderData.value.length)
 
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('Error fetching data:', error)
   } finally {
-    calenderLoading.value = false;
+    calenderLoading.value = false
+    isLoadingCalendar.value = false
   }
-};
+}
 
-// ✅ Nueva función para obtener eventos de Google
 const getGoogleEvents = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/google-events/${route.params.id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    console.log('🌐 Consultando Google Calendar para establecimiento:', route.params.id);
+    
+    const response = await fetch(
+      `/api/public/google-calendar-direct?establecimientoId=${route.params.id}`,
+      {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
 
-    if (response.ok) {
-      const data = await response.json();
-      googleEventsPublic.value = data.events || [];
-      console.log('Eventos de Google obtenidos:', googleEventsPublic.value.length);
+    if (!response.ok) {
+      throw new Error('Error en la respuesta del servidor');
+    }
+
+    const data = await response.json();
+    
+    console.log('📅 Respuesta de Google Calendar:', data);
+
+    if (data.error) {
+      console.warn('⚠️ Error de Google:', data.error);
+      googleEventsPublic.value = [];
+      return;
+    }
+
+    if (data.events && data.events.length > 0) {
+      googleEventsPublic.value = data.events
+        .filter(event => !event.isAllDay)
+        .map(event => ({
+          ...event,
+          start: new Date(event.start)
+        }));
+      
+      console.log('✅ Eventos Google convertidos:', googleEventsPublic.value.length);
+      console.log('Primer evento:', googleEventsPublic.value[0]);
     } else {
-      console.log('No se pudieron obtener eventos de Google');
+      console.log('ℹ️ No hay eventos de Google');
       googleEventsPublic.value = [];
     }
   } catch (error) {
-    console.error('Error obteniendo eventos de Google:', error);
+    console.error('❌ Error obteniendo eventos de Google:', error);
     googleEventsPublic.value = [];
   }
 };
 
 
 
-onMounted(async () => {
-  await getDataAppoinments();
+  onMounted(async () => {
+    loadingMessage.value = 'Cargando datos...'
+  try {
+    loadingProgress.value = 20
+    
+    // Cargar datos de citas
+    await getDataAppoinments()
+    loadingProgress.value = 60
+    
+    // Configurar color por defecto
+    if (!establecimientos.value.detalledescripcion5) {
+      establecimientos.value.detalledescripcion5 = '#ffffff'
+    }
+    loadingProgress.value = 80
+    
+    // Esperar un momento para suavizar la transición
+    await new Promise(resolve => setTimeout(resolve, 300))
+    loadingProgress.value = 100
 
-  // Aquí asignas un valor por defecto si aún no tiene uno
-  if (!establecimientos.value.detalledescripcion5) {
-    establecimientos.value.detalledescripcion5 = '#ffffff'; // o el color que quieras
+    isLoadingCalendar.value = false
+    
+  } finally {
+    // Ocultar loading con animación
+    setTimeout(() => {
+      isPageLoading.value = false
+    }, 200)
   }
-    audioUrldetalledescripcion1.value = await callLambda(establecimientos.value?.detalledescripcion1);
-    audioUrldetalledescripcion2.value = await callLambda(establecimientos.value?.detalledescripcion2);
-    audioUrldetalledescripcion3.value = await callLambda(establecimientos.value?.detalledescripcion3);
-    audioUrldetalledescripcion4.value = await callLambda(establecimientos.value?.detalledescripcion4);
-    audioUrldetalledescripcion5.value = await callLambda(establecimientos.value?.detalledescripcion5);
-  });
-
+})
 
 
 
@@ -647,6 +678,50 @@ onMounted(async () => {
 
 
 <style scoped lang="scss">
+
+
+
+
+/* Transición fade para el loading */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Animación de pulso opcional */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+
+/* Loading animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Fade in cuando carga */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.calendar-fade-enter {
+  animation: fadeIn 0.5s ease-out;
+}
 
   .custom-shadow {
     box-shadow: 0 0 10px #232c4d

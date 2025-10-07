@@ -79,6 +79,12 @@
         </div>
       </div>
 
+
+
+
+
+
+
       <!-- Right Side: Time Slots -->
       <div class="time-slots-section">
         <div v-if="!selectedDate" class="no-selection">

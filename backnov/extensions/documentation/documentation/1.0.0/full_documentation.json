@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "10/06/2025 10:18:11 AM"
+    "x-generation-date": "10/07/2025 10:23:24 AM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -7044,6 +7044,15 @@
                     "type": "string"
                   }
                 },
+                "googleRefreshToken": {
+                  "type": "string"
+                },
+                "googleCalendarEmail": {
+                  "type": "string"
+                },
+                "googleCalendarSyncEnabled": {
+                  "type": "boolean"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -7062,6 +7071,10 @@
               "local",
               "google"
             ]
+          },
+          "reminderSent": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",
@@ -7111,6 +7124,10 @@
               "local",
               "google"
             ]
+          },
+          "reminderSent": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",
@@ -7508,6 +7525,15 @@
                 "items": {
                   "type": "string"
                 }
+              },
+              "googleRefreshToken": {
+                "type": "string"
+              },
+              "googleCalendarEmail": {
+                "type": "string"
+              },
+              "googleCalendarSyncEnabled": {
+                "type": "boolean"
               },
               "published_at": {
                 "type": "string"
@@ -8620,6 +8646,9 @@
                     "google"
                   ]
                 },
+                "reminderSent": {
+                  "type": "boolean"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -8631,6 +8660,13 @@
                 }
               }
             }
+          },
+          "googleCalendarEmail": {
+            "type": "string"
+          },
+          "googleCalendarSyncEnabled": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",
@@ -8821,6 +8857,16 @@
             "items": {
               "type": "string"
             }
+          },
+          "googleRefreshToken": {
+            "type": "string"
+          },
+          "googleCalendarEmail": {
+            "type": "string"
+          },
+          "googleCalendarSyncEnabled": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",
@@ -9608,6 +9654,15 @@
                   "type": "string"
                 }
               },
+              "googleRefreshToken": {
+                "type": "string"
+              },
+              "googleCalendarEmail": {
+                "type": "string"
+              },
+              "googleCalendarSyncEnabled": {
+                "type": "boolean"
+              },
               "published_at": {
                 "type": "string"
               },
@@ -9733,6 +9788,9 @@
                   "local",
                   "google"
                 ]
+              },
+              "reminderSent": {
+                "type": "boolean"
               },
               "published_at": {
                 "type": "string"

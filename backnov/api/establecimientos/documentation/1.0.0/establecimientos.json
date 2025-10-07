@@ -1244,6 +1244,9 @@
                     "google"
                   ]
                 },
+                "reminderSent": {
+                  "type": "boolean"
+                },
                 "published_at": {
                   "type": "string"
                 },
@@ -1255,6 +1258,13 @@
                 }
               }
             }
+          },
+          "googleCalendarEmail": {
+            "type": "string"
+          },
+          "googleCalendarSyncEnabled": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",
@@ -1445,6 +1455,16 @@
             "items": {
               "type": "string"
             }
+          },
+          "googleRefreshToken": {
+            "type": "string"
+          },
+          "googleCalendarEmail": {
+            "type": "string"
+          },
+          "googleCalendarSyncEnabled": {
+            "type": "boolean",
+            "default": false
           },
           "published_at": {
             "type": "string",

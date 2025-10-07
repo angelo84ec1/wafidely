@@ -273,6 +273,17 @@
     "citas": {
       "via": "establecimientos",
       "collection": "citas"
+    },
+    "googleRefreshToken": {
+      "type": "richtext",
+      "private": true
+    },
+    "googleCalendarEmail": {
+      "type": "email"
+    },
+    "googleCalendarSyncEnabled": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
