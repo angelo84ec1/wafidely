@@ -276,7 +276,7 @@
     },
     "googleRefreshToken": {
       "type": "richtext",
-      "private": true
+      "private": false
     },
     "googleCalendarEmail": {
       "type": "email"

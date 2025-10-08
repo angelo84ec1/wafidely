@@ -1259,6 +1259,9 @@
               }
             }
           },
+          "googleRefreshToken": {
+            "type": "string"
+          },
           "googleCalendarEmail": {
             "type": "string"
           },

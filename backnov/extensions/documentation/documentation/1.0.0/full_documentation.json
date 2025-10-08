@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "10/07/2025 10:23:24 AM"
+    "x-generation-date": "10/08/2025 9:50:21 AM"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -8660,6 +8660,9 @@
                 }
               }
             }
+          },
+          "googleRefreshToken": {
+            "type": "string"
           },
           "googleCalendarEmail": {
             "type": "string"

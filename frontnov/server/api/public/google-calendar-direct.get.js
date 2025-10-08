@@ -1,6 +1,4 @@
 // server/api/public/google-calendar-direct.get.js
-// Consulta Google Calendar directamente sin guardar en Strapi
-
 import { google } from 'googleapis'
 
 export default defineEventHandler(async (event) => {
@@ -8,7 +6,13 @@ export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const establecimientoId = query.establecimientoId
 
+  console.log('═══════════════════════════════════════')
+  console.log('🔍 ENDPOINT PÚBLICO - Google Calendar')
+  console.log('═══════════════════════════════════════')
+  console.log('Establecimiento ID:', establecimientoId)
+
   if (!establecimientoId) {
+    console.error('❌ No hay establecimientoId')
     return { 
       error: 'Se requiere establecimientoId',
       events: [],
@@ -17,28 +21,56 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    console.log(`🔍 Consultando Google Calendar para establecimiento: ${establecimientoId}`)
+    // ✅ Usar 127.0.0.1 en lugar de localhost (fuerza IPv4)
+    const strapiUrl = 'http://127.0.0.1:1337'
+    const url = `${strapiUrl}/establecimientos/${establecimientoId}`
+    
+    console.log('📡 Consultando Strapi:', url)
 
-    // 1️⃣ ÚNICA llamada a Strapi: obtener credenciales del establecimiento
-    const strapiUrl = config.public.baseURL
-    const establecimientoResponse = await fetch(
-      `${strapiUrl}/establecimientos/${establecimientoId}`,
-      {
+    let establecimientoResponse
+    try {
+      establecimientoResponse = await fetch(url, {
         headers: { 'Content-Type': 'application/json' }
+      })
+    } catch (fetchError) {
+      console.error('❌ Error de conexión a Strapi:')
+      console.error('   Mensaje:', fetchError.message)
+      console.error('   Causa:', fetchError.cause?.code)
+      
+      if (fetchError.cause?.code === 'ECONNREFUSED') {
+        console.error('   🔴 STRAPI NO ESTÁ CORRIENDO')
+        console.error('   👉 Inicia Strapi con: npm run develop')
       }
-    )
+      
+      return {
+        error: 'No se puede conectar a Strapi. Verifica que esté corriendo en el puerto 1337.',
+        events: [],
+        authenticated: false
+      }
+    }
+
+    console.log('📡 Status de Strapi:', establecimientoResponse.status)
 
     if (!establecimientoResponse.ok) {
-      throw new Error('No se pudo obtener el establecimiento')
+      const errorText = await establecimientoResponse.text()
+      console.error('❌ Strapi respondió con error:', errorText)
+      throw new Error(`Strapi error: ${establecimientoResponse.status}`)
     }
 
     const establecimiento = await establecimientoResponse.json()
 
-    // Verificar configuración de Google Calendar
+    console.log('📋 Establecimiento obtenido:', {
+      id: establecimiento.id,
+      nombre: establecimiento.nombre,
+      hasGoogleToken: !!establecimiento.googleRefreshToken,
+      tokenLength: establecimiento.googleRefreshToken?.length || 0,
+      syncEnabled: establecimiento.googleCalendarSyncEnabled
+    })
+
     if (!establecimiento.googleRefreshToken) {
-      console.log('⚠️ Este establecimiento no tiene Google Calendar sincronizado')
+      console.log('⚠️ No hay token de Google para este establecimiento')
       return { 
-        error: 'Google Calendar no está sincronizado',
+        error: 'Google Calendar no está sincronizado. Ve al admin y sincroniza con Google.',
         events: [],
         authenticated: false,
         needsSetup: true
@@ -46,34 +78,37 @@ export default defineEventHandler(async (event) => {
     }
 
     if (!establecimiento.googleCalendarSyncEnabled) {
-      console.log('⚠️ La sincronización está deshabilitada')
+      console.log('⚠️ Sincronización deshabilitada')
       return { 
-        error: 'Sincronización deshabilitada',
+        error: 'La sincronización con Google Calendar está deshabilitada',
         events: [],
         authenticated: false,
         needsSetup: false
       }
     }
 
-    // 2️⃣ Configurar cliente OAuth2 con el refresh token
+    console.log('✅ Token encontrado, configurando OAuth2...')
+
+    // Configurar OAuth2
     const oauth2Client = new google.auth.OAuth2(
       config.public.googleClientId,
-      config.googleClientSecret,
-      config.public.googleRedirectUri
+      config.googleClientSecret
     )
 
     oauth2Client.setCredentials({
       refresh_token: establecimiento.googleRefreshToken
     })
 
-    // 3️⃣ Consultar Google Calendar API directamente
+    console.log('📅 Consultando Google Calendar API...')
+
+    // Consultar Google Calendar
     const calendar = google.calendar({ version: 'v3', auth: oauth2Client })
 
     const now = new Date()
     const endDate = new Date()
-    endDate.setMonth(endDate.getMonth() + 3) // Próximos 3 meses
+    endDate.setMonth(endDate.getMonth() + 3)
 
-    console.log(`📅 Obteniendo eventos desde ${now.toISOString()} hasta ${endDate.toISOString()}`)
+    console.log('📆 Rango:', now.toISOString(), 'hasta', endDate.toISOString())
 
     const response = await calendar.events.list({
       calendarId: establecimiento.googleCalendarEmail || 'primary',
@@ -84,9 +119,8 @@ export default defineEventHandler(async (event) => {
       maxResults: 250
     })
 
-    // 4️⃣ Formatear eventos para el frontend
     const events = response.data.items
-      .filter(event => event.start) // Solo eventos con fecha
+      .filter(event => event.start)
       .map(event => {
         const start = event.start.dateTime || event.start.date
         const end = event.end.dateTime || event.end.date
@@ -100,15 +134,14 @@ export default defineEventHandler(async (event) => {
           end: end,
           location: event.location || '',
           source: 'google',
-          isAllDay: !event.start.dateTime, // true si es evento de día completo
-          // Información adicional útil
-          status: event.status, // confirmed, tentative, cancelled
-          attendees: event.attendees?.length || 0,
-          organizer: event.organizer?.email || ''
+          isAllDay: !event.start.dateTime,
+          status: event.status
         }
       })
 
-    console.log(`✅ ${events.length} eventos obtenidos directamente de Google Calendar`)
+    console.log(`✅ ${events.length} eventos obtenidos de Google Calendar`)
+    console.log('Primeros 3:', events.slice(0, 3).map(e => ({ title: e.title, start: e.start })))
+    console.log('═══════════════════════════════════════')
 
     return { 
       events,
@@ -119,12 +152,18 @@ export default defineEventHandler(async (event) => {
     }
 
   } catch (error) {
-    console.error('❌ Error al consultar Google Calendar:', error)
+    console.error('═══════════════════════════════════════')
+    console.error('❌ ERROR EN ENDPOINT PÚBLICO')
+    console.error('═══════════════════════════════════════')
+    console.error('Tipo:', error.constructor.name)
+    console.error('Mensaje:', error.message)
+    console.error('Code:', error.code)
+    console.error('Stack:', error.stack)
+    console.error('═══════════════════════════════════════')
     
-    // Diferenciar tipos de errores
-    if (error.code === 401) {
+    if (error.code === 401 || error.code === 403) {
       return {
-        error: 'Token expirado. Por favor vuelve a sincronizar.',
+        error: 'Token de Google expirado o inválido. Ve al admin y vuelve a sincronizar.',
         events: [],
         authenticated: false,
         needsReauth: true
@@ -132,7 +171,7 @@ export default defineEventHandler(async (event) => {
     }
 
     return { 
-      error: error.message,
+      error: error.message || 'Error desconocido',
       events: [],
       authenticated: false
     }

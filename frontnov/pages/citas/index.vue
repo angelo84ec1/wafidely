@@ -366,9 +366,8 @@ definePageMeta({
   layout: "private",
 })
 
-const {
-  public: { baseURL },
-} = useRuntimeConfig()
+const config = useRuntimeConfig()
+const baseURL = config.public.baseURL
 
 // Reactive data
 const calenderData = ref([])
@@ -376,6 +375,7 @@ const googleEvents = ref([])
 const postCalenderModal = ref(false)
 const currentView = ref('month')
 const isGoogleAuthenticated = ref(false)
+const isLoadingGoogle = ref(false)
 const authStore = useAuthStore()
 
 // Computed properties
@@ -394,10 +394,8 @@ const getCalenderData = computed(() => {
       event?.establecimientos[0]?.id == userData.value?.establecimiento
     )
     .map(event => {
-      const isGoogle = event.source === 'google'
-      
       return {
-        id: event._id,
+        id: `local-${event._id}`,
         title: `${event?.name} - ${event?.hour}`,
         start: `${event?.date} ${event?.hour}`,
         end: `${event?.date} ${event?.hour}`,
@@ -405,15 +403,15 @@ const getCalenderData = computed(() => {
           <div class="event-content">
             <strong>${event?.name}</strong><br>
             <small>${event?.hour}</small><br>
-            ${isGoogle ? '<small>📅 Google Calendar</small>' : `<small>WhatsApp: ${event?.whatsapp}</small>`}
+            <small>WhatsApp: ${event?.whatsapp || 'N/A'}</small>
           </div>
         `,
-        class: isGoogle ? 'google-event' : 'custom-event',
-        source: event.source || 'local'
+        class: 'custom-event',
+        source: 'local'
       }
     })
 
-  // Eventos de Google (si hay)
+  // Eventos de Google Calendar
   const googleEventsFormatted = googleEvents.value.map(event => {
     const startDate = new Date(event.start)
     const endDate = new Date(event.end)
@@ -435,7 +433,7 @@ const getCalenderData = computed(() => {
       content: `
         <div class="event-content">
           <strong>${event.title}</strong><br>
-          <small>Google Calendar</small>
+          <small>📅 Google Calendar</small>
         </div>
       `,
       class: 'google-event',
@@ -443,7 +441,15 @@ const getCalenderData = computed(() => {
     }
   })
 
-  return [...localEvents, ...googleEventsFormatted]
+  const combined = [...localEvents, ...googleEventsFormatted]
+  
+  console.log('📊 Eventos para calendario:', {
+    locales: localEvents.length,
+    google: googleEventsFormatted.length,
+    total: combined.length
+  })
+
+  return combined
 })
 
 const getDisabledDates = computed(() => {
@@ -558,6 +564,10 @@ const setPostCalenderModal = () => {
 
 const onEventClick = (event, e) => {
   console.log('Event clicked:', event)
+  
+  if (event.source === 'google') {
+    alert(`Evento de Google Calendar:\n\n${event.title}`)
+  }
 }
 
 const formatDateTime = (date, time) => {
@@ -596,12 +606,12 @@ const getData = async () => {
     }
 
     calenderData.value = await response.json()
+    console.log(`✅ ${calenderData.value.length} citas locales cargadas`)
   } catch (error) {
     console.error('Error fetching data:', error)
   }
 }
 
-// Función para eliminar cita
 const deleteAppointment = async (appointmentId) => {
   if (!confirm('¿Estás seguro de que deseas eliminar esta cita?')) {
     return
@@ -619,7 +629,6 @@ const deleteAppointment = async (appointmentId) => {
       throw new Error('Failed to delete appointment')
     }
 
-    // Recargar los datos después de eliminar
     await getData()
   } catch (error) {
     console.error('Error deleting appointment:', error)
@@ -627,108 +636,151 @@ const deleteAppointment = async (appointmentId) => {
   }
 }
 
+// pages/citas/index.vue - función syncWithGoogle
 const syncWithGoogle = () => {
   const establecimientoId = userData.value?.establecimiento
+  
   if (!establecimientoId) {
     alert('No se pudo obtener el ID del establecimiento')
     return
   }
-  // Redirigir al endpoint de inicio con el establecimientoId
-  window.location.href = `/api/auth/google/init?establecimientoId=${establecimientoId}`
+  
+  console.log('🔐 SYNC: Establecimiento ID:', establecimientoId)
+  
+  const redirectUri = `http://${window.location.host}/api/auth/google/callback-admin`
+  
+  console.log('🔗 SYNC: Redirect URI:', redirectUri)
+
+  const authUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth')
+  authUrl.searchParams.append('client_id', config.public.googleClientId)
+  authUrl.searchParams.append('redirect_uri', redirectUri)
+  authUrl.searchParams.append('response_type', 'code')
+  authUrl.searchParams.append('scope', 'https://www.googleapis.com/auth/calendar.readonly')
+  authUrl.searchParams.append('access_type', 'offline')
+  authUrl.searchParams.append('prompt', 'consent')
+  authUrl.searchParams.append('state', establecimientoId)
+
+  console.log('🚀 SYNC: URL completa:', authUrl.toString())
+  
+  window.location.href = authUrl.toString()
 }
 
 const refreshGoogleCalendar = async () => {
-  if (!process.client) return
-  
-  try {
-    const establecimientoId = userData.value?.establecimiento
-    const response = await $fetch('/api/public/google-calendar-direct', {
-      method: 'GET',
-      params: { establecimientoId }
-    })
-
-    if (response.events) {
-      googleEvents.value = response.events
-      isGoogleAuthenticated.value = true
-      console.log('Eventos Google en admin:', response.events.length)
-    }
-    
-  } catch (error) {
-    console.error('Error:', error)
-    isGoogleAuthenticated.value = false
+  if (!process.client) {
+    console.log('⚠️ No está en cliente, saltando')
+    return
   }
-}
-
-
-
-// Nueva función: verificar si ya está sincronizado
-const checkGoogleSync = async () => {
-  try {
-    const establecimientoId = userData.value?.establecimiento
-    if (!establecimientoId) return
-
-    const response = await fetch(`${baseURL}/establecimientos/${establecimientoId}`)
-    if (!response.ok) return
-
-    const establecimiento = await response.json()
-
-    // Si tiene token y está habilitado, marcar como autenticado
-    if (establecimiento.googleRefreshToken && establecimiento.googleCalendarSyncEnabled) {
-      isGoogleAuthenticated.value = true
-      console.log('✅ Google Calendar ya sincronizado')
-      
-      // Cargar eventos automáticamente
-      await refreshGoogleCalendar()
-    }
-  } catch (error) {
-    console.error('Error verificando sincronización:', error)
-  }
-}
-
-
-const checkGoogleAuth = async () => {
-  if (!process.client) return
   
+  const establecimientoId = userData.value?.establecimiento
+  
+  if (!establecimientoId) {
+    console.error('❌ NO HAY ESTABLECIMIENTO ID')
+    console.log('userData.value:', userData.value)
+    alert('No se encontró el ID del establecimiento')
+    return
+  }
+
+  isLoadingGoogle.value = true
+  console.log('🔄 isLoadingGoogle = true')
+
   try {
-    const response = await $fetch('/api/google/calendar', {
+    console.log('📡 Llamando a /api/google/calendar-admin...')
+
+    const response = await $fetch('/api/google/calendar-admin', {
       method: 'GET'
     })
-    
-    console.log('Check auth response:', response)
-    
-    if (response.authenticated && !response.error) {
+
+    console.log('📦 Respuesta recibida:', response)
+
+    if (response.authenticated && response.events) {
+      googleEvents.value = response.events
       isGoogleAuthenticated.value = true
-      googleEvents.value = response.events || []
-      console.log('Ya autenticado, eventos cargados:', googleEvents.value.length)
+      
+      console.log('✅ EVENTOS CARGADOS EXITOSAMENTE')
+      console.log('   - Cantidad:', response.events.length)
+      console.log('   - isGoogleAuthenticated:', isGoogleAuthenticated.value)
+      console.log('   - Primeros 2 eventos:', response.events.slice(0, 2))
+      
+      alert(`✅ ${response.events.length} eventos sincronizados`)
+    } else if (response.needsReauth) {
+      console.warn('⚠️ NECESITA RE-AUTENTICACIÓN')
+      isGoogleAuthenticated.value = false
+      alert('Token expirado. Sincroniza de nuevo.')
+    } else {
+      console.warn('⚠️ SIN EVENTOS')
+      console.log('Response completo:', response)
+      isGoogleAuthenticated.value = false
+      googleEvents.value = []
+      alert(response.error || 'No hay eventos')
     }
+    
   } catch (error) {
-    console.log('No autenticado o error:', error)
+    console.error('❌ ERROR AL SINCRONIZAR:')
+    console.error('   Tipo:', error.constructor.name)
+    console.error('   Mensaje:', error.message)
+    console.error('   Stack:', error.stack)
     isGoogleAuthenticated.value = false
+    googleEvents.value = []
+    alert('Error al sincronizar: ' + error.message)
+  } finally {
+    isLoadingGoogle.value = false
+    console.log('🔄 isLoadingGoogle = false')
+    console.log('📊 Estado final:')
+    console.log('   - isGoogleAuthenticated:', isGoogleAuthenticated.value)
+    console.log('   - googleEvents.length:', googleEvents.value.length)
   }
 }
 
 onMounted(async () => {
-  console.log('Componente montado')
+  console.log('═══════════════════════════════════════')
+  console.log('📅 COMPONENTE CITAS MONTADO')
+  console.log('═══════════════════════════════════════')
+  console.log('👤 Usuario:', userData.value)
+  console.log('🆔 Establecimiento ID:', userData.value?.establecimiento)
   
+  // 1. Cargar datos locales
   await getData()
-  await checkGoogleSync() // ✅ Verificar primero si ya está sincronizado
   
-  // Limpiar URL si viene del callback
+  // 2. Verificar si hay callback de Google
   if (process.client) {
     const urlParams = new URLSearchParams(window.location.search)
     const googleAuth = urlParams.get('google_auth')
+    const error = urlParams.get('error')
+    
+    console.log('🔍 URL params:', { googleAuth, error })
     
     if (googleAuth === 'success') {
-      console.log('Autenticación exitosa, cargando eventos...')
+      console.log('✅ CALLBACK DE AUTENTICACIÓN EXITOSO')
       isGoogleAuthenticated.value = true
       
+      // Esperar un poco y cargar eventos
+      console.log('⏳ Esperando 1 segundo antes de cargar eventos...')
+      
       setTimeout(async () => {
+        console.log('🔄 Iniciando carga de eventos...')
         await refreshGoogleCalendar()
-        // Limpiar URL después de procesar
+        
+        // Limpiar URL
+        console.log('🧹 Limpiando URL')
         window.history.replaceState({}, '', '/citas')
-      }, 500)
+      }, 1000)
+      
+      return // ✅ Importante: salir aquí para no ejecutar checkGoogleSync
+    }
+    
+    if (error) {
+      console.error('❌ Error en callback:', error)
+      alert(`Error de autenticación: ${error}`)
+      window.history.replaceState({}, '', '/citas')
+      return
     }
   }
+  
+  // 3. Solo verificar sincronización si NO vino del callback
+  console.log('🔍 Verificando sincronización existente...')
+  await checkGoogleSync()
+  
+  console.log('═══════════════════════════════════════')
 })
 </script>
 

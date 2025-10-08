@@ -416,18 +416,19 @@ import { useAuthStore } from "~/store/auth";
 import type { User, EstableCimientos } from "~/common/interfaces/user.interface";
 import { useToast } from "vue-toastification";
 
-
 const isPageLoading = ref(true)
 const loadingProgress = ref(0)
 const calenderLoading = ref(true)
 const calenderData = ref([])
-const googleEventsPublic = ref([]) // ✅ Agregar para eventos de Google
+const googleEventsPublic = ref([])
 const isLoadingCalendar = ref(true)
 const loadingMessage = ref('Cargando calendario...')
 
-
-
 const getCalenderData = computed(() => {
+  console.log('═══════════════════════════════════════')
+  console.log('📊 CALCULANDO FECHAS BLOQUEADAS')
+  console.log('═══════════════════════════════════════')
+  
   // Citas locales
   const localDates = calenderData.value
     .filter(event => 
@@ -437,24 +438,37 @@ const getCalenderData = computed(() => {
       event?.establecimientos[0]?.id == route.params.id
     )
     .map(event => {
-      const [year, month, day] = event.date.split('-');
-      const [hours, minutes] = event.hour.split(':');
-      return new Date(year, month - 1, day, hours, minutes);
-    });
+      const [year, month, day] = event.date.split('-')
+      const [hours, minutes] = event.hour.split(':')
+      const date = new Date(year, month - 1, day, hours, minutes)
+      console.log('Cita local:', { date: event.date, hour: event.hour, dateObj: date })
+      return date
+    })
 
   // Eventos de Google
-  const googleDates = googleEventsPublic.value.map(event => event.start);
+  const googleDates = googleEventsPublic.value
+    .filter(event => event.start && !event.isAllDay)
+    .map(event => {
+      let date
+      if (event.start instanceof Date) {
+        date = event.start
+      } else {
+        date = new Date(event.start)
+      }
+      console.log('Evento Google:', { start: event.start, dateObj: date, title: event.title })
+      return date
+    })
 
-  console.log('Fechas locales bloqueadas:', localDates.length);
-  console.log('Fechas Google bloqueadas:', googleDates.length);
-  console.log('Total fechas bloqueadas:', localDates.length + googleDates.length);
+  const allDates = [...localDates, ...googleDates]
+  
+  console.log('📊 Resumen:')
+  console.log('  - Citas locales:', localDates.length)
+  console.log('  - Eventos Google:', googleDates.length)
+  console.log('  - Total bloqueadas:', allDates.length)
+  console.log('═══════════════════════════════════════')
 
-  return [...localDates, ...googleDates];
-});
-
-
-
-
+  return allDates
+})
 
 definePageMeta({
   title: "Single",
@@ -462,218 +476,221 @@ definePageMeta({
   components: {
     BaseInput,
     BaseFileInput,
+  },
+})
 
-    },
-  });
+const { isAdmin, isEstablecimiento } = useAdmin()
+const authStore = useAuthStore()
+const router = useRouter()
 
+const {
+  public: { baseURL, GOOGLE_MAPS_API },
+} = useRuntimeConfig()
+const BASE_URL = baseURL
 
-  
-  
-  const { isAdmin, isEstablecimiento } = useAdmin()
-  const authStore = useAuthStore();
-  const router = useRouter();
-  
-  const {
-    public: { baseURL, GOOGLE_MAPS_API },
-  } = useRuntimeConfig();
-  const BASE_URL = baseURL;
-  
+const getProfilePicture = (url: string) => `${BASE_URL}${url}`
 
-  const getProfilePicture = (url: string) => `${BASE_URL}${url}`;
-  
-  const toast = useToast();
-  const route = useRoute();
-  
-  // console.log(route);
-  const establecimientos = ref<any>(null);
-  
-  if (route.params.id != "create") {
-    const { data } = await useFetch<any[]>(
-      `${baseURL}/establecimientos/${route.params.id}`,
-      {
-        method: "GET",
+const toast = useToast()
+const route = useRoute()
+
+// ... (tu código existente de establecimientos y mapas continúa igual)
+const establecimientos = ref<any>(null)
+
+if (route.params.id != "create") {
+  const { data } = await useFetch<any[]>(
+    `${baseURL}/establecimientos/${route.params.id}`,
+    {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     }
-  );
+  )
+  
   if (data.value?.activateLanding === false) {
-    toast.error("Landing page desactivada por administrador");
-    router.push("/");
+    toast.error("Landing page desactivada por administrador")
+    router.push("/")
   }
-  console.log("????????? ", data.value);
+  
+  console.log("Establecimiento cargado:", data.value)
+  establecimientos.value = data.value
 
-  establecimientos.value = data.value;
-
-  // convert establecimientos.value.googlemaps to object with lat and lng
+  // Convertir coordenadas de Google Maps
   establecimientos.value.googlemaps = {
     lat: parseFloat(establecimientos.value?.googlemaps?.split(",")[0]),
     lng: parseFloat(establecimientos.value?.googlemaps?.split(",")[1]),
-  };
+  }
 
   establecimientos.value.googlemaps2 = {
     lat: parseFloat(establecimientos.value?.googlemaps2?.split(",")[0]),
     lng: parseFloat(establecimientos.value?.googlemaps2?.split(",")[1]),
-  };
+  }
 
   establecimientos.value.googlemaps3 = {
     lat: parseFloat(establecimientos.value?.googlemaps3?.split(",")[0]),
     lng: parseFloat(establecimientos.value?.googlemaps3?.split(",")[1]),
-  };
+  }
 
   establecimientos.value.googlemaps4 = {
     lat: parseFloat(establecimientos.value?.googlemaps4?.split(",")[0]),
     lng: parseFloat(establecimientos.value?.googlemaps4?.split(",")[1]),
-  };
-
+  }
 
   establecimientos.value.googlemaps5 = {
     lat: parseFloat(establecimientos.value?.googlemaps5?.split(",")[0]),
     lng: parseFloat(establecimientos.value?.googlemaps5?.split(",")[1]),
-  };
-
-
-
-  console.log("????????? ", establecimientos.value);
-  //get selected user
-  //   const {data} = await useFetch<any[]>(`${baseURL}/users/`, {
-  //   method: "GET",
-  //   headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${authStore.getToken}`,
-    //   },
-    // });
   }
+}
 
-  const markerOptions = {
-    position: {
-      lat: establecimientos.value.googlemaps.lat - 0.00011,
-      lng: establecimientos.value.googlemaps.lng + 0.00024,
-      lat: establecimientos.value.googlemaps2.lat - 0.00011,
-      lng: establecimientos.value.googlemaps2.lng + 0.00024,
-      lat: establecimientos.value.googlemaps3.lat - 0.00011,
-      lng: establecimientos.value.googlemaps3.lng + 0.00024,
-      lat: establecimientos.value.googlemaps4.lat - 0.00011,
-      lng: establecimientos.value.googlemaps4.lng + 0.00024,
-      lat: establecimientos.value.googlemaps5.lat - 0.00011,
-      lng: establecimientos.value.googlemaps5.lng + 0.00024
-    },
-    anchorPoint: 'TOP_CENTER',
-    label: 'O',
-    title: 'Oleg Rõbnikov Web Development'
-  }
+const markerOptions = {
+  position: {
+    lat: establecimientos.value.googlemaps.lat - 0.00011,
+    lng: establecimientos.value.googlemaps.lng + 0.00024,
+  },
+  anchorPoint: 'TOP_CENTER',
+  label: 'O',
+  title: establecimientos.value?.nombre || 'Ubicación'
+}
 
-  const getDataAppoinments = async () => {
+const getDataAppoinments = async () => {
   try {
+    console.log('🔄 Cargando citas locales...')
     calenderLoading.value = true
-    loadingMessage.value = 'Obteniendo citas...'
+    loadingMessage.value = 'Obteniendo citas locales...'
     
-    // ✅ Cargar citas locales y Google Calendar en paralelo
-    const [citasResponse] = await Promise.all([
-      fetch(`${BASE_URL}/citas`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      }),
-      getGoogleEvents() // Se ejecuta al mismo tiempo
-    ])
+    const citasResponse = await fetch(`${BASE_URL}/citas`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
 
     if (!citasResponse.ok) {
       throw new Error('Failed to fetch data')
     }
 
     calenderData.value = await citasResponse.json()
-    console.log('Citas locales obtenidas:', calenderData.value.length)
+    console.log('✅ Citas locales obtenidas:', calenderData.value.length)
 
   } catch (error) {
-    console.error('Error fetching data:', error)
+    console.error('❌ Error fetching citas:', error)
   } finally {
     calenderLoading.value = false
-    isLoadingCalendar.value = false
   }
 }
 
 const getGoogleEvents = async () => {
   try {
-    console.log('🌐 Consultando Google Calendar para establecimiento:', route.params.id);
+    loadingMessage.value = 'Sincronizando con Google Calendar...'
+    console.log('═══════════════════════════════════════')
+    console.log('🌐 CONSULTANDO GOOGLE CALENDAR (PÚBLICO)')
+    console.log('═══════════════════════════════════════')
+    console.log('Establecimiento ID:', route.params.id)
     
-    const response = await fetch(
-      `/api/public/google-calendar-direct?establecimientoId=${route.params.id}`,
-      {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
-      }
-    );
+    const url = `/api/public/google-calendar-direct?establecimientoId=${route.params.id}`
+    console.log('URL:', url)
+    
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' }
+    })
+
+    console.log('Response status:', response.status)
 
     if (!response.ok) {
-      throw new Error('Error en la respuesta del servidor');
+      const errorText = await response.text()
+      console.error('❌ Response not OK:', errorText)
+      throw new Error(`HTTP ${response.status}: ${errorText}`)
     }
 
-    const data = await response.json();
+    const data = await response.json()
     
-    console.log('📅 Respuesta de Google Calendar:', data);
+    console.log('📦 Respuesta de Google Calendar:', {
+      authenticated: data.authenticated,
+      count: data.count,
+      error: data.error,
+      hasEvents: !!data.events
+    })
 
     if (data.error) {
-      console.warn('⚠️ Error de Google:', data.error);
-      googleEventsPublic.value = [];
-      return;
+      console.warn('⚠️ Error en respuesta:', data.error)
+      if (data.needsSetup) {
+        console.warn('   Necesita configurar Google Calendar en el admin')
+      }
+      if (data.needsReauth) {
+        console.warn('   Token expirado, necesita re-autenticar')
+      }
+      googleEventsPublic.value = []
+      return
     }
 
-    if (data.events && data.events.length > 0) {
-      googleEventsPublic.value = data.events
-        .filter(event => !event.isAllDay)
-        .map(event => ({
-          ...event,
-          start: new Date(event.start)
-        }));
+    if (data.events && Array.isArray(data.events) && data.events.length > 0) {
+      console.log(`✅ ${data.events.length} eventos recibidos`)
+      console.log('Primer evento:', data.events[0])
       
-      console.log('✅ Eventos Google convertidos:', googleEventsPublic.value.length);
-      console.log('Primer evento:', googleEventsPublic.value[0]);
+      // Convertir a objetos Date
+      googleEventsPublic.value = data.events
+        .filter(event => event.start && !event.isAllDay)
+        .map(event => {
+          const startDate = new Date(event.start)
+          return {
+            ...event,
+            start: startDate,
+            originalStart: event.start
+          }
+        })
+      
+      console.log('✅ Eventos convertidos:', googleEventsPublic.value.length)
+      console.log('Primer evento convertido:', googleEventsPublic.value[0])
     } else {
-      console.log('ℹ️ No hay eventos de Google');
-      googleEventsPublic.value = [];
+      console.log('ℹ️ No hay eventos de Google Calendar')
+      googleEventsPublic.value = []
     }
+    
+    console.log('═══════════════════════════════════════')
   } catch (error) {
-    console.error('❌ Error obteniendo eventos de Google:', error);
-    googleEventsPublic.value = [];
+    console.error('═══════════════════════════════════════')
+    console.error('❌ ERROR OBTENIENDO EVENTOS DE GOOGLE')
+    console.error('═══════════════════════════════════════')
+    console.error('Tipo:', error.constructor.name)
+    console.error('Mensaje:', error.message)
+    console.error('Stack:', error.stack)
+    console.error('═══════════════════════════════════════')
+    googleEventsPublic.value = []
   }
-};
+}
 
-
-
-  onMounted(async () => {
-    loadingMessage.value = 'Cargando datos...'
+onMounted(async () => {
+  loadingMessage.value = 'Cargando datos...'
+  
   try {
     loadingProgress.value = 20
     
-    // Cargar datos de citas
+    console.log('🚀 Iniciando carga de datos...')
+    
+    // Cargar citas locales
     await getDataAppoinments()
-    loadingProgress.value = 60
+    loadingProgress.value = 50
+    
+    // Cargar eventos de Google Calendar
+    await getGoogleEvents()
+    loadingProgress.value = 80
     
     // Configurar color por defecto
     if (!establecimientos.value.detalledescripcion5) {
       establecimientos.value.detalledescripcion5 = '#ffffff'
     }
-    loadingProgress.value = 80
     
-    // Esperar un momento para suavizar la transición
-    await new Promise(resolve => setTimeout(resolve, 300))
     loadingProgress.value = 100
-
-    isLoadingCalendar.value = false
     
+    console.log('✅ Carga completa')
+    
+  } catch (error) {
+    console.error('❌ Error en onMounted:', error)
   } finally {
-    // Ocultar loading con animación
-    setTimeout(() => {
-      isPageLoading.value = false
-    }, 200)
+    await new Promise(resolve => setTimeout(resolve, 300))
+    isLoadingCalendar.value = false
+    isPageLoading.value = false
   }
 })
-
-
-
-
-
-
 </script>
 
 
